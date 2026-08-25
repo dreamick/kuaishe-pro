@@ -5734,11 +5734,11 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
       '<div class="ai-settings-dialog">' +
         '<div class="ai-settings-header"><span>AI 扩写设置</span><button class="ai-settings-close" id="aiSettingsClose" type="button">&times;</button></div>' +
         '<div class="ai-settings-body">' +
-          '<div class="ai-field"><label>API 地址（Base URL）</label><input id="aiBaseUrl" type="text" placeholder="https://openrouter.ai/api/v1" autocomplete="off"></div>' +
+          '<div class="ai-field"><label>API 地址（Base URL）</label><input id="aiBaseUrl" type="text" placeholder="https://ark.cn-beijing.volces.com/api/v3" autocomplete="off"></div>' +
           '<div class="ai-field"><label>API Key</label><input id="aiApiKey" type="password" placeholder="sk-..." autocomplete="off"></div>' +
-          '<div class="ai-field"><label>模型（Model）</label><input id="aiModel" type="text" placeholder="deepseek/deepseek-chat" autocomplete="off"></div>' +
+          '<div class="ai-field"><label>模型（Model）</label><input id="aiModel" type="text" placeholder="doubao-seed-2-1-pro-260628" autocomplete="off"></div>' +
           '<div class="ai-field"><label>扩写风格倾向（可选）</label><input id="aiStyle" type="text" placeholder="如：电影感 / 写实摄影 / 二次元" autocomplete="off"></div>' +
-          '<p class="ai-hint">支持任意 OpenAI 兼容接口。浏览器直连需服务端开启 CORS；若遇跨域报错，建议改用 OpenRouter 或把 Base URL 填成你自建的中转 / Cloudflare Worker 地址。</p>' +
+          '<p class="ai-hint">支持任意 OpenAI 兼容接口（默认已填火山方舟 ARK，豆包模型中文强、稳定便宜）。浏览器直连需服务端开启 CORS；若遇跨域报错，把 Base URL 换成你自建的中转 / Cloudflare Worker 地址即可。</p>' +
         '</div>' +
         '<div class="ai-settings-footer"><button class="ai-settings-btn cancel" id="aiSettingsCancel" type="button">取消</button><button class="ai-settings-btn save" id="aiSettingsSave" type="button">保存</button></div>' +
       '</div>' +
@@ -5750,9 +5750,9 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
 
   function openAISettings(){
     var cfg = loadAIConfig();
-    baseInput.value = cfg.baseUrl || 'https://openrouter.ai/api/v1';
+    baseInput.value = cfg.baseUrl || 'https://ark.cn-beijing.volces.com/api/v3';
     keyInput.value = cfg.apiKey || '';
-    modelInput.value = cfg.model || 'deepseek/deepseek-chat';
+    modelInput.value = cfg.model || 'doubao-seed-2-1-pro-260628';
     styleInput.value = cfg.style || '';
     overlay.classList.add('open');
   }
@@ -5765,7 +5765,7 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
     var cfg = {
       baseUrl: (baseInput.value || '').trim(),
       apiKey: (keyInput.value || '').trim(),
-      model: (modelInput.value || '').trim() || 'deepseek/deepseek-chat',
+      model: (modelInput.value || '').trim() || 'doubao-seed-2-1-pro-260628',
       style: (styleInput.value || '').trim()
     };
     saveAIConfig(cfg);
