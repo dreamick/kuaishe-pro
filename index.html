@@ -850,6 +850,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-ratio-faved-bar{display:flex;gap:4px;flex-wrap:wrap;align-items:center;min-height:24px}
 .prompt-ratio-faved-bar:empty{display:none}
 .prompt-ratio-faved-tag{display:inline-flex;align-items:center;padding:2px 6px;border-radius:5px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);cursor:pointer;transition:var(--prompt-transition);background:var(--prompt-bg-section);border:1px solid var(--prompt-border);white-space:nowrap}
+.prompt-ratio-faved-tag.selected{border-color:var(--prompt-accent);background:var(--prompt-accent-light);color:var(--prompt-accent)}
 .prompt-ratio-expand-btn{font-size:18px;font-weight:400;color:var(--prompt-accent);background:none;border:none;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;padding:0 2px;line-height:1}
 .prompt-ratio-empty-hint{font-size:11px;color:var(--prompt-text-muted)}
 .prompt-ratio-panel{display:none}
@@ -982,6 +983,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 body.dark .prompt-tag{background:var(--group-bg)}
 body.dark .prompt-ratio-btn{background:var(--group-bg);color:var(--text-secondary);border-color:var(--border)}
 body.dark .prompt-ratio-btn.selected{background:var(--prompt-accent-light);color:var(--prompt-accent)}
+body.dark .prompt-ratio-faved-tag.selected{background:var(--prompt-accent-light);color:var(--prompt-accent)}
 body.dark .prompt-style-tag{background:var(--group-bg)}
 body.dark .prompt-param-btn{background:var(--group-bg)}
 body.dark .prompt-quick-prompt-tag{background:var(--group-bg)}
@@ -4028,26 +4030,14 @@ if(ratioExpandBtn)ratioExpandBtn.addEventListener('click',function(){ratioPanel.
 ratioBtns.forEach(function(btn){
   var star=btn.querySelector('.prompt-star');
   if(star&&pState.favedRatios.includes(btn.dataset.value))star.classList.add('faved');
-  // 点击 ★ 星标：收藏/取消收藏（不触选中）
-  if(star){
-    star.addEventListener('click',function(e){
-      e.stopPropagation();
-      var v=btn.dataset.value;
-      if(pState.favedRatios.includes(v))pState.favedRatios=pState.favedRatios.filter(function(x){return x!==v;});
-      else pState.favedRatios.push(v);
-      localStorage.setItem('mergedPromptFavedRatios',JSON.stringify(pState.favedRatios));
-      var s=btn.querySelector('.prompt-star');if(s)s.classList.toggle('faved',pState.favedRatios.includes(v));
-      renderFavedBar();updatePromptResult();
-    });
-  }
-  // 点击按钮本体：选中比例并高亮
-  btn.addEventListener('click',function(){
+  // 比例面板仅收藏：点击按钮任意位置 = 收藏/取消收藏
+  btn.addEventListener('click',function(e){
     var v=this.dataset.value;
-    pState.ratio=pState.ratio===v?null:v;
-    ratioBtns.forEach(function(b){b.classList.toggle('selected',b.dataset.value===pState.ratio);});
-    renderFavedBar();
-    try{localStorage.setItem('mergedPromptRatio',pState.ratio||'');}catch(e){}
-    updatePromptResult();
+    if(pState.favedRatios.includes(v))pState.favedRatios=pState.favedRatios.filter(function(x){return x!==v;});
+    else pState.favedRatios.push(v);
+    localStorage.setItem('mergedPromptFavedRatios',JSON.stringify(pState.favedRatios));
+    ratioBtns.forEach(function(b){var s=b.querySelector('.prompt-star');if(s)s.classList.toggle('faved',pState.favedRatios.includes(b.dataset.value));});
+    renderFavedBar();updatePromptResult();
   });
 });
 renderFavedBar();
@@ -4060,8 +4050,8 @@ renderFavedBar();
     var savedR=localStorage.getItem('mergedPromptRatio');
     if(savedR){
       pState.ratio=savedR;
-      if(ratioBtns)ratioBtns.forEach(function(b){b.classList.toggle('selected',b.dataset.value===savedR);});
-      PSS('.prompt-ratio-faved-tag').forEach(function(t){t.classList.toggle('selected',t.dataset.value===savedR);});
+      if(ratioBtns)ratioBtns.forEach(function(b){b.classList.remove('selected');});
+      renderFavedBar();
       var cur=PS('#promptRatioToolbarCurrent'),tb=PS('#promptRatioToolbarBtn');
       if(cur)cur.textContent=savedR.replace('--ar ','');
       if(tb)tb.classList.add('has-value');
