@@ -5712,6 +5712,18 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
    AI 提示词扩写（独立模块，可整体移除）
    ============================================================ */
 (function(){
+  // 本地兼容：主脚本的 PS/PSS/showToast 在其 IIFE 内，外部脚本访问不到，这里自建
+  function PS(s){ return document.querySelector(s); }
+  function PSS(s){ return document.querySelectorAll(s); }
+  function showToast(msg, type){
+    if (typeof window.showToast === 'function') { try{ return window.showToast(msg, type); }catch(e){} }
+    var t = document.createElement('div');
+    t.textContent = msg;
+    t.style.cssText = 'position:fixed;left:50%;top:24px;transform:translateX(-50%);background:rgba(20,20,30,.88);color:#fff;padding:9px 18px;border-radius:10px;z-index:99999;font-size:14px;font-family:inherit;box-shadow:0 6px 24px rgba(0,0,0,.25);';
+    document.body.appendChild(t);
+    setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2200);
+  }
+
   var AI_CFG_KEY = 'mergedToolAIConfig';
   function loadAIConfig(){ try{ return JSON.parse(localStorage.getItem(AI_CFG_KEY) || '{}'); }catch(e){ return {}; } }
   function saveAIConfig(cfg){ localStorage.setItem(AI_CFG_KEY, JSON.stringify(cfg)); }
@@ -5761,7 +5773,7 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
     showToast('AI 设置已保存');
   });
 
-  // ---- 结果区「AI 扩写」按钮 + 「⚙ 设置」按钮 ----
+  // ---- 结果区「AI 扩写」按钮 ----
   var actions = PS('.prompt-result-header-actions');
   if(actions){
     var aiBtn = document.createElement('button');
@@ -5771,17 +5783,6 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
     aiBtn.innerHTML = '<span class="ai-spin"></span><span class="ai-label">AI 扩写</span>';
     actions.insertBefore(aiBtn, actions.firstChild);
     aiBtn.addEventListener('click', aiExpand);
-
-    // 结果区设置按钮（紧挨 AI 扩写，确保可见）
-    var gear2 = document.createElement('button');
-    gear2.className = 'prompt-result-header-btn';
-    gear2.id = 'aiSettingsGearResult';
-    gear2.type = 'button';
-    gear2.style.cssText = 'background:linear-gradient(135deg,#7c5cff,#a78bfa);color:#fff;border-color:transparent;font-size:12px;';
-    gear2.innerHTML = '&#9881; 设置';
-    gear2.title = 'AI 扩写设置（填 API Key / 模型）';
-    actions.insertBefore(gear2, aiBtn.nextSibling);
-    gear2.addEventListener('click', openAISettings);
   }
 
   // ---- 顶部齿轮按钮 ----
