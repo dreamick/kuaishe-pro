@@ -1232,8 +1232,10 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 .ai-settings-body { padding:16px 18px; display:flex; flex-direction:column; gap:12px; }
 .ai-field { display:flex; flex-direction:column; gap:5px; }
 .ai-field label { font-size:12px; font-weight:600; color:var(--text-secondary); }
-.ai-field input { height:38px; padding:0 12px; border:1px solid var(--border); border-radius:8px; background:var(--bg-card); color:var(--text); font-size:13px; font-family:inherit; outline:none; box-sizing:border-box; }
-.ai-field input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(91,124,250,.15); }
+.ai-field input, .ai-field select { height:38px; padding:0 12px; border:1px solid var(--border); border-radius:8px; background:var(--bg-card); color:var(--text); font-size:13px; font-family:inherit; outline:none; box-sizing:border-box; }
+.ai-field input:focus, .ai-field select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(91,124,250,.15); }
+.ai-field select { cursor:pointer; width:100%; }
+.ai-field .ai-custom-input { margin-top:6px; }
 .ai-hint { margin:2px 0 0; font-size:11px; line-height:1.5; color:var(--text-muted); background:var(--group-bg); padding:8px 10px; border-radius:8px; }
 .ai-settings-footer { display:flex; justify-content:flex-end; gap:10px; padding:12px 18px; border-top:1px solid var(--border); }
 .ai-settings-btn { padding:8px 18px; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
@@ -5736,7 +5738,21 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
         '<div class="ai-settings-body">' +
           '<div class="ai-field"><label>API 地址（Base URL）</label><input id="aiBaseUrl" type="text" placeholder="https://ark.cn-beijing.volces.com/api/v3" autocomplete="off"></div>' +
           '<div class="ai-field"><label>API Key</label><input id="aiApiKey" type="password" placeholder="sk-..." autocomplete="off"></div>' +
-          '<div class="ai-field"><label>模型（Model）</label><input id="aiModel" type="text" placeholder="doubao-seed-2-1-pro-260628" autocomplete="off"></div>' +
+          '<div class="ai-field"><label>模型（Model）</label>' +
+          '<select id="aiModel" class="ai-select">' +
+            '<optgroup label="火山方舟 · 豆包">' +
+            '<option value="doubao-seed-2-1-pro-260628">doubao-seed-2-1-pro（质量优先·推荐）</option>' +
+            '<option value="doubao-seed-2-1-turbo-260628">doubao-seed-2-1-turbo（性价比·更快）</option>' +
+            '<option value="doubao-seed-2-0-pro-260215">doubao-seed-2-0-pro（备选）</option>' +
+            '</optgroup>' +
+            '<optgroup label="DeepSeek（官方）">' +
+            '<option value="deepseek-chat">deepseek-chat（V3·便宜稳定）</option>' +
+            '<option value="deepseek-reasoner">deepseek-reasoner（R1·推理更强）</option>' +
+            '</optgroup>' +
+            '<option value="__custom__">自定义…</option>' +
+          '</select>' +
+          '<input id="aiModelCustom" type="text" class="ai-custom-input" placeholder="输入自定义模型 ID（如控制台看到的）" autocomplete="off" style="display:none;">' +
+          '</div>' +
           '<div class="ai-field"><label>扩写风格倾向（可选）</label><input id="aiStyle" type="text" placeholder="如：电影感 / 写实摄影 / 二次元" autocomplete="off"></div>' +
           '<p class="ai-hint">支持任意 OpenAI 兼容接口（默认已填火山方舟 ARK，豆包模型中文强、稳定便宜）。浏览器直连需服务端开启 CORS；若遇跨域报错，把 Base URL 换成你自建的中转 / Cloudflare Worker 地址即可。</p>' +
         '</div>' +
@@ -5746,18 +5762,41 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
   document.body.insertAdjacentHTML('beforeend', modalHTML);
 
   var overlay = PS('#aiSettingsOverlay');
-  var baseInput = PS('#aiBaseUrl'), keyInput = PS('#aiApiKey'), modelInput = PS('#aiModel'), styleInput = PS('#aiStyle');
+  var baseInput = PS('#aiBaseUrl'), keyInput = PS('#aiApiKey'), modelSelect = PS('#aiModel'), modelCustom = PS('#aiModelCustom'), styleInput = PS('#aiStyle');
+  var AI_PRESET_MODELS = ['doubao-seed-2-1-pro-260628','doubao-seed-2-1-turbo-260628','doubao-seed-2-0-pro-260215','deepseek-chat','deepseek-reasoner'];
+  // 预设模型 -> 推荐 Base URL（切换模型时自动填入对应服务商的接口地址）
+  var MODEL_BASE_URL = {
+    'doubao-seed-2-1-pro-260628': 'https://ark.cn-beijing.volces.com/api/v3',
+    'doubao-seed-2-1-turbo-260628': 'https://ark.cn-beijing.volces.com/api/v3',
+    'doubao-seed-2-0-pro-260215': 'https://ark.cn-beijing.volces.com/api/v3',
+    'deepseek-chat': 'https://api.deepseek.com/v1',
+    'deepseek-reasoner': 'https://api.deepseek.com/v1'
+  };
+
+  function syncModelUI(){
+    modelCustom.style.display = (modelSelect.value === '__custom__') ? 'block' : 'none';
+    // 选了预设模型就自动套用对应服务商的 Base URL，避免地址不匹配导致调不通
+    if(MODEL_BASE_URL[modelSelect.value]){ baseInput.value = MODEL_BASE_URL[modelSelect.value]; }
+  }
+  function getModelValue(){
+    var v = (modelSelect.value === '__custom__') ? (modelCustom.value || '') : modelSelect.value;
+    return (v || '').trim() || 'doubao-seed-2-1-pro-260628';
+  }
 
   function openAISettings(){
     var cfg = loadAIConfig();
     baseInput.value = cfg.baseUrl || 'https://ark.cn-beijing.volces.com/api/v3';
     keyInput.value = cfg.apiKey || '';
-    modelInput.value = cfg.model || 'doubao-seed-2-1-pro-260628';
+    var m = cfg.model || 'doubao-seed-2-1-pro-260628';
+    if(AI_PRESET_MODELS.indexOf(m) >= 0){ modelSelect.value = m; modelCustom.value = ''; }
+    else { modelSelect.value = '__custom__'; modelCustom.value = m; }
+    syncModelUI();
     styleInput.value = cfg.style || '';
     overlay.classList.add('open');
   }
   function closeAISettings(){ overlay.classList.remove('open'); }
 
+  modelSelect.addEventListener('change', syncModelUI);
   PS('#aiSettingsClose').addEventListener('click', closeAISettings);
   PS('#aiSettingsCancel').addEventListener('click', closeAISettings);
   overlay.addEventListener('click', function(e){ if(e.target === overlay) closeAISettings(); });
@@ -5765,7 +5804,7 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
     var cfg = {
       baseUrl: (baseInput.value || '').trim(),
       apiKey: (keyInput.value || '').trim(),
-      model: (modelInput.value || '').trim() || 'doubao-seed-2-1-pro-260628',
+      model: getModelValue(),
       style: (styleInput.value || '').trim()
     };
     saveAIConfig(cfg);
