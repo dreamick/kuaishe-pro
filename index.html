@@ -5761,7 +5761,7 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
     showToast('AI 设置已保存');
   });
 
-  // ---- 结果区「AI 扩写」按钮 ----
+  // ---- 结果区「AI 扩写」按钮 + 「⚙ 设置」按钮 ----
   var actions = PS('.prompt-result-header-actions');
   if(actions){
     var aiBtn = document.createElement('button');
@@ -5771,6 +5771,17 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
     aiBtn.innerHTML = '<span class="ai-spin"></span><span class="ai-label">AI 扩写</span>';
     actions.insertBefore(aiBtn, actions.firstChild);
     aiBtn.addEventListener('click', aiExpand);
+
+    // 结果区设置按钮（紧挨 AI 扩写，确保可见）
+    var gear2 = document.createElement('button');
+    gear2.className = 'prompt-result-header-btn';
+    gear2.id = 'aiSettingsGearResult';
+    gear2.type = 'button';
+    gear2.style.cssText = 'background:linear-gradient(135deg,#7c5cff,#a78bfa);color:#fff;border-color:transparent;font-size:12px;';
+    gear2.innerHTML = '&#9881; 设置';
+    gear2.title = 'AI 扩写设置（填 API Key / 模型）';
+    actions.insertBefore(gear2, aiBtn.nextSibling);
+    gear2.addEventListener('click', openAISettings);
   }
 
   // ---- 顶部齿轮按钮 ----
