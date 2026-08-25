@@ -3496,7 +3496,7 @@ var PROMPT_DATA_VERSION='v3.6-restore-daily-uncommon-trendy';
 
 var pState={
 selected:{background:[],subject:[],typography:[],product:[]},
-quality:'high quality',ratio:null,style:null,currentSection:'image',
+quality:'8K, ultra high resolution',ratio:null,style:null,currentSection:'image',
 favedRatios:JSON.parse(localStorage.getItem('mergedPromptFavedRatios')||'[]'),
 presets:JSON.parse(localStorage.getItem('mergedPromptPresets')||'[]'),
 quickPrompts:JSON.parse(localStorage.getItem('mergedPromptQuickPrompts')||'[]'),
@@ -3573,7 +3573,7 @@ var promptNavBtns=PSS('.prompt-tab-nav-btn');
 var promptHeader=document.createElement('div');
 promptHeader.className='prompt-mini-nav';
 promptHeader.style.cssText='display:flex;gap:6px;margin-bottom:10px;align-items:center;';
-promptHeader.innerHTML='<button class="prompt-nav-btn active" data-psection="image"><span class="nav-icon">'+navIcons.image+'</span>生图</button><button class="prompt-nav-btn" data-psection="product"><span class="nav-icon">'+navIcons.product+'</span>产品</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn selected" data-value="high quality">高清</button><button class="prompt-param-btn" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
+promptHeader.innerHTML='<button class="prompt-nav-btn active" data-psection="image"><span class="nav-icon">'+navIcons.image+'</span>生图</button><button class="prompt-nav-btn" data-psection="product"><span class="nav-icon">'+navIcons.product+'</span>产品</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
 PS('#promptBody').insertBefore(promptHeader,PS('#promptBody').firstChild);
 
 // 生成结果列左右拖动调整宽度（拖动后保存到 localStorage，下次打开恢复）
@@ -4010,7 +4010,7 @@ function showPromptContextMenu(x,y,items){
 
 // ====== Quality ======
 var qualityBtns=PSS('#promptQualityOptions .prompt-param-btn');
-qualityBtns.forEach(function(btn){btn.addEventListener('click',function(){qualityBtns.forEach(function(b){b.classList.remove('selected');});this.classList.add('selected');pState.quality=this.dataset.value;updatePromptResult();});});
+qualityBtns.forEach(function(btn){btn.addEventListener('click',function(){qualityBtns.forEach(function(b){b.classList.remove('selected');});this.classList.add('selected');pState.quality=this.dataset.value;try{localStorage.setItem('mergedPromptQuality',pState.quality);}catch(e){}updatePromptResult();});});
 
 // ====== Ratio ======
 var ratioBtns=PSS('.prompt-ratio-btn'),ratioFavedBar=PS('#promptRatioFavedBar'),ratioPanel=PS('#promptRatioPanel'),ratioExpandBtn=PS('#promptRatioExpandBtn'),ratioEmptyState=PS('#promptRatioEmptyState'),ratioToolbarFaved=PS('#promptRatioToolbarFaved');
@@ -4019,7 +4019,7 @@ function renderFavedBar(){
   ratioFavedBar.innerHTML=tagsHtml;
   if(ratioToolbarFaved)ratioToolbarFaved.innerHTML=tagsHtml;
   ratioEmptyState.style.display=pState.favedRatios.length===0?'inline':'none';
-  var attach=function(scope){scope.querySelectorAll('.prompt-ratio-faved-tag').forEach(function(el){el.addEventListener('click',function(){var v=this.dataset.value;pState.ratio=pState.ratio===v?null:v;ratioBtns.forEach(function(b){b.classList.toggle('selected',b.dataset.value===pState.ratio);});renderFavedBar();updatePromptResult();});});};
+  var attach=function(scope){scope.querySelectorAll('.prompt-ratio-faved-tag').forEach(function(el){el.addEventListener('click',function(){var v=this.dataset.value;pState.ratio=pState.ratio===v?null:v;ratioBtns.forEach(function(b){b.classList.toggle('selected',b.dataset.value===pState.ratio);});renderFavedBar();try{localStorage.setItem('mergedPromptRatio',pState.ratio||'');}catch(e){}updatePromptResult();});});};
   attach(ratioFavedBar);
   if(ratioToolbarFaved)attach(ratioToolbarFaved);
   updateRatioToolbar();
@@ -4038,6 +4038,24 @@ ratioBtns.forEach(function(btn){
   });
 });
 renderFavedBar();
+
+// 恢复上次选择的材质(质量)与比例
+(function(){
+  try{
+    var savedQ=localStorage.getItem('mergedPromptQuality');
+    if(savedQ&&qualityBtns){qualityBtns.forEach(function(b){b.classList.toggle('selected',b.dataset.value===savedQ);});pState.quality=savedQ;}
+    var savedR=localStorage.getItem('mergedPromptRatio');
+    if(savedR){
+      pState.ratio=savedR;
+      if(ratioBtns)ratioBtns.forEach(function(b){b.classList.toggle('selected',b.dataset.value===savedR);});
+      PSS('.prompt-ratio-faved-tag').forEach(function(t){t.classList.toggle('selected',t.dataset.value===savedR);});
+      var cur=PS('#promptRatioToolbarCurrent'),tb=PS('#promptRatioToolbarBtn');
+      if(cur)cur.textContent=savedR.replace('--ar ','');
+      if(tb)tb.classList.add('has-value');
+      updateRatioToolbar();
+    }
+  }catch(e){}
+})();
 
 function updateRatioToolbar(){
   var btn=PS('#promptRatioToolbarBtn'),cur=PS('#promptRatioToolbarCurrent');
@@ -4198,8 +4216,8 @@ PS('#promptCopyBtn').addEventListener('click',async function(){var t=resultText.
 PS('#promptClearBtn').addEventListener('click',function(){
   qualityBtns.forEach(function(b){b.classList.remove('selected');});
   PS('#promptQualityOptions .prompt-param-btn[data-value="high quality"]').classList.add('selected');
-  pState.quality='high quality';pState.quickPromptText='';
-  pState.ratio=null;
+  pState.quality='8K, ultra high resolution';pState.quickPromptText='';try{localStorage.removeItem('mergedPromptQuality');}catch(e){}
+  pState.ratio=null;try{localStorage.removeItem('mergedPromptRatio');}catch(e){}
   pState.style=null;
   pState.selected={background:[],subject:[],typography:[],product:[]};
   PS('#promptQuickPromptBody').querySelectorAll('.prompt-quick-prompt-tag').forEach(function(t){t.classList.remove('selected');});
