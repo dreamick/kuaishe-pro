@@ -4028,13 +4028,26 @@ if(ratioExpandBtn)ratioExpandBtn.addEventListener('click',function(){ratioPanel.
 ratioBtns.forEach(function(btn){
   var star=btn.querySelector('.prompt-star');
   if(star&&pState.favedRatios.includes(btn.dataset.value))star.classList.add('faved');
-  btn.addEventListener('click',function(e){
+  // 点击 ★ 星标：收藏/取消收藏（不触选中）
+  if(star){
+    star.addEventListener('click',function(e){
+      e.stopPropagation();
+      var v=btn.dataset.value;
+      if(pState.favedRatios.includes(v))pState.favedRatios=pState.favedRatios.filter(function(x){return x!==v;});
+      else pState.favedRatios.push(v);
+      localStorage.setItem('mergedPromptFavedRatios',JSON.stringify(pState.favedRatios));
+      var s=btn.querySelector('.prompt-star');if(s)s.classList.toggle('faved',pState.favedRatios.includes(v));
+      renderFavedBar();updatePromptResult();
+    });
+  }
+  // 点击按钮本体：选中比例并高亮
+  btn.addEventListener('click',function(){
     var v=this.dataset.value;
-    if(pState.favedRatios.includes(v))pState.favedRatios=pState.favedRatios.filter(function(x){return x!==v;});
-    else pState.favedRatios.push(v);
-    localStorage.setItem('mergedPromptFavedRatios',JSON.stringify(pState.favedRatios));
-    ratioBtns.forEach(function(b){var s=b.querySelector('.prompt-star');if(s)s.classList.toggle('faved',pState.favedRatios.includes(b.dataset.value));});
-    renderFavedBar();updatePromptResult();
+    pState.ratio=pState.ratio===v?null:v;
+    ratioBtns.forEach(function(b){b.classList.toggle('selected',b.dataset.value===pState.ratio);});
+    renderFavedBar();
+    try{localStorage.setItem('mergedPromptRatio',pState.ratio||'');}catch(e){}
+    updatePromptResult();
   });
 });
 renderFavedBar();
