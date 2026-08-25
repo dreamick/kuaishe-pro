@@ -1220,8 +1220,8 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 .prompt-result-header-btn.ai.loading .ai-spin { display:inline-block; }
 .prompt-result-header-btn.ai.loading .ai-label { display:none; }
 @keyframes ai-spin { to { transform: rotate(360deg); } }
-.ai-gear-btn { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:1px solid var(--prompt-border); border-radius:7px; background:var(--prompt-bg-section); color:var(--prompt-text-secondary); cursor:pointer; transition:var(--prompt-transition); font-size:15px; line-height:1; padding:0; }
-.ai-gear-btn:hover { color:var(--purple); border-color:var(--purple); }
+.ai-gear-btn { display:inline-flex; align-items:center; justify-content:center; gap:4px; height:30px; padding:0 10px; border:1px solid var(--prompt-border,#e3e3e8); border-radius:7px; background:var(--prompt-bg-section,#fff); color:var(--prompt-text-secondary,#555); cursor:pointer; transition:all .2s ease; font-size:13px; font-weight:600; line-height:1; white-space:nowrap; }
+.ai-gear-btn:hover { color:var(--purple,#7c5cff); border-color:var(--purple,#7c5cff); }
 /* 设置弹窗 */
 .ai-settings-overlay { position:fixed; inset:0; background:rgba(15,23,42,.45); display:none; align-items:center; justify-content:center; z-index:9999; }
 .ai-settings-overlay.open { display:flex; }
@@ -5781,7 +5781,7 @@ PSS('.prompt-tag-add').forEach(function(btn){btn.addEventListener('click',functi
     gear.id = 'aiSettingsGear';
     gear.type = 'button';
     gear.title = 'AI 扩写设置';
-    gear.innerHTML = '&#9881;';
+    gear.innerHTML = '&#9881; AI设置';
     var toolbar = nav.querySelector('.prompt-param-toolbar');
     if(toolbar) nav.insertBefore(gear, toolbar); else nav.appendChild(gear);
     gear.addEventListener('click', openAISettings);
