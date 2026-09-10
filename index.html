@@ -3247,6 +3247,7 @@ function promptEscapeHtml(value){
   });
 }
 function promptEscapeAttr(value){return promptEscapeHtml(value);}
+function promptShade(hex,amt){var h=(hex||'#888888').replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);r=Math.round(r+(255-r)*amt);g=Math.round(g+(255-g)*amt);b=Math.round(b+(255-b)*amt);return 'rgb('+r+','+g+','+b+')';}function promptSelGrad(c){return 'linear-gradient(135deg,'+promptShade(c,0.22)+' 0%,'+c+' 100%)';}
 function promptTagHTML(label,prompt,group,opts){
   var style='';
   if(opts&&(opts.grad||opts.tcol)){
@@ -3571,7 +3572,7 @@ quickPromptText:'',
 function collapsibleHTML(c,bodyHtml){
   var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   var header='<div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-icon" style="background:'+c.color+'">'+promptEscapeHtml(c.icon)+'</span><span class="prompt-title">'+promptEscapeHtml(c.title)+'<button class="prompt-tag-add">+</button></span>'+arrow+'</div>';
-  return '<div class="prompt-collapsible">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
+  return '<div class="prompt-collapsible" style="background:'+c.gradient+';border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 function flatGroupHTML(c,bodyHtml){
@@ -3589,12 +3590,12 @@ colKeys.forEach(function(key,ci){
   var html=data.map(function(c){
     if(c.groups){
       var groupsHtml=c.groups.map(function(g){
-        var tags=g.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],g.title,{grad:c.gradient,tcol:c.tcolor});}).join('');
+        var tags=g.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],g.title,{grad:promptSelGrad(c.color),tcol:'#fff'});}).join('');
         return '<div class="prompt-subgroup"><div class="prompt-subgroup-title">'+promptEscapeHtml(g.title)+'<button class="prompt-tag-add">+</button></div><div class="prompt-tag-group" data-group="'+promptEscapeAttr(g.title)+'">'+tags+'</div></div>';
       }).join('');
       return flatGroupHTML(c, groupsHtml);
     }else{
-      var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:c.gradient,tcol:c.tcolor});}).join('');
+      var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff'});}).join('');
       return flatGroupHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
     }
   }).join('');
@@ -3604,7 +3605,7 @@ colKeys.forEach(function(key,ci){
 var prodData=collapsibleData.product;
 if(prodData){
   var prodHtml=prodData.map(function(c){
-    var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:c.gradient,tcol:c.tcolor});}).join('');
+    var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff'});}).join('');
     return collapsibleHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
   }).join('');
   PS('#promptProductLayout').innerHTML='<div class="prompt-col-header" style="position:relative;top:auto"><span class="prompt-ch-icon" style="background:#5A8C5C">品</span><span class="prompt-ch-title">产品</span></div><div class="prompt-collapsible" id="promptProductInputCard"><div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-icon" style="background:#5A8C5C">描</span><span class="prompt-title">产品描述</span><span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="prompt-collapsible-body open"><div style="position:relative"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="输入产品描述关键词..." autocomplete="off" style="width:100%;padding:6px 10px;font-size:13px;border:1px solid var(--prompt-border);border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;box-sizing:border-box"><button class="prompt-col-custom-clear" id="promptClearProduct" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0">&times;</button></div></div></div>'+'<div class="prompt-product-col-layout">'+prodHtml+'</div>';
