@@ -820,12 +820,12 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px}
 .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:4px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
-.prompt-tag.faved{border-color:var(--prompt-border);color:var(--prompt-accent)}
+.prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent))}
 .prompt-tag.selected{border-color:transparent;background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38));color:var(--tag-tcol,#fff);box-shadow:0 2px 6px rgba(0,0,0,.08)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:5px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0}
 .prompt-tag-add:hover{transform:none;border-color:var(--prompt-border);background:var(--prompt-bg-section)}
 .prompt-tag-add:active{transform:scale(0.96)}
-.prompt-tag:hover{border-color:rgba(0,0,0,.22);background:var(--prompt-bg-section)}
+.prompt-tag:hover{border-color:rgba(0,0,0,.22);background:var(--tag-hov,var(--prompt-bg-section))}
 body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.04)}
 .prompt-tag.selected:hover{border-color:transparent;background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
 
@@ -3254,6 +3254,8 @@ function promptTagHTML(label,prompt,group,opts){
     var s='';
     if(opts.grad)s+='--tag-grad:'+opts.grad+';';
     if(opts.tcol)s+='--tag-tcol:'+opts.tcol+';';
+    if(opts.hov)s+='--tag-hov:'+opts.hov+';';
+    if(opts.fav)s+='--tag-fav:'+opts.fav+';';
     style=' style="'+s+'"';
   }
   return '<button class="prompt-tag"'+style+' data-prompt="'+promptEscapeAttr(prompt)+'" title="'+promptEscapeAttr(prompt)+'" data-group="'+promptEscapeAttr(group)+'">'+promptEscapeHtml(label)+'</button>';
@@ -3295,7 +3297,7 @@ background:[
 ['赛博空间','赛博空间','赛博空间网格背景，透视纵深，蓝紫霓虹线框，暗调']
 ]},
 // ── 空间构图 ──
-{icon:'构',color:'#9370DB',title:'空间构图',gradient:'linear-gradient(135deg,#DDEEEF 0%,#A0C8D5 100%)',tcolor:'#265F73',tags:[
+{icon:'构',color:'#C08A3E',title:'空间构图',gradient:'linear-gradient(135deg,#FFF3E0 0%,#F3D6A0 100%)',tcolor:'#8A5514',tags:[
 ['中心聚焦','中心聚焦','中心聚焦构图，主体居中，四周留白均分'],
 ['对角线构图','对角线构图','对角线构图，主体沿对角线分布，强纵深'],
 ['四角对称','四角对称','四角对称构图，视觉重量四角均衡，中轴稳定'],
@@ -3346,7 +3348,7 @@ subject:[
 ['纸雕分层','纸雕分层','分层纸雕，多层卡纸叠压，层间投影，手工立体感']
 ]},
 // ── 取景构图 ──
-{icon:'取',color:'#E87941',title:'取景构图',gradient:'linear-gradient(135deg,#EFE2CB 0%,#C9B085 100%)',tcolor:'#654A1E',tags:[
+{icon:'取',color:'#C96A75',title:'取景构图',gradient:'linear-gradient(135deg,#FBE6E2 0%,#EFB6AE 100%)',tcolor:'#8F3A44',tags:[
 ['极特写','极特写','极特写，聚焦最细微局部，细节极致放大'],
 ['特写','特写','特写构图，主体局部占满画面，背景虚化'],
 ['近景','近景','近景构图，主体主要特征入画，背景适度保留'],
@@ -3397,7 +3399,7 @@ typography:[
 ['霓虹灯管','霓虹灯管','霓虹灯管标题字，玻璃管发光笔画，光晕外溢']
 ]},
 // ── 排版布局 ──
-{icon:'排',color:'#5F9EA0',title:'文字排向',gradient:'linear-gradient(135deg,#EBDEF3 0%,#C0A5DC 100%)',tcolor:'#553787',tags:[
+{icon:'排',color:'#4A7FB5',title:'文字排向',gradient:'linear-gradient(135deg,#D9E7F4 0%,#93BCDF 100%)',tcolor:'#1F4E79',tags:[
 ['横向排列','横向排列','标题字横向排列，字距均匀，行线水平'],
 ['竖向排列','竖向排列','标题字竖向排列，自上而下，行气贯通'],
 ['左端齐平','左端齐平','标题字左端齐平，起点一致，右端自然错落'],
@@ -3591,12 +3593,12 @@ colKeys.forEach(function(key,ci){
   var html=data.map(function(c){
     if(c.groups){
       var groupsHtml=c.groups.map(function(g){
-        var tags=g.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],g.title,{grad:promptSelGrad(c.color),tcol:'#fff'});}).join('');
+        var tags=g.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],g.title,{grad:promptSelGrad(c.color),tcol:'#fff',hov:c.gradient,fav:c.tcolor});}).join('');
         return '<div class="prompt-subgroup"><div class="prompt-subgroup-title">'+promptEscapeHtml(g.title)+'<button class="prompt-tag-add">+</button></div><div class="prompt-tag-group" data-group="'+promptEscapeAttr(g.title)+'">'+tags+'</div></div>';
       }).join('');
       return flatGroupHTML(c, groupsHtml);
     }else{
-      var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff'});}).join('');
+      var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff',hov:c.gradient,fav:c.tcolor});}).join('');
       return flatGroupHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
     }
   }).join('');
@@ -3606,7 +3608,7 @@ colKeys.forEach(function(key,ci){
 var prodData=collapsibleData.product;
 if(prodData){
   var prodHtml=prodData.map(function(c){
-    var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff'});}).join('');
+    var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff',hov:c.gradient,fav:c.tcolor});}).join('');
     return collapsibleHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
   }).join('');
   PS('#promptProductLayout').innerHTML='<div class="prompt-collapsible" id="promptProductInputCard"><div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="background:linear-gradient(135deg,#F5FAF5 0%,#E0EFE3 100%);color:#2F5A36;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">产品描述</span><span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="prompt-collapsible-body open"><div style="position:relative"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="输入产品描述关键词..." autocomplete="off" style="width:100%;padding:6px 10px;font-size:13px;border:1px solid var(--prompt-border);border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;box-sizing:border-box"><button class="prompt-col-custom-clear" id="promptClearProduct" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0">&times;</button></div></div></div>'+'<div class="prompt-product-col-layout">'+prodHtml+'</div>';
