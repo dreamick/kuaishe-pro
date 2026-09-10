@@ -3413,7 +3413,7 @@ typography:[
 // 【产品·材质】
 product:[
 // ── 产品类型 ──
-{icon:'品',color:'#5A8C5C',title:'产品类型',gradient:'linear-gradient(135deg,#F5FAF5 0%,#E0EFE3 100%)',tcolor:'#2F5A36',tags:[
+{icon:'品',color:'#5A8C5C',title:'产品类型',gradient:'linear-gradient(135deg,#F5FAF5 0%,#E0EFE3 100%)',capGrad:'linear-gradient(135deg,#EAF3EC 0%,#BDD7C0 100%)',tcolor:'#2F5A36',tags:[
 ['书签','书签','书签，纤薄金属或木质，边缘切割干净，纹样清晰，搭配书页陈列'],
 ['手机壳','手机壳','手机壳，完整展示正反面，开孔精准，材质明确'],
 ['帆布包','帆布包','帆布包，包型挺括，提手受力自然，印花细节完整'],
@@ -3447,7 +3447,7 @@ product:[
 ['包装礼盒','包装礼盒','包装礼盒，盒盖盒身结构清晰，烫金局部，开盒露内衬']
 ]},
 // ── 产品材质 ──
-{icon:'材',color:'#8C7A5A',title:'产品材质',gradient:'linear-gradient(135deg,#FCF8EE 0%,#F0E5C8 100%)',tcolor:'#5E4423',tags:[
+{icon:'材',color:'#8C7A5A',title:'产品材质',gradient:'linear-gradient(135deg,#FCF8EE 0%,#F0E5C8 100%)',capGrad:'linear-gradient(135deg,#F5EFE3 0%,#DDC9A0 100%)',tcolor:'#5E4423',tags:[
 ['磨砂亚克力','磨砂亚克力','磨砂亚克力，半透雾面，边缘透光柔和，无指纹'],
 ['金属拉丝','金属拉丝','金属拉丝，细密平行纹理，高光沿纹路延展'],
 ['金属烤漆','金属烤漆','金属烤漆，均匀漆面，边缘柔和镜面高光'],
@@ -3473,7 +3473,7 @@ product:[
 ['织唛布标','织唛布标','织唛布标，经纬线织出图案，锁边整齐，略有厚度'],
 ]},
 // ── 产品造型 ──
-{icon:'型',color:'#5A6A8C',title:'产品造型',gradient:'linear-gradient(135deg,#F2F4FA 0%,#D8E0F0 100%)',tcolor:'#2C3858',tags:[
+{icon:'型',color:'#5A6A8C',title:'产品造型',gradient:'linear-gradient(135deg,#F2F4FA 0%,#D8E0F0 100%)',capGrad:'linear-gradient(135deg,#E8ECF5 0%,#B7C2DA 100%)',tcolor:'#2C3858',tags:[
 ['方形','方形','方形轮廓，四边平直，边角清晰'],
 ['圆角矩形','圆角矩形','圆角矩形轮廓，转角柔和顺滑'],
 ['椭圆形','椭圆形','椭圆形轮廓，两端收窄，曲线流畅'],
@@ -3488,7 +3488,7 @@ product:[
 ['圆形','圆形','圆形轮廓，完整圆润无棱角，边缘光滑']
 ]},
 // ── 表面工艺 ──
-{icon:'工',color:'#8C5A6A',title:'表面工艺',gradient:'linear-gradient(135deg,#FCF5F7 0%,#F0DDE2 100%)',tcolor:'#5C2E3C',tags:[
+{icon:'工',color:'#8C5A6A',title:'表面工艺',gradient:'linear-gradient(135deg,#FCF5F7 0%,#F0DDE2 100%)',capGrad:'linear-gradient(135deg,#F5E8EC 0%,#D8B7C0 100%)',tcolor:'#5C2E3C',tags:[
 ['数码直喷','数码直喷','数码直喷，图案直接印于表面，色彩层次细腻'],
 ['热转印','热转印','热转印，图案贴合曲面，色彩鲜艳牢固'],
 ['UV打印','UV打印','UV打印，墨层清晰锐利，局部微凸'],
@@ -3506,7 +3506,7 @@ product:[
 ['曲面印刷','曲面印刷','曲面印刷，图案包覆弧面不变形，贴合自然'],
 ]},
 // ── 视觉质感 ──
-{icon:'质',color:'#6A8C7A',title:'视觉质感',gradient:'linear-gradient(135deg,#F5F9F6 0%,#DDEEE6 100%)',tcolor:'#2F4F44',tags:[
+{icon:'质',color:'#9370DB',title:'视觉质感',gradient:'linear-gradient(135deg,#F5F3FA 0%,#E2DCF0 100%)',capGrad:'linear-gradient(135deg,#EBDEF3 0%,#C0A5DC 100%)',tcolor:'#553787',tags:[
 ['微距特写','微距特写','微距特写，贴近材质表面，纹理工艺极清晰，背景虚化'],
 ['影棚布光','影棚布光','影棚布光，柔光箱均匀高光，阴影干净，轮廓清晰'],
 ['自然日光','自然日光','自然日光，窗边柔光，阴影轻柔，色温温暖'],
@@ -3571,7 +3571,7 @@ quickPromptText:'',
 
 function collapsibleHTML(c,bodyHtml){
   var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-  var header='<div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="background:'+c.gradient+';color:'+c.tcolor+';padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
+  var header='<div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="background:'+(c.capGrad||c.gradient)+';color:'+c.tcolor+';padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
   return '<div class="prompt-collapsible" style="background:'+c.gradient+';border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
@@ -3608,7 +3608,7 @@ if(prodData){
     var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff'});}).join('');
     return collapsibleHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
   }).join('');
-  PS('#promptProductLayout').innerHTML='<div class="prompt-collapsible" id="promptProductInputCard"><div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-icon" style="background:#5A8C5C">描</span><span class="prompt-title">产品描述</span><span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="prompt-collapsible-body open"><div style="position:relative"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="输入产品描述关键词..." autocomplete="off" style="width:100%;padding:6px 10px;font-size:13px;border:1px solid var(--prompt-border);border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;box-sizing:border-box"><button class="prompt-col-custom-clear" id="promptClearProduct" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0">&times;</button></div></div></div>'+'<div class="prompt-product-col-layout">'+prodHtml+'</div>';
+  PS('#promptProductLayout').innerHTML='<div class="prompt-collapsible" id="promptProductInputCard"><div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="background:linear-gradient(135deg,#F5FAF5 0%,#E0EFE3 100%);color:#2F5A36;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">产品描述</span><span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="prompt-collapsible-body open"><div style="position:relative"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="输入产品描述关键词..." autocomplete="off" style="width:100%;padding:6px 10px;font-size:13px;border:1px solid var(--prompt-border);border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;box-sizing:border-box"><button class="prompt-col-custom-clear" id="promptClearProduct" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0">&times;</button></div></div></div>'+'<div class="prompt-product-col-layout">'+prodHtml+'</div>';
 }
 
 // 上半部分两列：转换风格+常用提示词（左）| 生成结果+预设方案（右）
