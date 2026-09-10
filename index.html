@@ -760,11 +760,6 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-width:0}
 /* ===== 新布局：上半部分两列（转换风格+常用提示词 | 生成结果+预设方案）+ 下半部分整宽 ===== */
 .prompt-top-grid{--col-left:300px;display:grid;grid-template-columns:var(--col-left) 4px minmax(0,1fr);gap:4px;align-items:stretch;width:100%;min-width:0;flex:0 0 auto;max-height:42vh}
-.prompt-appbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--prompt-bg-card);border-radius:14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);flex:0 0 auto}
-.prompt-appbar-title{font-size:14px;font-weight:600;color:var(--prompt-text-primary);display:flex;align-items:center;gap:8px}
-.prompt-appbar-title-icon{width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;box-shadow:0 2px 6px rgba(230,112,56,.35)}
-.prompt-appbar-stats{font-size:12px;color:var(--prompt-text-muted);display:flex;align-items:center;gap:8px}
-.prompt-appbar-stats b{color:var(--prompt-text-primary);font-weight:600;font-size:13px}
 .prompt-col-resizer{grid-column:2;align-self:stretch;width:4px;cursor:col-resize;position:relative;touch-action:none}
 .prompt-col-resizer::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:2px;height:28px;border-radius:2px;background:transparent;transition:background .15s}
 .prompt-col-resizer:hover::after,.prompt-col-resizer.dragging::after{background:var(--prompt-accent)}
@@ -788,9 +783,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
   .prompt-bottom-area{flex:0 0 auto;overflow:visible}
   .prompt-bottom-area .prompt-col-layout{height:auto;align-items:stretch}
 }
-.prompt-col-header{width:100%;font-size:13px;font-weight:600;color:var(--prompt-text-primary);padding:10px 14px;background:linear-gradient(135deg,#FFFAF4 0%,#FFEFDF 100%);border-radius:14px;border:1px solid var(--prompt-border-light);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:6;flex-wrap:nowrap;box-shadow:0 4px 10px -4px rgba(180,120,40,0.12)}
+.prompt-col-header{width:100%;font-size:13px;font-weight:600;color:var(--prompt-text-primary);padding:6px 12px;background:linear-gradient(135deg,#FFFAF4 0%,#FFEFDF 100%);border-radius:10px;border:1px solid var(--prompt-border-light);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:6;flex-wrap:nowrap;box-shadow:0 2px 8px -2px rgba(180,120,40,0.10)}
 .prompt-col-header .prompt-ch-icon{display:none}
-.prompt-col-header .prompt-ch-title{flex-shrink:0;display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,#FFE5CC 0%,#FFC79A 100%);color:#9B4513;font-size:13px;font-weight:700;letter-spacing:.5px;box-shadow:0 2px 6px rgba(180,90,20,0.15)}
+.prompt-col-header .prompt-ch-title{flex-shrink:0;display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:linear-gradient(135deg,#FFE5CC 0%,#FFC79A 100%);color:#9B4513;font-size:12px;font-weight:700;letter-spacing:.4px;box-shadow:0 1px 4px rgba(180,90,20,0.12)}
 .prompt-col-header .prompt-col-custom-wrap{flex:1 1 auto;min-width:0;max-width:156px;margin-left:auto;position:relative;padding:0}
 .prompt-col-header .prompt-col-custom-input{width:100%;padding:6px 10px;font-size:13px;border:1px solid transparent;border-radius:6px;color:var(--prompt-text-primary);background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;outline:none;font-family:inherit;transition:var(--prompt-transition);box-sizing:border-box}
 .prompt-col-header .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(212,101,42,.1);background:var(--prompt-bg-card)}
@@ -823,9 +818,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid var(--prompt-border);border-radius:4px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 .prompt-tag.faved{border-color:var(--prompt-border);color:var(--prompt-accent)}
 .prompt-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;box-shadow:0 2px 6px rgba(230,112,56,.25)}
-.prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;font-size:16px;font-weight:600;line-height:1;border:none;border-radius:50%;background:var(--prompt-accent);color:#fff;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;box-shadow:0 2px 6px rgba(0,0,0,.06);flex-shrink:0}
-.prompt-tag-add:hover{transform:scale(1.08);box-shadow:0 4px 10px rgba(0,0,0,.12)}
-.prompt-tag-add:active{transform:scale(0.95)}
+.prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:5px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0}
+.prompt-tag-add:hover{transform:none;border-color:var(--prompt-border);background:var(--prompt-bg-section)}
+.prompt-tag-add:active{transform:scale(0.96)}
 
 .prompt-subgroup-title{font-size:11px;font-weight:600;color:var(--prompt-text-secondary);padding:6px 0 2px 2px;letter-spacing:0.3px}
 .prompt-subgroup-title:first-child{padding-top:0}
@@ -1012,7 +1007,7 @@ body.dark .prompt-result-body{background:var(--group-bg)}
 body.dark .prompt-result-textarea{color:var(--text)}
 body.dark .prompt-preset-item{background:var(--group-bg)}
 body.dark .prompt-preset-item .prompt-preset-name{color:var(--text)}
-body.dark .prompt-tag-add{color:#fff}
+body.dark .prompt-tag-add{color:var(--prompt-accent)}
 body.dark .prompt-param-box,body.dark .prompt-ratio-box{background:#2a2a2a!important;border-color:#3a3a3a!important}
 body.dark .prompt-col-header .prompt-col-custom-input{background:linear-gradient(var(--bg-card),var(--bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;color:var(--text)}
 body.dark .prompt-col-header .prompt-col-custom-input:focus{background:var(--bg-card)}
@@ -1631,15 +1626,6 @@ body.dark .ai-field input { background:#141e2d; }
   <div class="tab-content active" id="tabPrompt" data-page-node-id="maoAKqf1CXPOAUPnGahPf6">
     <div class="tab-body prompt-body" id="promptBody" data-page-node-id="bXEp7iBEG0lJkpzeJ4VVyD">
       <div class="prompt-app" data-page-node-id="U0RG6f1WoSL7WqnjosgVBX">
-        <div class="prompt-appbar">
-          <div class="prompt-appbar-title">
-            <span class="prompt-appbar-title-icon">快</span>
-            <span>快设助手</span>
-          </div>
-          <div class="prompt-appbar-stats">
-            <span><b id="promptAppbarChar">0</b> 字符</span>
-          </div>
-        </div>
         <!-- 上半部分：两列（转换风格 + 常用提示词 | 生成结果 + 预设方案），中间可拖动调宽 -->
         <div class="prompt-top-grid" id="promptTopGrid" data-page-node-id="VSgfp4nwcFCONIdDsVicdE">
           <div class="prompt-top-col prompt-top-col-style" id="promptStyleCol" data-page-node-id="zez56UZi3GzrRTFZ05BFfH"></div>
@@ -3577,7 +3563,7 @@ function collapsibleHTML(c,bodyHtml){
 function flatGroupHTML(c,bodyHtml){
   var grad=c.gradient||'linear-gradient(135deg,#FFE5CC 0%,#FFC79A 100%)';
   var tcol=c.tcolor||c.color||'#9B4513';
-  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="background:'+grad+';color:'+tcol+'">'+promptEscapeHtml(c.title)+'<button class="prompt-tag-add" style="background:'+tcol+';color:#fff">+</button></span></div>';
+  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="background:'+grad+';color:'+tcol+'">'+promptEscapeHtml(c.title)+'<button class="prompt-tag-add">+</button></span></div>';
   return '<div class="prompt-flat-group">'+title+bodyHtml+'</div>';
 }
 // Build three columns
@@ -3679,8 +3665,7 @@ function restoreCustomTagsFromLegacy(){
 
 // ====== Init ======
 var resultText=PS('#promptResultText'),charCount=PS('#promptCharCount');
-function updateAppbarChar(){var ac=PS('#promptAppbarChar');if(!ac)return;var n=parseInt(charCount.textContent)||0;ac.textContent=n;}
-resultText.addEventListener('input',function(){charCount.textContent=resultText.value.length+' 字符';updateAppbarChar();});
+resultText.addEventListener('input',function(){charCount.textContent=resultText.value.length+' 字符';});
 
 // Navigation
 var promptNavBtns=PSS('.prompt-tab-nav-btn');
@@ -4311,7 +4296,7 @@ function updatePromptResult(){
   if(pState.style)text=text?(text+'\n\n'+pState.style):pState.style;
   // 技术参数：有风格转换时空行隔开，否则换行
   if(metaParts.length)text=text?(text+(pState.style?'\n\n':'\n')+metaParts.join(' ')):metaParts.join(' ');
-  resultText.value=text;charCount.textContent=text.length+' 字符';updateAppbarChar();
+  resultText.value=text;charCount.textContent=text.length+' 字符';
   promptAutoSave();
 }
 
@@ -4344,7 +4329,7 @@ PS('#promptClearBtn').addEventListener('click',function(){
   PSS('.prompt-ratio-faved-tag.selected').forEach(function(t){t.classList.remove('selected');});
   PSS('.prompt-ratio-btn.selected').forEach(function(t){t.classList.remove('selected');});
   ['Bg','Element','Font','Product'].forEach(function(k){var inp=PS('#promptCustom'+k);if(inp){inp.value='';var clr=PS('#promptClear'+k);if(clr)clr.style.display='none';}});
-  resultText.value='';charCount.textContent='0 字符';updateAppbarChar();
+  resultText.value='';charCount.textContent='0 字符';
 });
 
 // ====== Presets ======
@@ -4354,7 +4339,7 @@ function renderPresets(){
   card.classList.add('has-items');
   body.className='prompt-preset-list-body preset-row';
   body.innerHTML=pState.presets.map(function(p,i){var n=typeof p==='string'?p:(p.name||p.prompt||p),pr=typeof p==='string'?p:(p.prompt||p.name||p),t=typeof p==='string'?'':(p.time||'');var preview=pr.slice(0,60)+(pr.length>60?'...':'');return '<div class="prompt-preset-item" title="'+promptEscapeAttr(pr)+'"><div class="prompt-preset-text" data-index="'+i+'"><div class="prompt-preset-name">'+promptEscapeHtml(n)+(t?' <span class="prompt-preset-time">'+promptEscapeHtml(t)+'</span>':'')+'</div><div class="prompt-preset-preview">'+promptEscapeHtml(preview)+'</div></div><button class="prompt-preset-del" data-index="'+i+'">&times;</button></div>';}).join('');
-  body.querySelectorAll('.prompt-preset-text').forEach(function(el){el.addEventListener('click',function(){var p=pState.presets[this.dataset.index],pr=typeof p==='string'?p:(p.prompt||p.name||p);pState.quickPromptText='';PS('#promptQuickPromptBody').querySelectorAll('.prompt-quick-prompt-tag').forEach(function(t){t.classList.remove('selected');});resultText.value=pr;charCount.textContent=pr.length+' 字符';updateAppbarChar();});});
+  body.querySelectorAll('.prompt-preset-text').forEach(function(el){el.addEventListener('click',function(){var p=pState.presets[this.dataset.index],pr=typeof p==='string'?p:(p.prompt||p.name||p);pState.quickPromptText='';PS('#promptQuickPromptBody').querySelectorAll('.prompt-quick-prompt-tag').forEach(function(t){t.classList.remove('selected');});resultText.value=pr;charCount.textContent=pr.length+' 字符';});});
   body.querySelectorAll('.prompt-preset-del').forEach(function(el){el.addEventListener('click',function(){var idx=this.dataset.index;openPromptConfirm('删除预设','确定要删除预设吗？',function(){pState.presets.splice(idx,1);localStorage.setItem('mergedPromptPresets',JSON.stringify(pState.presets));renderPresets();promptAutoSave();});});});
 }
 PS('#promptPresetBtn').addEventListener('click',function(){var t=resultText.value;if(!t||!t.trim()){if(typeof showToast==='function')showToast('生成结果为空，无法保存为预设','warn');else alert('生成结果为空，无法保存为预设');return;}if(!confirm('确定将当前生成结果保存为预设吗？'))return;openPromptModal('保存预设','',t,function(kw,pr){var n=kw||pr||t,now=new Date(),time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');pState.presets.push({name:n,prompt:t,time:time});localStorage.setItem('mergedPromptPresets',JSON.stringify(pState.presets));renderPresets();promptAutoSave();},'预设名称','提示词内容');});
