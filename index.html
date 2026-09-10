@@ -758,6 +758,10 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start;width:100%;min-width:0;flex:1 1 auto}
 .prompt-col{min-width:0;width:100%;display:flex;flex-direction:column;gap:10px}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-width:0}
+/* v4.3.5 三列各自动底色：列头胶囊色调延伸到整列 */
+.prompt-col-bg{background:linear-gradient(180deg,#FFFAF4 0%,#FFEFDF 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,165,116,0.18);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
+.prompt-col-element{background:linear-gradient(180deg,#FFF5F3 0%,#FFE5E0 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,116,116,0.18);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
+.prompt-col-font{background:linear-gradient(180deg,#F0F6FB 0%,#DDE9F2 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(116,148,180,0.18);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
 /* ===== 新布局：上半部分两列（转换风格+常用提示词 | 生成结果+预设方案）+ 下半部分整宽 ===== */
 .prompt-top-grid{--col-left:300px;display:grid;grid-template-columns:var(--col-left) 4px minmax(0,1fr);gap:4px;align-items:stretch;width:100%;min-width:0;flex:0 0 auto;max-height:42vh}
 .prompt-col-resizer{grid-column:2;align-self:stretch;width:4px;cursor:col-resize;position:relative;touch-action:none}
@@ -783,7 +787,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
   .prompt-bottom-area{flex:0 0 auto;overflow:visible}
   .prompt-bottom-area .prompt-col-layout{height:auto;align-items:stretch}
 }
-.prompt-col-header{width:100%;font-size:13px;font-weight:600;color:var(--prompt-text-primary);padding:6px 12px;background:linear-gradient(135deg,#FFFAF4 0%,#FFEFDF 100%);border-radius:10px;border:1px solid var(--prompt-border-light);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:6;flex-wrap:nowrap;box-shadow:0 2px 8px -2px rgba(180,120,40,0.10)}
+.prompt-col-header{width:100%;font-size:13px;font-weight:600;color:var(--prompt-text-primary);padding:8px 12px;background:transparent;border-radius:10px;border:none;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:6;flex-wrap:nowrap}
 .prompt-col-header .prompt-ch-icon{display:none}
 .prompt-col-header .prompt-ch-title{flex-shrink:0;display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:linear-gradient(135deg,#FFE5CC 0%,#FFC79A 100%);color:#9B4513;font-size:12px;font-weight:700;letter-spacing:.4px;box-shadow:0 1px 4px rgba(180,90,20,0.12)}
 .prompt-col-header .prompt-col-custom-wrap{flex:1 1 auto;min-width:0;max-width:156px;margin-left:auto;position:relative;padding:0}
@@ -813,7 +817,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-group:last-child{margin-bottom:0}
 .prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap}
 .prompt-flat-title .prompt-icon{display:none}
-.prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:12px;font-weight:600;line-height:1;padding:8px 14px;border-radius:999px;letter-spacing:.5px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px}
 .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid var(--prompt-border);border-radius:4px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 .prompt-tag.faved{border-color:var(--prompt-border);color:var(--prompt-accent)}
@@ -3561,9 +3565,8 @@ function collapsibleHTML(c,bodyHtml){
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 function flatGroupHTML(c,bodyHtml){
-  var grad=c.gradient||'linear-gradient(135deg,#FFE5CC 0%,#FFC79A 100%)';
   var tcol=c.tcolor||c.color||'#9B4513';
-  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="background:'+grad+';color:'+tcol+'">'+promptEscapeHtml(c.title)+'<button class="prompt-tag-add">+</button></span></div>';
+  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="color:'+tcol+'">'+promptEscapeHtml(c.title)+'<button class="prompt-tag-add">+</button></span></div>';
   return '<div class="prompt-flat-group">'+title+bodyHtml+'</div>';
 }
 // Build three columns
