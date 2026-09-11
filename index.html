@@ -196,6 +196,15 @@ body {
 .tab-item.active[data-tab="layout"]  { background: linear-gradient(135deg, #4D96FF, #7C5CFC); }
 .tab-item.active[data-tab="color"]   { background: linear-gradient(135deg, #9B72F0, #C084FC); }
 .tab-item.active[data-tab="matting"] { background: linear-gradient(135deg, #1FD67B, #12C2A0); }
+/* 右侧白色高光条（光条）：在彩色渐变背景上形成精致亮边，按文字实际长度动态贴合 */
+.tab-item.active::before {
+  content: "";
+  position: absolute;
+  right: 2px; top: var(--hl-inset, 21px); bottom: var(--hl-inset, 21px);
+  width: 2px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.55);
+}
 /* 侧边栏底部工具区 */
 .tab-bar .sidebar-toolbar {
   margin-top: auto;
@@ -1753,6 +1762,21 @@ body.dark .ai-field input { background:#141e2d; }
     switchTab(names[next]);
     localStorage.setItem('mergedToolActiveTab', names[next]);
   }, { passive: false });
+
+  // 右侧高亮条按每个 tab 文字实际长度动态贴合（字数不同也自动适配）
+  function layoutTabHighlight(){
+    document.querySelectorAll('.tab-item').forEach(function(t){
+      var sp=t.querySelector('.tab-text');
+      if(!sp)return;
+      var th=sp.getBoundingClientRect().height;
+      var inset=(t.offsetHeight - th)/2;
+      if(inset<0)inset=0;
+      t.style.setProperty('--hl-inset', inset.toFixed(1)+'px');
+    });
+  }
+  requestAnimationFrame(layoutTabHighlight);
+  window.addEventListener('resize', layoutTabHighlight);
+  window.addEventListener('load', layoutTabHighlight);
 
   // 恢复上次退出的板块
   var savedTab=localStorage.getItem('mergedToolActiveTab') || 'prompt';
