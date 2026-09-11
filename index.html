@@ -714,7 +714,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 /* ============================================================
    PROMPT GENERATOR STYLES (embedded)
    ============================================================ */
-.prompt-body { padding: 16px 20px; position: relative; flex: 1 1 auto; min-height: 0; height: 100%; display: flex; flex-direction: column; }
+.prompt-body { padding: 16px 20px; position: relative; flex: 1 1 auto; min-height: 0; height: 100%; display: flex; flex-direction: column; background: linear-gradient(180deg, #FFF5EA 0%, #FFFCF7 45%, #FFFFFF 100%); border-radius: 24px; }
 .prompt-app {
   --prompt-bg: var(--bg);
   --prompt-bg-card: var(--bg-card);
@@ -749,6 +749,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
   min-width:0;
   height:100%;
   overflow:hidden;
+  border-radius:20px;
 }
 .prompt-app *,.prompt-app *::before,.prompt-app *::after{box-sizing:border-box;margin:0;padding:0}
 .prompt-app ::-webkit-scrollbar{width:5px}
@@ -1020,6 +1021,7 @@ body.dark .prompt-param-btn{background:var(--group-bg)}
 body.dark .prompt-quick-prompt-tag{background:var(--group-bg)}
 body.dark .prompt-result-header-btn.close{background:var(--group-bg)}
 body.dark .prompt-result-body{background:var(--group-bg)}
+body.dark .prompt-body{background:linear-gradient(180deg,#1a2535 0%,#1a2332 45%,#141d2a 100%);border-radius:24px;}
 body.dark .prompt-result-textarea{color:var(--text)}
 body.dark .prompt-preset-item{background:var(--group-bg)}
 body.dark .prompt-preset-item .prompt-preset-name{color:var(--text)}
