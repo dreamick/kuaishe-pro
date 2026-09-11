@@ -10,6 +10,7 @@
 <meta http-equiv="Pragma" content="no-cache" data-page-node-id="9JqdncysqrXvpOtphw2lGt">
 <meta http-equiv="Expires" content="0" data-page-node-id="ApaHtlzGSk0ftH9ulCojwz">
 <title>快设助手PRO</title>
+<!-- 快设助手PRO v4.5.2 -->
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iI0U2NzAzOCIvPjx0ZXh0IHg9IjE2IiB5PSIxNiIgZm9udC1zaXplPSIyMiIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9ImNlbnRyYWwiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPks8L3RleHQ+PC9zdmc+" data-page-node-id="FCSntP7FCdC1BbmSTW9aQj">
 
 <style>
@@ -153,7 +154,19 @@ body {
   flex-shrink: 0;
   align-items: flex-end;
   height: 100%;
+  position: relative;
 }
+.tab-bar::after{
+  content:"";
+  position:absolute;
+  right:0;top:0;bottom:0;
+  width:1px;
+  background:rgba(0,0,0,0.06);
+  z-index:4;
+  pointer-events:none;
+}
+body.dark .tab-bar::after{background:rgba(255,255,255,0.06);}
+
 /* ===== 侧边栏标签 — 浏览器标签样式（左侧圆角舌头，彩条在右侧，选中右侧连接内容区）===== */
 .tab-item {
   width: 36px; height: 102px; padding: 8px 2px;
@@ -182,7 +195,7 @@ body {
 .tab-item[data-tab="layout"]:hover { background: rgba(77,150,255,0.18); }
 .tab-item[data-tab="color"]:hover  { background: rgba(155,114,240,0.18); }
 .tab-item[data-tab="matting"]:hover{ background: rgba(31,214,123,0.18); }
-/* 选中态 — 重新设计：主题色渐变实色 + 白字 + 右侧白色高光条 + 凸出咬合内容区 */
+/* 选中态：主题色渐变实色 + 白字 + 凸出咬合内容区 */
 .tab-item.active {
   color: #fff;
   font-weight: 700;
@@ -194,16 +207,6 @@ body {
 .tab-item.active[data-tab="layout"]  { background: linear-gradient(135deg, #4D96FF, #7C5CFC); }
 .tab-item.active[data-tab="color"]   { background: linear-gradient(135deg, #9B72F0, #C084FC); }
 .tab-item.active[data-tab="matting"] { background: linear-gradient(135deg, #1FD67B, #12C2A0); }
-/* 右侧白色高光条：在彩色渐变背景上形成精致亮边 */
-.tab-item.active::before {
-  content: "";
-  position: absolute;
-  right: 3px; top: var(--hl-inset, 24px); bottom: var(--hl-inset, 24px);
-  width: 2px;
-  border-radius: 2px;
-  background: rgba(255,255,255,0.45);
-}
-
 /* 侧边栏底部工具区 */
 .tab-bar .sidebar-toolbar {
   margin-top: auto;
@@ -919,7 +922,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-result-header-actions{display:flex;gap:6px}
 .prompt-result-header-btn{padding:5px 14px;border:none;border-radius:var(--prompt-radius-pill);font-size:12px;font-weight:600;cursor:pointer;transition:var(--prompt-transition);font-family:inherit}
 .prompt-result-header-btn.copy{background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;display:inline-flex;align-items:center;gap:4px}
-.prompt-result-header-btn.close{background:var(--prompt-bg-section);color:var(--prompt-text-muted);font-size:18px;padding:4px 10px}
+.prompt-result-header-btn.close{background:transparent;color:var(--prompt-text-muted);font-size:18px;padding:4px 10px}
 .prompt-result-body{padding:10px 14px;min-height:100px;background:var(--prompt-bg);border-radius:8px;margin:0 10px 8px}
 body.dark .tab-bar{border-right-color:rgba(255,255,255,0.06)}
 .prompt-result-textarea{width:100%;min-height:80px;font-size:13px;line-height:1.6;color:var(--prompt-text-primary);background:transparent;border:none;outline:none;resize:vertical;font-family:inherit;word-break:break-all;white-space:pre-wrap}
@@ -970,10 +973,10 @@ body.dark .tab-bar{border-right-color:rgba(255,255,255,0.06)}
 #promptProductLayout .prompt-tag,
 
 .prompt-style-tag{font-size:12px;padding:4px 9px;}
-/* 文字风格列居中对齐 */
-#promptColFontScroll .prompt-collapsible-header{justify-content:center;}
-#promptColFontScroll .prompt-tag-group{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
-#promptColFontScroll .prompt-tag-group .prompt-tag{justify-content:center;display:inline-flex;width:calc((100% - 12px) / 3);margin-bottom:0;break-inside:auto;}
+/* 文字风格列居左对齐 */
+#promptColFontScroll .prompt-collapsible-header{justify-content:flex-start;}
+#promptColFontScroll .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-start;}
+#promptColFontScroll .prompt-tag-group .prompt-tag{justify-content:flex-start;display:inline-flex;width:auto;margin-bottom:0;break-inside:auto;}
 
 /* 产品描述输入行：标题+输入框横向一行、无底色（其他标签保持原样） */
 #promptProductInputCard{
@@ -1027,7 +1030,7 @@ body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:l
 body.dark .prompt-style-tag{background:var(--group-bg)}
 body.dark .prompt-param-btn{background:var(--group-bg)}
 body.dark .prompt-quick-prompt-tag{background:var(--group-bg)}
-body.dark .prompt-result-header-btn.close{background:var(--group-bg)}
+body.dark .prompt-result-header-btn.close{background:transparent}
 body.dark .prompt-result-body{background:var(--group-bg)}
 body.dark .container{background:var(--bg-card);border-radius:24px}
 body.dark .prompt-result-textarea{color:var(--text)}
@@ -1049,7 +1052,6 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 @media(max-width:1180px){
 .prompt-col-layout{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .prompt-col-font{grid-column:auto}
-#promptColFontScroll .prompt-tag-group{column-count:3}
 .prompt-product-col-layout{grid-template-columns:repeat(3,minmax(0,1fr))}
 .prompt-product-column{gap:10px}
 .prompt-product-column .prompt-collapsible{max-height:none}
@@ -1062,7 +1064,6 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .prompt-col-header{flex-wrap:nowrap}
 .prompt-col-header .prompt-col-custom-wrap{max-width:180px;min-width:0;margin-top:0}
 .prompt-flat-custom-wrap{max-width:160px}
-#promptColFontScroll .prompt-tag-group{column-count:3}
 .prompt-product-col-layout{grid-template-columns:1fr;gap:10px}
 .prompt-product-column{gap:10px}
 .prompt-product-column .prompt-collapsible:nth-child(n){grid-column:auto;grid-row:auto}
@@ -1767,21 +1768,6 @@ body.dark .ai-field input { background:#141e2d; }
   var savedTab=localStorage.getItem('mergedToolActiveTab') || 'prompt';
   if (!contents[savedTab]) savedTab = 'prompt';
   switchTab(savedTab);
-
-  // 右侧高亮条按每个 tab 文字实际长度动态贴合（字数不同也自动适配）
-  function layoutTabHighlight(){
-    tabs.forEach(function(t){
-      var s=t.querySelector('.tab-text');
-      if(!s)return;
-      var th=s.getBoundingClientRect().height;
-      var inset=(t.offsetHeight - th)/2;
-      if(inset<0)inset=0;
-      t.style.setProperty('--hl-inset', inset.toFixed(1)+'px');
-    });
-  }
-  requestAnimationFrame(layoutTabHighlight);
-  window.addEventListener('resize', layoutTabHighlight);
-  window.addEventListener('load', layoutTabHighlight);
 
   // Theme toggle
   const themeBtn = document.getElementById('mergedThemeToggle');
