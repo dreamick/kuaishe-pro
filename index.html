@@ -107,6 +107,11 @@ body {
   transition: background 0.3s, color 0.3s;
   color: var(--text);
 }
+/* 亮色模式外层背景：紫罗兰→白上下渐变（暗色模式保持纯深色） */
+body:not(.dark) {
+  background: linear-gradient(180deg, #9b72f0 0%, #f0f2f5 100%);
+  background-attachment: fixed;
+}
 .scale-shell {
   width: calc(1200px * var(--page-scale, 1));
   min-width: calc(1200px * var(--page-scale, 1));
