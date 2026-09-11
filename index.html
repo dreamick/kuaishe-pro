@@ -1299,7 +1299,8 @@ body.dark .ai-field input { background:#141e2d; }
   --line-col-elem: rgba(212,116,116,.28);  /* 元素风格列 */
   --line-col-font: rgba(116,148,180,.28);  /* 文字风格列 */
 }
-.tab-bar{box-shadow:inset -1px 0 0 var(--line-sidebar);}
+.tab-bar{position:relative;}
+.tab-bar::after{content:"";position:absolute;top:0;bottom:0;right:0;width:1px;background:var(--line-sidebar);z-index:5;pointer-events:none;}
 .prompt-result-card,
 .prompt-quick-prompt-card,
 .prompt-param-card,
@@ -1311,7 +1312,7 @@ body.dark .ai-field input { background:#141e2d; }
 .prompt-col-bg{box-shadow:inset 0 0 0 1px var(--line-col-bg),0 2px 10px -2px rgba(180,120,40,.08);}
 .prompt-col-element{box-shadow:inset 0 0 0 1px var(--line-col-elem),0 2px 10px -2px rgba(180,70,70,.08);}
 .prompt-col-font{box-shadow:inset 0 0 0 1px var(--line-col-font),0 2px 10px -2px rgba(70,100,150,.08);}
-body.dark .tab-bar{box-shadow:inset -1px 0 0 rgba(255,255,255,.06);}
+body.dark .tab-bar::after{background:rgba(255,255,255,.06);}
 body.dark .prompt-result-card,
 body.dark .prompt-quick-prompt-card,
 body.dark .prompt-param-card,
