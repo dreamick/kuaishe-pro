@@ -122,7 +122,7 @@ body {
   margin: 0;
   background: var(--bg-card);
   padding: 0;
-  border-radius: 24px;
+  border-radius: 0; /* 改回直角：左侧栏顶部/底部不再出现圆弧切口 */
   box-shadow: 0 1px 3px var(--shadow), 0 4px 24px rgba(0,0,0,0.04);
   transition: background 0.3s, box-shadow 0.3s;
   overflow: hidden;
@@ -1022,7 +1022,7 @@ body.dark .prompt-param-btn{background:var(--group-bg)}
 body.dark .prompt-quick-prompt-tag{background:var(--group-bg)}
 body.dark .prompt-result-header-btn.close{background:transparent}
 body.dark .prompt-result-body{background:var(--group-bg)}
-body.dark .container{background:var(--bg-card);border-radius:24px}
+body.dark .container{background:var(--bg-card);border-radius:0}
 body.dark .prompt-result-textarea{color:var(--text)}
 body.dark .prompt-preset-item{background:var(--group-bg)}
 body.dark .prompt-preset-item .prompt-preset-name{color:var(--text)}
