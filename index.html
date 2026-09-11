@@ -109,7 +109,7 @@ body {
 }
 /* 亮色模式外层背景：紫罗兰→白上下渐变（暗色模式保持纯深色） */
 body:not(.dark) {
-  background: linear-gradient(180deg, #9b72f0 0%, #f0f2f5 100%);
+  background: linear-gradient(180deg, #e7e3f2 0%, #ffffff 100%);
   background-attachment: fixed;
 }
 .scale-shell {
@@ -803,7 +803,13 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col-header .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(212,101,42,.1);background:var(--prompt-bg-card)}
 .prompt-col-header .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-col-header .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
-.prompt-col-scroll{display:flex;flex-direction:column;min-height:0;overflow-y:auto;padding-right:4px;flex:1 1 auto}
+/* v4.4.5 自定义描述输入框移入分组标题行（背景风格/元素风格/文字风格 右侧） */
+.prompt-flat-title .prompt-col-custom-wrap{flex:0 1 auto;min-width:0;max-width:220px;position:relative;padding:0;margin-left:auto}
+.prompt-flat-title .prompt-col-custom-input{width:100%;padding:5px 10px;font-size:12px;border:1px solid transparent;border-radius:6px;color:var(--prompt-text-primary);background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;outline:none;font-family:inherit;transition:var(--prompt-transition);box-sizing:border-box}
+.prompt-flat-title .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(212,101,42,.1);background:var(--prompt-bg-card)}
+.prompt-flat-title .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
+.prompt-flat-title .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
+.prompt-col-scroll{display:flex;flex-direction:column;min-height:0;overflow-y:auto;padding-right:4px;padding-top:18px;flex:1 1 auto}
 .prompt-col-scroll::-webkit-scrollbar{width:3px}
 .prompt-col-scroll::-webkit-scrollbar-thumb{background:var(--prompt-border);border-radius:2px}
 /* 上半折叠体（背景/元素/文字）：紧贴内容，自然高度（v4.2.7 红框整体滚后不再占满/内部滚） */
@@ -828,7 +834,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px}
 .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:4px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
-.prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent))}
+.prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:var(--tag-fav-soft,rgba(212,101,42,.12));box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .prompt-tag.selected{border-color:transparent;background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38));color:var(--tag-tcol,#fff);box-shadow:0 2px 6px rgba(0,0,0,.08)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:5px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0}
 .prompt-tag-add:hover{transform:none;border-color:var(--prompt-border);background:var(--prompt-bg-section)}
@@ -897,8 +903,9 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-style-add-btn{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
 .prompt-style-tags-grid{display:flex;flex-wrap:wrap;gap:6px}
 .prompt-style-tag{padding:3px 8px;border:1px solid var(--prompt-border);border-radius:5px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
-.prompt-style-tag.faved{border-color:var(--prompt-accent);color:var(--prompt-accent);background:var(--prompt-accent-light)}
-.prompt-style-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;box-shadow:0 2px 6px rgba(230,112,56,.25)}
+.prompt-style-tag.faved{border-color:var(--prompt-accent);color:var(--prompt-accent);background:var(--prompt-accent-light);font-weight:700;letter-spacing:.2px}
+.prompt-style-tag.selected{border-color:transparent;background:linear-gradient(135deg,#F2A163,#E0843C);color:#fff;box-shadow:0 2px 6px rgba(224,132,60,.22)}
+.prompt-style-tag.faved.selected{border-color:transparent;background:linear-gradient(135deg,#F2A163,#E0843C);color:#fff}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
 .prompt-quick-prompt-card .prompt-quick-prompt-add{flex-shrink:0;margin-top:2px;order:2;margin-left:auto}
 .prompt-quick-prompt-add{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
@@ -1032,6 +1039,8 @@ body.dark .prompt-tag-add{color:var(--prompt-accent)}
 body.dark .prompt-param-box,body.dark .prompt-ratio-box{background:#2a2a2a!important;border-color:#3a3a3a!important}
 body.dark .prompt-col-header .prompt-col-custom-input{background:linear-gradient(var(--bg-card),var(--bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;color:var(--text)}
 body.dark .prompt-col-header .prompt-col-custom-input:focus{background:var(--bg-card)}
+body.dark .prompt-flat-title .prompt-col-custom-input{background:linear-gradient(var(--bg-card),var(--bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;color:var(--text)}
+body.dark .prompt-flat-title .prompt-col-custom-input:focus{background:var(--bg-card)}
 body.dark .prompt-quick-prompt-card,
 body.dark .prompt-param-card,
 body.dark .prompt-collapsible{background:var(--group-bg);border-color:rgba(255,255,255,.14)}
@@ -1056,6 +1065,7 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .prompt-col-font{grid-column:auto}
 .prompt-col-header{flex-wrap:nowrap}
 .prompt-col-header .prompt-col-custom-wrap{max-width:180px;min-width:0;margin-top:0}
+.prompt-flat-title .prompt-col-custom-wrap{max-width:160px;min-width:0}
 #promptColFontScroll .prompt-tag-group{column-count:3}
 .prompt-product-col-layout{grid-template-columns:1fr;gap:10px}
 .prompt-product-column{gap:10px}
@@ -1660,15 +1670,12 @@ body.dark .ai-field input { background:#141e2d; }
         <div class="prompt-bottom-area" data-page-node-id="5sP4UAVv1ZgVAer1TA8OVe">
           <div class="prompt-col-layout" id="promptImageLayout" data-page-node-id="92je9pX4vGgMMHkRtV6WUV">
             <div class="prompt-col prompt-col-bg" data-page-node-id="UWFbR0xb5BFPQVE0ThtGKx">
-              <div class="prompt-col-header" data-page-node-id="UkW21Gi9wnVpchLGHx92dC"><span class="prompt-ch-icon" style="background:#D4652A" data-page-node-id="jqCf7vCe4BxkvA9SINwLpp">背</span><span class="prompt-ch-title" data-page-node-id="2JFV8t20TSpjjMXXNvSdgm" style="background:linear-gradient(135deg,#FFF0DC 0%,#FFD8A8 100%);color:#9B4513">背景氛围</span><div class="prompt-col-custom-wrap" data-page-node-id="GGO2tneByr5YjUb23Pk1LZ"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off" data-page-node-id="dSKHuzLhFxo0c6B2RdSQmJ"><button class="prompt-col-custom-clear" id="promptClearBg" data-page-node-id="kgGIpI5toEHY0Eq1GhVCKL">&times;</button></div></div>
               <div class="prompt-col-scroll" id="promptColBgScroll" data-page-node-id="cHCzLxwVs2BtuYVBZw1V9q"></div>
             </div>
             <div class="prompt-col prompt-col-element" data-page-node-id="abeI9jJD8v8vMc4HFe5Y3M">
-              <div class="prompt-col-header" data-page-node-id="QePUdjbQYQpdLlY04ACU41"><span class="prompt-ch-icon" style="background:#B84C4C" data-page-node-id="IsuevDhYYyScOFTyEDdYGV">主</span><span class="prompt-ch-title" data-page-node-id="6VMRvpHkDhwV1RR45bSvNo" style="background:linear-gradient(135deg,#FFE0DA 0%,#F4AFA8 100%);color:#A33646">主体元素</span><div class="prompt-col-custom-wrap" data-page-node-id="dtjhgsmMhE2mMHu5Iyeg3v"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off" data-page-node-id="hLO0IVZT95px8jOwiWhVDJ"><button class="prompt-col-custom-clear" id="promptClearElement" data-page-node-id="RTywA5ZjHRSiRCAAl1r8wg">&times;</button></div></div>
               <div class="prompt-col-scroll" id="promptColElementScroll" data-page-node-id="BMxPw8iHcYkggCpDKqIYqw"></div>
             </div>
             <div class="prompt-col prompt-col-font" data-page-node-id="8J868ZPd4yiHCpI6kgfmRv">
-              <div class="prompt-col-header" data-page-node-id="I2coxrQh78a81TBzg8LQf4"><span class="prompt-ch-icon" style="background:#5A7FA0" data-page-node-id="VK7o28U9A1zzx2ZEnB4Zmj">字</span><span class="prompt-ch-title" data-page-node-id="5KXNDYbK7rLyU2cceooBfb" style="background:linear-gradient(135deg,#DDE9F2 0%,#9CC0E0 100%);color:#2C5286">文字排版</span><div class="prompt-col-custom-wrap" data-page-node-id="gsBtrzBJCDJg7w2qRejIvM"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off" data-page-node-id="pFQp3iTLhP6gjwF1eBJKDo"><button class="prompt-col-custom-clear" id="promptClearFont" data-page-node-id="SWi4LXMAJ7wTFNgUTOHfNT">&times;</button></div></div>
               <div class="prompt-col-scroll" id="promptColFontScroll" data-page-node-id="eoTqjV1XumecRLQSWmqYEL"></div>
             </div>
           </div>
@@ -3264,7 +3271,14 @@ function promptEscapeHtml(value){
   });
 }
 function promptEscapeAttr(value){return promptEscapeHtml(value);}
-function promptShade(hex,amt){var h=(hex||'#888888').replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);r=Math.round(r+(255-r)*amt);g=Math.round(g+(255-g)*amt);b=Math.round(b+(255-b)*amt);return 'rgb('+r+','+g+','+b+')';}function promptSelGrad(c){return 'linear-gradient(135deg,'+promptShade(c,0.22)+' 0%,'+c+' 100%)';}
+function promptShade(hex,amt){var h=(hex||'#888888').replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);r=Math.round(r+(255-r)*amt);g=Math.round(g+(255-g)*amt);b=Math.round(b+(255-b)*amt);return 'rgb('+r+','+g+','+b+')';}
+// v4.4.6 选中态整体压暗：降低亮度，与收藏态（淡底+描边）拉开层次
+function promptDarken(hex,amt){var h=(hex||'#888888').replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);r=Math.round(r*(1-amt));g=Math.round(g*(1-amt));b=Math.round(b*(1-amt));return 'rgb('+r+','+g+','+b+')';}
+// v4.4.9 选中态整体调浅：板块色提亮 34% → 提亮 8%，保留同色系且白字仍可读
+// a1/a2 可覆盖提亮幅度（产品页板块色偏深，单独调更浅）
+function promptSelGrad(hex,a1,a2){return 'linear-gradient(135deg,'+promptShade(hex,a1==null?0.34:a1)+' 0%,'+promptShade(hex,a2==null?0.08:a2)+' 100%)';}
+// v4.4.7 板块统一色：优先取分组标题色，缺省回落到分组主色（收藏态与选中态共用）
+function promptGroupColor(c){return (c&&(c.tcolor||c.color))||'#9B4513';}
 function promptTagHTML(label,prompt,group,opts){
   var style='';
   if(opts&&(opts.grad||opts.tcol)){
@@ -3273,6 +3287,7 @@ function promptTagHTML(label,prompt,group,opts){
     if(opts.tcol)s+='--tag-tcol:'+opts.tcol+';';
     if(opts.hov)s+='--tag-hov:'+opts.hov+';';
     if(opts.fav)s+='--tag-fav:'+opts.fav+';';
+    if(opts.fav&&/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(opts.fav))s+='--tag-fav-soft:'+opts.fav+'26;';
     style=' style="'+s+'"';
   }
   return '<button class="prompt-tag"'+style+' data-prompt="'+promptEscapeAttr(prompt)+'" title="'+promptEscapeAttr(prompt)+'" data-group="'+promptEscapeAttr(group)+'">'+promptEscapeHtml(label)+'</button>';
@@ -3594,28 +3609,35 @@ function collapsibleHTML(c,bodyHtml){
   return '<div class="prompt-collapsible" style="background:'+c.gradient+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
-function flatGroupHTML(c,bodyHtml){
+function flatGroupHTML(c,bodyHtml,extraTitleHtml){
   var tcol=c.tcolor||c.color||'#9B4513';
-  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="color:'+tcol+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button></div>';
+  // v4.4.8 「+」紧跟分组标题右侧；自定义描述框（如有）靠右排
+  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="color:'+tcol+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+(extraTitleHtml||'')+'</div>';
   return '<div class="prompt-flat-group">'+title+bodyHtml+'</div>';
 }
 // Build three columns
 // Build three columns
 var colIds=['promptColBgScroll','promptColElementScroll','promptColFontScroll'];
 var colKeys=['background','subject','typography'];
+// v4.4.5 三列的自定义描述输入框：注入到每组第一行（背景风格/元素风格/文字风格）标题右侧
+var colCustomHTML=[
+  '<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearBg">&times;</button></div>',
+  '<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearElement">&times;</button></div>',
+  '<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearFont">&times;</button></div>'
+];
 colKeys.forEach(function(key,ci){
   var data=collapsibleData[key];
   if(!data) return;
-  var html=data.map(function(c){
+  var html=data.map(function(c,gi){
     if(c.groups){
       var groupsHtml=c.groups.map(function(g){
-        var tags=g.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],g.title,{grad:promptSelGrad(c.color),tcol:'#fff',hov:c.gradient,fav:c.tcolor});}).join('');
+        var tags=g.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],g.title,{grad:promptSelGrad(promptGroupColor(c)),tcol:'#fff',hov:c.gradient,fav:promptGroupColor(c)});}).join('');
         return '<div class="prompt-subgroup"><div class="prompt-subgroup-title">'+promptEscapeHtml(g.title)+'<button class="prompt-tag-add">+</button></div><div class="prompt-tag-group" data-group="'+promptEscapeAttr(g.title)+'">'+tags+'</div></div>';
       }).join('');
-      return flatGroupHTML(c, groupsHtml);
+      return flatGroupHTML(c, groupsHtml, gi===0?colCustomHTML[ci]:'');
     }else{
-      var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff',hov:c.gradient,fav:c.tcolor});}).join('');
-      return flatGroupHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
+      var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(promptGroupColor(c)),tcol:'#fff',hov:c.gradient,fav:promptGroupColor(c)});}).join('');
+      return flatGroupHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>', gi===0?colCustomHTML[ci]:'');
     }
   }).join('');
   PS('#'+colIds[ci]).innerHTML=html;
@@ -3624,7 +3646,7 @@ colKeys.forEach(function(key,ci){
 var prodData=collapsibleData.product;
 if(prodData){
   var prodItems=prodData.map(function(c){
-    var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff',hov:c.gradient,fav:c.tcolor});}).join('');
+    var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(promptGroupColor(c),0.50,0.22),tcol:'#fff',hov:c.gradient,fav:promptGroupColor(c)});}).join('');
     return collapsibleHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
   });
   var prodCol1=prodItems[0]||'',prodCol2=(prodItems[1]||'')+(prodItems[2]||''),prodCol3=(prodItems[3]||'')+(prodItems[4]||'');
@@ -3637,15 +3659,21 @@ if(prodData){
 // v4.4.3: 按分组生成 hover/选中/收藏 专属 CSS（data-group 选择器 + !important，不依赖 inline 变量）
 (function(){
   var all=[];
-  Object.keys(collapsibleData).forEach(function(k){(collapsibleData[k]||[]).forEach(function(c){all.push(c);});});
-  var css=all.map(function(c){
+  Object.keys(collapsibleData).forEach(function(k){(collapsibleData[k]||[]).forEach(function(c){all.push({c:c,sec:k});});});
+  var css=all.map(function(o){
+    var c=o.c;
     if(!c.color||!c.title)return '';
-    var sel=promptSelGrad(c.color),tcol=c.tcolor||c.color,hov=c.gradient||'';
+    var u=promptGroupColor(c),hov=c.gradient||'';
+    // v4.4.9 产品页板块色偏深，选中渐变再提亮一档
+    var sel=(o.sec==='product')?promptSelGrad(u,0.50,0.22):promptSelGrad(u);
     var g='.prompt-tag[data-group="'+c.title+'"]';
+    // v4.4.6 收藏态(faved)：主题色描边 + 同色淡底 + 加粗文字，更醒目
+    // 选中态(selected)：压暗一档的渐变+白字，写在收藏态之后，保证「已选中」优先于「已收藏」
     return g+':hover{background:'+hov+' !important;border-color:rgba(0,0,0,.22) !important}'
-      +g+'.selected,'+g+'.selected:hover{background:'+sel+' !important;color:#fff !important;border-color:transparent !important}'
-      +g+'.faved{border-color:'+tcol+' !important;color:'+tcol+' !important}'
-      +'body.dark '+g+':hover{color:'+tcol+' !important}';
+      +g+'.faved{border-color:'+u+' !important;color:'+u+' !important;background:'+u+'26 !important;box-shadow:0 1px 3px '+u+'33 !important}'
+      +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+sel+' !important;color:#fff !important;border-color:transparent !important;box-shadow:0 2px 6px '+u+'40 !important}'
+      +'body.dark '+g+'.faved{background:'+u+'3d !important}'
+      +'body.dark '+g+':hover{color:'+u+' !important}';
   }).join('');
   var st=document.createElement('style');st.id='promptGroupColorCss';st.textContent=css;document.head.appendChild(st);
 })();
