@@ -58,6 +58,7 @@ body.dark {
   --group-bg: #1e293b;
   --shadow: rgba(0,0,0,0.4);
   --primary-light: #1e2d4a;
+  background: linear-gradient(180deg, #141326 0%, #1A1B36 50%, #141528 100%);
 }
 body.dark textarea { background: #141e2d; color: #e8edf5; border-color: #2a3548; }
 body.dark textarea:focus { border-color: #5b7cfa; box-shadow: 0 0 0 3px rgba(91,124,250,0.15); }
@@ -100,7 +101,7 @@ body.dark .color-app .saved-del { background: var(--bg-card); border-color: var(
 html { min-height: 100%; }
 body {
   font-family: var(--font-sans);
-  background: var(--bg);
+  background: linear-gradient(180deg, #F3F0FF 0%, #EDE7F8 50%, #E4DDEF 100%);
   padding: 0;
   min-height: 100vh;
   display: flow-root;
@@ -118,7 +119,7 @@ body {
 .container {
   width: 1200px;
   margin: 0;
-  background: linear-gradient(180deg, #FFF5EA 0%, #FFFCF7 45%, #FFFFFF 100%);
+  background: var(--bg-card);
   padding: 0;
   border-radius: 24px;
   box-shadow: 0 1px 3px var(--shadow), 0 4px 24px rgba(0,0,0,0.04);
@@ -832,7 +833,6 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-tag:hover{border-color:rgba(0,0,0,.22);background:var(--tag-hov,var(--prompt-bg-section))}
 body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.04)}
 .prompt-tag.selected:hover{border-color:transparent;background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
-.prompt-tag.selected,.prompt-tag.selected.faved{color:#fff !important;text-shadow:0 1px 2px rgba(0,0,0,.28)}
 
 .prompt-subgroup-title{font-size:11px;font-weight:600;color:var(--prompt-text-secondary);padding:6px 0 2px 2px;letter-spacing:0.3px}
 .prompt-subgroup-title:first-child{padding-top:0}
@@ -895,8 +895,8 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-style-tags-grid{display:flex;flex-wrap:wrap;gap:6px}
 .prompt-style-tag{padding:3px 8px;border:1px solid var(--prompt-border);border-radius:5px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-style-tag.faved{border-color:var(--prompt-accent);color:var(--prompt-accent);background:var(--prompt-accent-light)}
-.prompt-style-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;box-shadow:0 2px 6px rgba(230,112,56,.25)}
-.prompt-style-tag.selected,.prompt-style-tag.selected.faved{color:#fff !important;text-shadow:0 1px 2px rgba(0,0,0,.28)}
+.prompt-style-tag.selected{border-color:transparent;background:linear-gradient(135deg,#F8D8CC,#F5B89C);color:#9B4513;box-shadow:0 2px 6px rgba(230,112,56,.25)}
+.prompt-style-tag.selected.faved{background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
 .prompt-quick-prompt-card .prompt-quick-prompt-add{flex-shrink:0;margin-top:2px;order:2;margin-left:auto}
 .prompt-quick-prompt-add{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
@@ -1023,8 +1023,7 @@ body.dark .prompt-param-btn{background:var(--group-bg)}
 body.dark .prompt-quick-prompt-tag{background:var(--group-bg)}
 body.dark .prompt-result-header-btn.close{background:var(--group-bg)}
 body.dark .prompt-result-body{background:var(--group-bg)}
-body.dark .container{background:linear-gradient(180deg,#1a2535 0%,#1a2332 45%,#141d2a 100%);border-radius:24px}
-body.dark .prompt-body{background:transparent;border-radius:0}
+body.dark .container{background:var(--bg-card);border-radius:24px}
 body.dark .prompt-result-textarea{color:var(--text)}
 body.dark .prompt-preset-item{background:var(--group-bg)}
 body.dark .prompt-preset-item .prompt-preset-name{color:var(--text)}
@@ -3264,7 +3263,7 @@ function promptEscapeHtml(value){
   });
 }
 function promptEscapeAttr(value){return promptEscapeHtml(value);}
-function promptShade(hex,amt){var h=(hex||'#888888').replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);r=Math.round(r+(255-r)*amt);g=Math.round(g+(255-g)*amt);b=Math.round(b+(255-b)*amt);return 'rgb('+r+','+g+','+b+')';}function promptSelGrad(c){return 'linear-gradient(135deg,'+promptShade(c,0.22)+' 0%,'+c+' 100%)';}
+function promptShade(hex,amt){var h=(hex||'#888888').replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);r=Math.round(r+(255-r)*amt);g=Math.round(g+(255-g)*amt);b=Math.round(b+(255-b)*amt);return 'rgb('+r+','+g+','+b+')';}function promptSelGrad(c){return 'linear-gradient(135deg,'+promptShade(c,0.22)+' 0%,'+c+' 100%)';}function promptSelGradLight(c){return 'linear-gradient(135deg,'+promptShade(c,0.55)+' 0%,'+promptShade(c,0.20)+' 100%)';}
 function promptTagHTML(label,prompt,group,opts){
   var style='';
   if(opts&&(opts.grad||opts.tcol)){
@@ -3640,10 +3639,11 @@ if(prodData){
   Object.keys(collapsibleData).forEach(function(k){(collapsibleData[k]||[]).forEach(function(c){all.push(c);});});
   var css=all.map(function(c){
     if(!c.color||!c.title)return '';
-    var sel=promptSelGrad(c.color),tcol=c.tcolor||c.color,hov=c.gradient||'';
+    var sel=promptSelGradLight(c.color),selFav=promptSelGrad(c.color),tcol=c.tcolor||c.color,hov=c.gradient||'';
     var g='.prompt-tag[data-group="'+c.title+'"]';
     return g+':hover{background:'+hov+' !important;border-color:rgba(0,0,0,.22) !important}'
-      +g+'.selected,'+g+'.selected:hover{background:'+sel+' !important;color:#fff !important;border-color:transparent !important}'
+      +g+'.selected,'+g+'.selected:hover{background:'+sel+' !important;color:'+tcol+' !important;border-color:transparent !important}'
+      +g+'.selected.faved,'+g+'.selected.faved:hover{background:'+selFav+' !important;color:#fff !important;border-color:transparent !important}'
       +g+'.faved{border-color:'+tcol+' !important;color:'+tcol+' !important}'
       +'body.dark '+g+':hover{color:'+tcol+' !important}';
   }).join('');
