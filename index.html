@@ -10,7 +10,7 @@
 <meta http-equiv="Pragma" content="no-cache" data-page-node-id="9JqdncysqrXvpOtphw2lGt">
 <meta http-equiv="Expires" content="0" data-page-node-id="ApaHtlzGSk0ftH9ulCojwz">
 <title>快设助手PRO</title>
-<!-- 快设助手PRO v4.5.2 -->
+<!-- 快设助手PRO v4.5.3 -->
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iI0U2NzAzOCIvPjx0ZXh0IHg9IjE2IiB5PSIxNiIgZm9udC1zaXplPSIyMiIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9ImNlbnRyYWwiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiPks8L3RleHQ+PC9zdmc+" data-page-node-id="FCSntP7FCdC1BbmSTW9aQj">
 
 <style>
@@ -154,19 +154,8 @@ body {
   flex-shrink: 0;
   align-items: flex-end;
   height: 100%;
-  position: relative;
+  border-radius: 0 24px 24px 0;   /* 与 .container 同款圆角，border-right 随圆角弯曲 */
 }
-.tab-bar::after{
-  content:"";
-  position:absolute;
-  right:0;top:0;bottom:0;
-  width:1px;
-  background:rgba(0,0,0,0.06);
-  z-index:4;
-  pointer-events:none;
-}
-body.dark .tab-bar::after{background:rgba(255,255,255,0.06);}
-
 /* ===== 侧边栏标签 — 浏览器标签样式（左侧圆角舌头，彩条在右侧，选中右侧连接内容区）===== */
 .tab-item {
   width: 36px; height: 102px; padding: 8px 2px;
@@ -199,7 +188,7 @@ body.dark .tab-bar::after{background:rgba(255,255,255,0.06);}
 .tab-item.active {
   color: #fff;
   font-weight: 700;
-  margin-right: -2px;              /* 标签右侧凸过 border-right，与内容区无缝连接 */
+  margin-right: 0;                 /* 不再覆盖 border-right，让边框线连同圆角完整显示 */
   z-index: 3;
   box-shadow: 2px 0 8px rgba(0,0,0,0.12);
 }
@@ -823,10 +812,10 @@ textarea:focus { outline: none; border-color: var(--primary); }
 /* v4.3.0 平铺分组：替换折叠块，层级 列→小标题→标签 */
 .prompt-flat-group{margin-bottom:12px}
 .prompt-flat-group:last-child{margin-bottom:0}
-.prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap;justify-content:space-between}
+.prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap;justify-content:flex-start}
 .prompt-flat-title .prompt-icon{display:none}
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px;flex:0 0 auto}
-.prompt-flat-custom-wrap{flex:0 1 auto;min-width:0;max-width:200px;position:relative;display:flex;align-items:center}
+.prompt-flat-custom-wrap{flex:0 1 auto;min-width:0;max-width:200px;position:relative;display:flex;align-items:center;margin-left:auto}
 .prompt-flat-custom-wrap .prompt-col-custom-input{width:100%;padding:4px 8px;font-size:12px;border:1px solid transparent;border-radius:5px;color:var(--prompt-text-primary);background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;outline:none;font-family:inherit;transition:var(--prompt-transition);box-sizing:border-box}
 .prompt-flat-custom-wrap .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(212,101,42,.1);background:var(--prompt-bg-card)}
 .prompt-flat-custom-wrap .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:11px}
