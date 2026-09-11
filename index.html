@@ -58,7 +58,7 @@ body.dark {
   --group-bg: #1e293b;
   --shadow: rgba(0,0,0,0.4);
   --primary-light: #1e2d4a;
-  background: linear-gradient(180deg, #141326 0%, #1A1B36 50%, #141528 100%);
+  background: linear-gradient(180deg, #141326 0%, #1A1B36 40%, #0F1724 100%);
 }
 body.dark textarea { background: #141e2d; color: #e8edf5; border-color: #2a3548; }
 body.dark textarea:focus { border-color: #5b7cfa; box-shadow: 0 0 0 3px rgba(91,124,250,0.15); }
@@ -101,7 +101,7 @@ body.dark .color-app .saved-del { background: var(--bg-card); border-color: var(
 html { min-height: 100%; }
 body {
   font-family: var(--font-sans);
-  background: linear-gradient(180deg, #F3F0FF 0%, #EDE7F8 50%, #E4DDEF 100%);
+  background: linear-gradient(180deg, #F3F0FF 0%, #F8F7FF 35%, #FFFFFF 100%);
   padding: 0;
   min-height: 100vh;
   display: flow-root;
@@ -965,9 +965,8 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-style-tag{font-size:12px;padding:4px 9px;}
 /* 文字风格列居中对齐 */
 #promptColFontScroll .prompt-collapsible-header{justify-content:center;}
-#promptColFontScroll .prompt-tag-group{column-count:3;column-gap:6px;display:block;text-align:center;}
-#promptColFontScroll .prompt-tag-group .prompt-tag{justify-content:center;}
-#promptColFontScroll .prompt-tag-group .prompt-tag{display:inline-flex;width:100%;margin-bottom:4px;break-inside:avoid;justify-content:center;}
+#promptColFontScroll .prompt-tag-group{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
+#promptColFontScroll .prompt-tag-group .prompt-tag{justify-content:center;display:inline-flex;width:calc((100% - 12px) / 3);margin-bottom:0;break-inside:auto;}
 
 /* 产品描述输入行：标题+输入框横向一行、无底色（其他标签保持原样） */
 #promptProductInputCard{
@@ -3390,27 +3389,19 @@ typography:[
 ['行书流韵','行书流韵','行书笔意标题字，笔画连绵牵丝，收放有节奏'],
 ['楷书端方','楷书端方','楷书笔意标题字，横平竖直，起收分明，结构匀称'],
 ['隶书古拙','隶书古拙','隶书笔意标题字，蚕头燕尾，横画舒展，结体扁方'],
-['篆书典雅','篆书典雅','篆书笔意标题字，线条圆融均匀，结体修长对称'],
-['草书狂放','草书狂放','草书笔意标题字，笔画连绵缠绕，结体欹侧奔放'],
-['魏碑雄健','魏碑雄健','魏碑笔意标题字，方笔棱角分明，刀刻金石味'],
-['瘦金清瘦','瘦金清瘦','瘦金体标题字，瘦劲挺拔，撇捺锋利细长'],
 ['毛笔飞白','毛笔飞白','毛笔飞白标题字，枯笔丝丝露白，苍劲有力'],
 ['童趣手写','童趣手写','童趣手写标题字，笔画歪斜圆钝，结构稚拙'],
 ['圆润卡通','圆润卡通','圆润卡通标题字，笔画圆鼓矮胖，转角圆融无锐角'],
 ['随笔手写','随笔手写','随笔手写标题字，笔锋松弛，连笔省减，行气散淡'],
 ['马克笔涂鸦','马克笔涂鸦','马克笔涂鸦标题字，方头宽笔触，外扩张扬'],
 ['钢笔细线','钢笔细线','钢笔细线标题字，纤巧均匀，起收尖挺'],
-['藏书朱印','藏书朱印','藏书朱印标题字，篆体方整屈伸，线条浑厚，朱砂印泥'],
 ['美术黑体','美术黑体','美术黑体标题字，笔画粗重等宽，转角硬朗'],
 ['复古美术字','复古美术字','复古美术字标题字，粗细对比强烈，起收带装饰，结体微倾'],
 ['几何构成','几何构成','几何构成标题字，笔画拆解重构，块面拼贴，正负形经营'],
 ['立体浮雕','立体浮雕','立体浮雕标题字，笔画有厚度与侧面，带落地投影'],
 ['雕版宋体','雕版宋体','雕版宋体标题字，横细竖粗，刀刻棱角，墨色匀净'],
 ['朱砂批注','朱砂批注','朱砂批注标题字，红墨浓淡，笔锋细劲，宣纸洇润'],
-['石刻碑文','石刻碑文','石刻碑文标题字，凿刻凹痕，石材斑驳，风化缺角'],
-['拓印斑驳','拓印斑驳','拓印标题字，墨色不匀，笔画残缺断裂，石花干扰'],
 ['烫金描边','烫金描边','烫金标题字，镜面金属光泽，细金边勾轮廓'],
-['凹凸压字','凹凸压字','凹凸压印标题字，纸面浮雕，无墨，侧光显影'],
 ['3D充气立体','3D充气立体','3D充气立体标题字，圆鼓饱满体积，高光反射，糖果色'],
 ['霓虹灯管','霓虹灯管','霓虹灯管标题字，玻璃管发光笔画，光晕外溢']
 ]},
@@ -4095,6 +4086,7 @@ function renderTagGroup(group){
   });
 }
 
+document.addEventListener('click',function(e){if(!e.target.closest('.prompt-tag,.prompt-style-tag,.prompt-quick-prompt-tag'))PS('#promptTagTooltip').classList.remove('show');});
 function bindPromptTag(tag){
   if(tag.classList.contains('prompt-tag-add'))return;
   var rawText=tag.childNodes[0]&&tag.childNodes[0].nodeType===3?tag.childNodes[0].textContent.trim():tag.textContent.trim();
@@ -4111,6 +4103,7 @@ function bindPromptTag(tag){
     if(this.classList.contains('selected')){
       this.classList.remove('selected');
       pState.selected[sec]=pState.selected[sec].filter(function(s){return s.prompt!==p;});
+      PS('#promptTagTooltip').classList.remove('show');
     }else{
       if(!multiSelect&&gEl){
         gEl.querySelectorAll('.prompt-tag.selected').forEach(function(el){el.classList.remove('selected');});
@@ -4121,15 +4114,12 @@ function bindPromptTag(tag){
       }
       this.classList.add('selected');
       pState.selected[sec].push({text:t,prompt:p,group:grp});
+      var tip=PS('#promptTagTooltip');tip.textContent=this.dataset.prompt;tip.classList.add('show');
+      var r=this.getBoundingClientRect();
+      tip.style.left=Math.min(r.left,window.innerWidth-290)+'px';tip.style.top=(r.bottom+6)+'px';
     }
     updatePromptResult();
   });
-  tag.addEventListener('mouseenter',function(e){
-    PS('#promptTagTooltip').textContent=this.dataset.prompt;PS('#promptTagTooltip').classList.add('show');
-    var r=this.getBoundingClientRect();
-    PS('#promptTagTooltip').style.left=Math.min(r.left,window.innerWidth-290)+'px';PS('#promptTagTooltip').style.top=(r.bottom+6)+'px';
-  });
-  tag.addEventListener('mouseleave',function(){PS('#promptTagTooltip').classList.remove('show');});
   tag.addEventListener('contextmenu',function(e){
     e.preventDefault();
     var oldP=this.dataset.prompt,oldT=this.dataset.rawText,sec=this.dataset.tagSec;
@@ -4269,9 +4259,7 @@ function sortStyleTags(){
 function bindStyleBtn(btn){
   var styleFavKey='mergedStyleFavs';
   try{var sf=JSON.parse(localStorage.getItem(styleFavKey)||'[]');if(sf.indexOf(btn.dataset.value)!==-1)btn.classList.add('faved');}catch(e){}
-  btn.addEventListener('click',function(){var v=this.dataset.value;if(pState.style===v){this.classList.remove('selected');pState.style=null;}else{pStyleBtns.forEach(function(b){b.classList.remove('selected');});this.classList.add('selected');pState.style=v;}updatePromptResult();});
-  btn.addEventListener('mouseenter',function(e){var tip=PS('#promptTagTooltip');tip.textContent=this.dataset.value;tip.classList.add('show');var r=this.getBoundingClientRect();tip.style.left=Math.min(r.left,window.innerWidth-290)+'px';tip.style.top=(r.bottom+6)+'px';});
-  btn.addEventListener('mouseleave',function(){PS('#promptTagTooltip').classList.remove('show');});
+  btn.addEventListener('click',function(){var v=this.dataset.value;if(pState.style===v){this.classList.remove('selected');pState.style=null;PS('#promptTagTooltip').classList.remove('show');}else{pStyleBtns.forEach(function(b){b.classList.remove('selected');});this.classList.add('selected');pState.style=v;var tip=PS('#promptTagTooltip');tip.textContent=this.dataset.value;tip.classList.add('show');var r=this.getBoundingClientRect();tip.style.left=Math.min(r.left,window.innerWidth-290)+'px';tip.style.top=(r.bottom+6)+'px';}updatePromptResult();});
   btn.addEventListener('contextmenu',function(e){
     e.preventDefault();
     var oldP=this.dataset.value,oldT=this.textContent.trim();
@@ -4437,18 +4425,14 @@ function renderQuickPrompts(){
       var t=e.currentTarget,v=pState.quickPrompts[t.dataset.index].prompt;
       pState.quickPromptText=pState.quickPromptText===v?'':v;
       body.querySelectorAll('.prompt-quick-prompt-tag').forEach(function(tg){tg.classList.remove('selected');});
-      if(pState.quickPromptText)t.classList.add('selected');
+      if(pState.quickPromptText){
+        t.classList.add('selected');
+        var tip=PS('#promptTagTooltip');tip.textContent=v;tip.classList.add('show');
+        var r=t.getBoundingClientRect();
+        tip.style.left=Math.min(r.left,window.innerWidth-290)+'px';tip.style.top=(r.bottom+6)+'px';
+      }else{PS('#promptTagTooltip').classList.remove('show');}
       updatePromptResult();
     });
-    tag.addEventListener('mouseenter',function(e){
-      var el=e.currentTarget,tip=PS('#promptTagTooltip');
-      tip.textContent=pState.quickPrompts[el.dataset.index].prompt;
-      tip.classList.add('show');
-      var r=el.getBoundingClientRect();
-      tip.style.left=Math.min(r.left,window.innerWidth-290)+'px';
-      tip.style.top=(r.bottom+6)+'px';
-    });
-    tag.addEventListener('mouseleave',function(){PS('#promptTagTooltip').classList.remove('show');});
     tag.addEventListener('contextmenu',function(e){
       e.preventDefault();
       var idx=e.currentTarget.dataset.index,old=pState.quickPrompts[idx];
