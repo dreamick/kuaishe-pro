@@ -4336,10 +4336,18 @@ function updatePromptResult(){
     if(bgParts.length)contentParts.push(bgParts.join('，'));
     if(subjParts.length)contentParts.push(subjParts.join('，'));
     if(ftParts.length)contentParts.push(ftParts.join('，'));
-    // 纯白背景兜底
+    // 纯背景兜底：未主动选背景时，按内容补背景约束
+    // 文字标签单独/主导时，强调纯色背景且无场景、无装饰元素，避免生成背景与附加物体
     var hasSubjectTags=subjSel.filter(function(s){return s.prompt;}).length>0;
+    var hasFontTags=ftSel.filter(function(s){return s.prompt;}).length>0;
     var noBgSelected=!customBg&&!bgSel.length;
-    if(hasSubjectTags&&noBgSelected)contentParts.push('纯白干净背景');
+    if(noBgSelected){
+      if(hasFontTags){
+        contentParts.push('纯色背景，无场景，无装饰元素');
+      }else if(hasSubjectTags){
+        contentParts.push('纯白干净背景');
+      }
+    }
   }else{
     var customProd=getCustomInput('product');
     var contentParts=[];
