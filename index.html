@@ -755,13 +755,13 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-app ::-webkit-scrollbar-track{background:transparent}
 .prompt-app ::-webkit-scrollbar-thumb{background:var(--prompt-border);border-radius:3px}
 .prompt-app ::-webkit-scrollbar-thumb:hover{background:var(--prompt-text-muted)}
-.prompt-col-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start;width:100%;min-width:0;flex:1 1 auto}
-.prompt-col{min-width:0;width:100%;display:flex;flex-direction:column;gap:10px}
+.prompt-col-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch;width:100%;min-width:0;flex:1 1 auto;height:100%}
+.prompt-col{min-width:0;width:100%;display:flex;flex-direction:column;gap:10px;height:100%;min-height:0}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-width:0}
 /* v4.3.5 三列各自动底色：列头胶囊色调延伸到整列 */
-.prompt-col-bg{background:linear-gradient(180deg,#FFFAF4 0%,#FFEFDF 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,165,116,0.18);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
-.prompt-col-element{background:linear-gradient(180deg,#FFF5F3 0%,#FFE5E0 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,116,116,0.18);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
-.prompt-col-font{background:linear-gradient(180deg,#F0F6FB 0%,#DDE9F2 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(116,148,180,0.18);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
+.prompt-col-bg{background:linear-gradient(180deg,#FFFAF4 0%,#FFEFDF 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,165,116,0.28);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
+.prompt-col-element{background:linear-gradient(180deg,#FFF5F3 0%,#FFE5E0 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,116,116,0.28);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
+.prompt-col-font{background:linear-gradient(180deg,#F0F6FB 0%,#DDE9F2 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(116,148,180,0.28);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
 /* ===== 新布局：上半部分两列（转换风格+常用提示词 | 生成结果+预设方案）+ 下半部分整宽 ===== */
 .prompt-top-grid{--col-left:300px;display:grid;grid-template-columns:var(--col-left) 4px minmax(0,1fr);gap:4px;align-items:stretch;width:100%;min-width:0;flex:0 0 auto;max-height:42vh}
 .prompt-col-resizer{grid-column:2;align-self:stretch;width:4px;cursor:col-resize;position:relative;touch-action:none}
@@ -773,9 +773,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-top-col-result .prompt-result-body{flex:1 1 auto;display:flex;min-height:80px}
 .prompt-top-col-result .prompt-result-textarea{flex:1 1 auto;min-height:60px}
 .prompt-top-col-result .prompt-preset-list-card{flex:0 0 auto}
-.prompt-bottom-area{width:100%;min-width:0;flex:0 1 auto;min-height:0;max-height:100%;display:flex;flex-direction:column;overflow-y:auto}
+.prompt-bottom-area{width:100%;min-width:0;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 /* v4.2.8: 上半折叠体在红框滚时吸顶锁定（背景色覆盖下半滚上来的内容） */
-.prompt-bottom-area .prompt-col-layout{flex:1 1 auto;min-height:0;align-items:start}
+.prompt-bottom-area .prompt-col-layout{flex:1 1 auto;min-height:0;align-items:stretch;height:100%}
 @media(max-width:1180px){
   .prompt-top-grid{--col-left:260px}
 }
@@ -786,8 +786,11 @@ textarea:focus { outline: none; border-color: var(--primary); }
   .prompt-top-col-result .prompt-result-card{height:auto}
   .prompt-bottom-area{flex:0 0 auto;overflow:visible}
   .prompt-bottom-area .prompt-col-layout{height:auto;align-items:stretch}
+  .prompt-col{height:auto;min-height:auto}
+  .prompt-col-header{flex:0 0 auto}
+  .prompt-col-scroll{overflow:visible;flex:0 0 auto}
 }
-.prompt-col-header{width:100%;font-size:13px;font-weight:600;color:var(--prompt-text-primary);padding:8px 12px;background:transparent;border-radius:10px;border:none;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:6;flex-wrap:nowrap}
+.prompt-col-header{width:100%;font-size:13px;font-weight:600;color:var(--prompt-text-primary);padding:8px 12px;background:transparent;border-radius:10px;border:none;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:nowrap;flex:0 0 auto}
 .prompt-col-header .prompt-ch-icon{display:none}
 .prompt-col-header .prompt-ch-title{flex:0 0 auto;display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;background:linear-gradient(135deg,#FFE5CC 0%,#FFC79A 100%);color:#9B4513;font-size:12px;font-weight:700;letter-spacing:.4px;line-height:1.3;box-shadow:0 1px 4px rgba(180,90,20,0.12)}
 .prompt-col-header .prompt-col-custom-wrap{flex:0 1 auto;min-width:0;max-width:200px;position:relative;padding:0}
@@ -795,7 +798,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col-header .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(212,101,42,.1);background:var(--prompt-bg-card)}
 .prompt-col-header .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-col-header .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
-.prompt-col-scroll{display:flex;flex-direction:column;min-height:0;overflow:visible;padding-right:0}
+.prompt-col-scroll{display:flex;flex-direction:column;min-height:0;overflow-y:auto;padding-right:4px;flex:1 1 auto}
 .prompt-col-scroll::-webkit-scrollbar{width:3px}
 .prompt-col-scroll::-webkit-scrollbar-thumb{background:var(--prompt-border);border-radius:2px}
 /* 上半折叠体（背景/元素/文字）：紧贴内容，自然高度（v4.2.7 红框整体滚后不再占满/内部滚） */
@@ -803,7 +806,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 /* grid 子级允许收缩到剩余空间 */
 .prompt-col-layout > .prompt-col{min-height:0}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-height:0}
-.prompt-collapsible{width:100%;background:var(--prompt-bg-section);border-radius:14px;margin-bottom:8px;border:1px solid var(--prompt-border);overflow:hidden}
+.prompt-collapsible{width:100%;background:var(--prompt-bg-section);border-radius:14px;margin-bottom:8px;border:1px solid rgba(0,0,0,.16);overflow:hidden}
 .prompt-collapsible-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;user-select:none;transition:var(--prompt-transition);gap:8px}
 .prompt-collapsible-header .prompt-icon{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
 .prompt-collapsible-header .prompt-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);flex:1}
@@ -1002,15 +1005,11 @@ body.dark #promptProductInputCard .prompt-product-back{background:linear-gradien
 body.dark #promptProductInputCard .prompt-product-back:hover{background:linear-gradient(135deg,#3D7A4A,#4C9A63)}
 /* 产品模式：产品类型/材质/造型/工艺/质感 三列自适应（左1/中2/右2） */
 #promptProductLayout{display:none;width:100%;min-width:0;flex:1 1 auto;min-height:0}
-.prompt-product-col-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto;gap:12px;width:100%;min-width:0;align-items:start;margin-top:10px}
-.prompt-product-col-layout .prompt-collapsible{margin-bottom:0;display:flex;flex-direction:column;overflow:hidden}
-.prompt-product-col-layout .prompt-collapsible:nth-child(1){grid-column:1;grid-row:1 / span 2}
-.prompt-product-col-layout .prompt-collapsible:nth-child(2){grid-column:2;grid-row:1}
-.prompt-product-col-layout .prompt-collapsible:nth-child(3){grid-column:2;grid-row:2}
-.prompt-product-col-layout .prompt-collapsible:nth-child(4){grid-column:3;grid-row:1}
-.prompt-product-col-layout .prompt-collapsible:nth-child(5){grid-column:3;grid-row:2}
-.prompt-product-col-layout .prompt-collapsible-body.open{max-height:none;overflow-y:visible;padding-bottom:12px}
-.prompt-product-col-layout .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px}
+.prompt-product-col-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;min-width:0;align-items:start;margin-top:10px}
+.prompt-product-column{display:flex;flex-direction:column;gap:12px}
+.prompt-product-column .prompt-collapsible{margin-bottom:0;display:flex;flex-direction:column;overflow:hidden}
+.prompt-product-column .prompt-collapsible-body.open{max-height:none;overflow-y:visible;padding-bottom:12px}
+.prompt-product-column .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px}
 
 body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.14)}
 body.dark .prompt-ratio-btn{background:var(--group-bg);color:var(--text-secondary);border-color:var(--border)}
@@ -1030,7 +1029,7 @@ body.dark .prompt-col-header .prompt-col-custom-input{background:linear-gradient
 body.dark .prompt-col-header .prompt-col-custom-input:focus{background:var(--bg-card)}
 body.dark .prompt-quick-prompt-card,
 body.dark .prompt-param-card,
-body.dark .prompt-collapsible{background:var(--group-bg);border-color:var(--border)}
+body.dark .prompt-collapsible{background:var(--group-bg);border-color:rgba(255,255,255,.14)}
 body.dark .prompt-quick-prompt-card .prompt-title,
 body.dark .prompt-param-card-title,
 body.dark .prompt-collapsible-header .prompt-title{color:var(--text)}
@@ -1041,13 +1040,9 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .prompt-col-layout{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .prompt-col-font{grid-column:auto}
 #promptColFontScroll .prompt-tag-group{column-count:3}
-.prompt-product-col-layout{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto}
-.prompt-product-col-layout .prompt-collapsible:nth-child(1){grid-column:1;grid-row:1 / span 2}
-.prompt-product-col-layout .prompt-collapsible:nth-child(2){grid-column:2;grid-row:1}
-.prompt-product-col-layout .prompt-collapsible:nth-child(3){grid-column:2;grid-row:2}
-.prompt-product-col-layout .prompt-collapsible:nth-child(4){grid-column:3;grid-row:1}
-.prompt-product-col-layout .prompt-collapsible:nth-child(5){grid-column:3;grid-row:2}
-.prompt-product-col-layout .prompt-collapsible{max-height:none}
+.prompt-product-col-layout{grid-template-columns:repeat(3,minmax(0,1fr))}
+.prompt-product-column{gap:10px}
+.prompt-product-column .prompt-collapsible{max-height:none}
 }
 @media(max-width:768px){
 .prompt-app{flex-direction:column;height:auto;overflow:visible;padding:16px 20px}
@@ -1057,10 +1052,11 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .prompt-col-header{flex-wrap:nowrap}
 .prompt-col-header .prompt-col-custom-wrap{max-width:180px;min-width:0;margin-top:0}
 #promptColFontScroll .prompt-tag-group{column-count:3}
-.prompt-product-col-layout{grid-template-columns:1fr;grid-template-rows:auto;gap:10px}
-.prompt-product-col-layout .prompt-collapsible:nth-child(n){grid-column:1;grid-row:auto}
-.prompt-product-col-layout .prompt-collapsible{max-height:none;overflow:visible}
-.prompt-product-col-layout .prompt-collapsible-body.open{max-height:none;overflow:visible}
+.prompt-product-col-layout{grid-template-columns:1fr;gap:10px}
+.prompt-product-column{gap:10px}
+.prompt-product-column .prompt-collapsible:nth-child(n){grid-column:auto;grid-row:auto}
+.prompt-product-column .prompt-collapsible{max-height:none;overflow:visible}
+.prompt-product-column .prompt-collapsible-body.open{max-height:none;overflow:visible}
 }
 
 /* ============================================================
@@ -3590,7 +3586,7 @@ quickPromptText:'',
 function collapsibleHTML(c,bodyHtml){
   var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   var header='<div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="color:'+c.tcolor+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
-  return '<div class="prompt-collapsible" style="background:'+c.gradient+';border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
+  return '<div class="prompt-collapsible" style="background:'+c.gradient+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 function flatGroupHTML(c,bodyHtml){
@@ -3622,11 +3618,13 @@ colKeys.forEach(function(key,ci){
 // Build product section
 var prodData=collapsibleData.product;
 if(prodData){
-  var prodHtml=prodData.map(function(c){
+  var prodItems=prodData.map(function(c){
     var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelGrad(c.color),tcol:'#fff',hov:c.gradient,fav:c.tcolor});}).join('');
     return collapsibleHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
-  }).join('');
-  PS('#promptProductLayout').innerHTML='<div class="prompt-collapsible" id="promptProductInputCard"><div class="prompt-collapsible-header"><span class="prompt-product-back" data-psection="image" title="返回生图提示词"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></span><span class="prompt-title" style="color:#2F5A36;font-size:13px;font-weight:700;letter-spacing:.4px">产品描述</span><span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="prompt-collapsible-body open"><div style="position:relative"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="输入产品描述关键词..." autocomplete="off" style="width:100%;padding:6px 10px;font-size:13px;border:1px solid var(--prompt-border);border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;box-sizing:border-box"><button class="prompt-col-custom-clear" id="promptClearProduct" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0">&times;</button></div></div></div>'+'<div class="prompt-product-col-layout">'+prodHtml+'</div>';
+  });
+  var prodCol1=prodItems[0]||'',prodCol2=(prodItems[1]||'')+(prodItems[2]||''),prodCol3=(prodItems[3]||'')+(prodItems[4]||'');
+  var prodHtml='<div class="prompt-product-col-layout"><div class="prompt-product-column">'+prodCol1+'</div><div class="prompt-product-column">'+prodCol2+'</div><div class="prompt-product-column">'+prodCol3+'</div></div>';
+  PS('#promptProductLayout').innerHTML='<div class="prompt-collapsible" id="promptProductInputCard"><div class="prompt-collapsible-header"><span class="prompt-product-back" data-psection="image" title="返回生图提示词"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></span><span class="prompt-title" style="color:#2F5A36;font-size:13px;font-weight:700;letter-spacing:.4px">产品描述</span><span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="prompt-collapsible-body open"><div style="position:relative"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="输入产品描述关键词..." autocomplete="off" style="width:100%;padding:6px 10px;font-size:13px;border:1px solid var(--prompt-border);border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;box-sizing:border-box"><button class="prompt-col-custom-clear" id="promptClearProduct" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0">&times;</button></div></div></div>'+prodHtml;
   var pb=PS('#promptProductInputCard').querySelector('.prompt-product-back');
   if(pb)pb.addEventListener('click',function(e){e.stopPropagation();switchPSection('image');});
 }
@@ -3863,13 +3861,16 @@ function saveColOrder(){
       var els=c.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group');
       order[COL_ORDER_MAP[id]]=Array.prototype.map.call(els,_getCollapsibleKey);
     });
-    // 产品列：板块在 .prompt-product-col-layout 内
+    // 产品列：板块在 .prompt-product-column 内
     var pc=PS('#promptProductLayout');
     if(pc){
       var pl=pc.querySelector('.prompt-product-col-layout');
       if(pl){
-        var els=pl.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group');
-        order.product=Array.prototype.map.call(els,_getCollapsibleKey);
+        var els=[];
+        pl.querySelectorAll('.prompt-product-column').forEach(function(col){
+          col.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(el){ els.push(el); });
+        });
+        order.product=els.map(_getCollapsibleKey);
       }
     }
     localStorage.setItem(COL_ORDER_KEY,JSON.stringify(order));
@@ -3896,14 +3897,30 @@ function restoreColOrder(){
     if(pc&&order.product&&order.product.length){
       var pl=pc.querySelector('.prompt-product-col-layout');
       if(pl){
-        order.product.forEach(function(k){
-          if(!k)return;
-          var found=null;
-          pl.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(e){
-            if(!found&&_getCollapsibleKey(e)===k)found=e;
+        var cols=pl.querySelectorAll('.prompt-product-column');
+        if(cols.length){
+          var byKey={};
+          cols.forEach(function(col){
+            col.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(e){
+              var k=_getCollapsibleKey(e); if(k) byKey[k]=e;
+            });
           });
-          if(found)pl.appendChild(found);
-        });
+          order.product.forEach(function(k,idx){
+            if(!k)return;
+            var found=byKey[k];
+            if(!found){
+              cols.forEach(function(col){
+                col.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(e){
+                  if(!found&&_getCollapsibleKey(e)===k)found=e;
+                });
+              });
+            }
+            if(found){
+              var colIdx=idx===0?0:(idx<=2?1:2);
+              if(cols[colIdx]) cols[colIdx].appendChild(found);
+            }
+          });
+        }
       }
     }
   }catch(_){}
