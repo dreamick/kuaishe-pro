@@ -144,7 +144,7 @@ body {
 .tab-bar {
   display: flex; flex-direction: column;
   background: var(--group-bg);
-  border-right: 1px solid var(--border);   /* 还原：侧边栏回到左侧 */
+  border-right: 1px solid rgba(0,0,0,0.06);
   padding: 18px 0 8px 6px;
   gap: 2px;
   user-select: none;
@@ -186,9 +186,9 @@ body {
 .tab-item.active {
   color: #fff;
   font-weight: 700;
-  margin-right: -1px;              /* 标签右侧凸过 border-right，与内容区无缝连接 */
+  margin-right: -2px;              /* 标签右侧凸过 border-right，与内容区无缝连接 */
   z-index: 3;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.12);
 }
 .tab-item.active[data-tab="prompt"]  { background: linear-gradient(135deg, #D4652A, #F29A38); }
 .tab-item.active[data-tab="layout"]  { background: linear-gradient(135deg, #4D96FF, #7C5CFC); }
@@ -198,10 +198,10 @@ body {
 .tab-item.active::before {
   content: "";
   position: absolute;
-  right: 2px; top: var(--hl-inset, 21px); bottom: var(--hl-inset, 21px);
+  right: 3px; top: var(--hl-inset, 24px); bottom: var(--hl-inset, 24px);
   width: 2px;
   border-radius: 2px;
-  background: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.45);
 }
 
 /* 侧边栏底部工具区 */
@@ -761,9 +761,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col{min-width:0;width:100%;display:flex;flex-direction:column;gap:10px;height:100%;min-height:0}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-width:0}
 /* v4.3.5 三列各自动底色：列头胶囊色调延伸到整列 */
-.prompt-col-bg{background:linear-gradient(180deg,#FFFAF4 0%,#FFEFDF 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,165,116,0.28);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
-.prompt-col-element{background:linear-gradient(180deg,#FFF5F3 0%,#FFE5E0 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,116,116,0.28);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
-.prompt-col-font{background:linear-gradient(180deg,#F0F6FB 0%,#DDE9F2 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(116,148,180,0.28);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
+.prompt-col-bg{background:linear-gradient(180deg,#FFFAF4 0%,#FFEFDF 100%);padding:8px;border-radius:14px;border:1px solid rgba(212,165,116,0.28);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
+.prompt-col-element{background:linear-gradient(180deg,#FFF5F3 0%,#FFE5E0 100%);padding:8px;border-radius:14px;border:1px solid rgba(212,116,116,0.28);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
+.prompt-col-font{background:linear-gradient(180deg,#F0F6FB 0%,#DDE9F2 100%);padding:8px;border-radius:14px;border:1px solid rgba(116,148,180,0.28);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
 /* ===== 新布局：上半部分两列（转换风格+常用提示词 | 生成结果+预设方案）+ 下半部分整宽 ===== */
 .prompt-top-grid{--col-left:300px;display:grid;grid-template-columns:var(--col-left) 4px minmax(0,1fr);gap:4px;align-items:stretch;width:100%;min-width:0;flex:0 0 auto;max-height:42vh}
 .prompt-col-resizer{grid-column:2;align-self:stretch;width:4px;cursor:col-resize;position:relative;touch-action:none}
@@ -820,9 +820,16 @@ textarea:focus { outline: none; border-color: var(--primary); }
 /* v4.3.0 平铺分组：替换折叠块，层级 列→小标题→标签 */
 .prompt-flat-group{margin-bottom:12px}
 .prompt-flat-group:last-child{margin-bottom:0}
-.prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap}
+.prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap;justify-content:space-between}
 .prompt-flat-title .prompt-icon{display:none}
-.prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px}
+.prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px;flex:0 0 auto}
+.prompt-flat-custom-wrap{flex:0 1 auto;min-width:0;max-width:200px;position:relative;display:flex;align-items:center}
+.prompt-flat-custom-wrap .prompt-col-custom-input{width:100%;padding:4px 8px;font-size:12px;border:1px solid transparent;border-radius:5px;color:var(--prompt-text-primary);background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;outline:none;font-family:inherit;transition:var(--prompt-transition);box-sizing:border-box}
+.prompt-flat-custom-wrap .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(212,101,42,.1);background:var(--prompt-bg-card)}
+.prompt-flat-custom-wrap .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:11px}
+.prompt-flat-custom-wrap .prompt-col-custom-clear{position:absolute;right:4px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:14px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
+body.dark .prompt-flat-custom-wrap .prompt-col-custom-input{background:linear-gradient(var(--bg-card),var(--bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;color:var(--text)}
+body.dark .prompt-flat-custom-wrap .prompt-col-custom-input:focus{background:var(--bg-card)}
 .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:4px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 .prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent))}
@@ -906,8 +913,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-quick-prompt-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
 .prompt-quick-prompt-tag.selected .prompt-q-text{color:#fff}
 .prompt-quick-prompt-empty{font-size:11px;color:var(--prompt-text-muted);padding:4px 0}
-.prompt-result-card{background:var(--prompt-bg-card);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.05);border:1px solid transparent;background-clip:padding-box;position:relative;overflow:hidden}
-.prompt-result-card::before{content:'';position:absolute;inset:0;border-radius:14px;padding:1px;background:linear-gradient(135deg,#C8B8E8,#F5DCC8);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.prompt-result-card{background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.05);border:1px solid transparent;position:relative;overflow:hidden}
 .prompt-result-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px}
 .prompt-result-header .prompt-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary)}
 .prompt-result-header-actions{display:flex;gap:6px}
@@ -915,6 +921,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-result-header-btn.copy{background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;display:inline-flex;align-items:center;gap:4px}
 .prompt-result-header-btn.close{background:var(--prompt-bg-section);color:var(--prompt-text-muted);font-size:18px;padding:4px 10px}
 .prompt-result-body{padding:10px 14px;min-height:100px;background:var(--prompt-bg);border-radius:8px;margin:0 10px 8px}
+body.dark .tab-bar{border-right-color:rgba(255,255,255,0.06)}
 .prompt-result-textarea{width:100%;min-height:80px;font-size:13px;line-height:1.6;color:var(--prompt-text-primary);background:transparent;border:none;outline:none;resize:vertical;font-family:inherit;word-break:break-all;white-space:pre-wrap}
 .prompt-result-textarea::placeholder{color:var(--prompt-text-muted);font-style:italic}
 .prompt-result-header-left{display:flex;align-items:baseline;gap:8px}
@@ -1054,6 +1061,7 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .prompt-col-font{grid-column:auto}
 .prompt-col-header{flex-wrap:nowrap}
 .prompt-col-header .prompt-col-custom-wrap{max-width:180px;min-width:0;margin-top:0}
+.prompt-flat-custom-wrap{max-width:160px}
 #promptColFontScroll .prompt-tag-group{column-count:3}
 .prompt-product-col-layout{grid-template-columns:1fr;gap:10px}
 .prompt-product-column{gap:10px}
@@ -1658,15 +1666,12 @@ body.dark .ai-field input { background:#141e2d; }
         <div class="prompt-bottom-area" data-page-node-id="5sP4UAVv1ZgVAer1TA8OVe">
           <div class="prompt-col-layout" id="promptImageLayout" data-page-node-id="92je9pX4vGgMMHkRtV6WUV">
             <div class="prompt-col prompt-col-bg" data-page-node-id="UWFbR0xb5BFPQVE0ThtGKx">
-              <div class="prompt-col-header" data-page-node-id="UkW21Gi9wnVpchLGHx92dC"><span class="prompt-ch-icon" style="background:#D4652A" data-page-node-id="jqCf7vCe4BxkvA9SINwLpp">背</span><span class="prompt-ch-title" data-page-node-id="2JFV8t20TSpjjMXXNvSdgm" style="background:linear-gradient(135deg,#FFF0DC 0%,#FFD8A8 100%);color:#9B4513">背景氛围</span><div class="prompt-col-custom-wrap" data-page-node-id="GGO2tneByr5YjUb23Pk1LZ"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off" data-page-node-id="dSKHuzLhFxo0c6B2RdSQmJ"><button class="prompt-col-custom-clear" id="promptClearBg" data-page-node-id="kgGIpI5toEHY0Eq1GhVCKL">&times;</button></div></div>
               <div class="prompt-col-scroll" id="promptColBgScroll" data-page-node-id="cHCzLxwVs2BtuYVBZw1V9q"></div>
             </div>
             <div class="prompt-col prompt-col-element" data-page-node-id="abeI9jJD8v8vMc4HFe5Y3M">
-              <div class="prompt-col-header" data-page-node-id="QePUdjbQYQpdLlY04ACU41"><span class="prompt-ch-icon" style="background:#B84C4C" data-page-node-id="IsuevDhYYyScOFTyEDdYGV">主</span><span class="prompt-ch-title" data-page-node-id="6VMRvpHkDhwV1RR45bSvNo" style="background:linear-gradient(135deg,#FFE0DA 0%,#F4AFA8 100%);color:#A33646">主体元素</span><div class="prompt-col-custom-wrap" data-page-node-id="dtjhgsmMhE2mMHu5Iyeg3v"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off" data-page-node-id="hLO0IVZT95px8jOwiWhVDJ"><button class="prompt-col-custom-clear" id="promptClearElement" data-page-node-id="RTywA5ZjHRSiRCAAl1r8wg">&times;</button></div></div>
               <div class="prompt-col-scroll" id="promptColElementScroll" data-page-node-id="BMxPw8iHcYkggCpDKqIYqw"></div>
             </div>
             <div class="prompt-col prompt-col-font" data-page-node-id="8J868ZPd4yiHCpI6kgfmRv">
-              <div class="prompt-col-header" data-page-node-id="I2coxrQh78a81TBzg8LQf4"><span class="prompt-ch-icon" style="background:#5A7FA0" data-page-node-id="VK7o28U9A1zzx2ZEnB4Zmj">字</span><span class="prompt-ch-title" data-page-node-id="5KXNDYbK7rLyU2cceooBfb" style="background:linear-gradient(135deg,#DDE9F2 0%,#9CC0E0 100%);color:#2C5286">文字排版</span><div class="prompt-col-custom-wrap" data-page-node-id="gsBtrzBJCDJg7w2qRejIvM"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off" data-page-node-id="pFQp3iTLhP6gjwF1eBJKDo"><button class="prompt-col-custom-clear" id="promptClearFont" data-page-node-id="SWi4LXMAJ7wTFNgUTOHfNT">&times;</button></div></div>
               <div class="prompt-col-scroll" id="promptColFontScroll" data-page-node-id="eoTqjV1XumecRLQSWmqYEL"></div>
             </div>
           </div>
@@ -3586,7 +3591,15 @@ function collapsibleHTML(c,bodyHtml){
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 function flatGroupHTML(c,bodyHtml){
   var tcol=c.tcolor||c.color||'#9B4513';
-  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="color:'+tcol+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button></div>';
+  var customWrap='';
+  if(c.title==='背景风格'){
+    customWrap='<div class="prompt-flat-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearBg">&times;</button></div>';
+  }else if(c.title==='元素风格'){
+    customWrap='<div class="prompt-flat-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearElement">&times;</button></div>';
+  }else if(c.title==='文字风格'){
+    customWrap='<div class="prompt-flat-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearFont">&times;</button></div>';
+  }
+  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" style="color:'+tcol+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span>'+customWrap+'<button class="prompt-tag-add">+</button></div>';
   return '<div class="prompt-flat-group">'+title+bodyHtml+'</div>';
 }
 // Build three columns
