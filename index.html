@@ -902,12 +902,12 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-ratio-btn.selected .prompt-star,.prompt-ratio-btn.selected .prompt-star.faved{color:var(--prompt-accent)}
 .prompt-style-add-btn{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
 .prompt-style-tags-grid{display:flex;flex-wrap:wrap;gap:6px}
-/* v4.5.1 转换风格配色与新三态体系对齐：默认透明 → hover 浅底 → 收藏 橙描边浅橙底 → 选中 暖橙渐变实底+深棕文字 */
-.prompt-style-tag{padding:3px 8px;border:1px solid var(--prompt-border);border-radius:9px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
-.prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
-.prompt-style-tag.faved{border-color:#C2561F;color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
-.prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 1px 3px rgba(194,86,31,.18)}
-.prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212}
+/* v4.6.1 转换风格标签描边统一为中性灰（与其他标签一致），选中/收藏底色与文字色保留 */
+.prompt-style-tag{padding:3px 8px;border:1px solid rgba(0,0,0,.1);border-radius:9px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
+.prompt-style-tag:hover{border-color:rgba(0,0,0,.28);background:rgba(255,255,255,.62)}
+.prompt-style-tag.faved{border-color:rgba(0,0,0,.28);color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
+.prompt-style-tag.selected{border-color:rgba(0,0,0,.28);background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 1px 3px rgba(194,86,31,.18)}
+.prompt-style-tag.faved.selected{border-color:rgba(0,0,0,.28);background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
 .prompt-quick-prompt-card .prompt-quick-prompt-add{flex-shrink:0;margin-top:2px;order:2;margin-left:auto}
 .prompt-quick-prompt-add{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
@@ -1051,9 +1051,9 @@ body.dark [data-gtitle="产品描述"]{color:hsl(133,55%,70%) !important}
 body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 /* 转换风格：暖橙系在深空蓝底上提亮一档 */
 body.dark .prompt-style-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
-body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
-body.dark .prompt-style-tag.faved{border-color:#F0955C;color:#F5B183;background:transparent}
-body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE}
+body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);color:var(--prompt-text-primary)}
+body.dark .prompt-style-tag.faved{border-color:rgba(255,255,255,.28);color:#F5B183;background:transparent}
+body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:rgba(255,255,255,.28);background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE}
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
 body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
 body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
