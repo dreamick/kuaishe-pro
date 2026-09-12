@@ -853,6 +853,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.4.8 转换风格卡片：暖橙底色 + 标题同系深色（与三列卡片的「底色+深标题」保持一致） */
 #promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#FFF7F0 0%,#FFE9D6 100%);border-color:rgba(214,138,66,.30)}
+#promptStyleCol .prompt-param-card-title{padding-left:18px} /* v4.7.2 标题与三列卡片标题文字（拖拽把手后）左端对齐 */
 #promptStyleCol .prompt-param-card-title{color:#B4621F}
 .prompt-param-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
 .prompt-param-row:last-child{margin-bottom:0}
@@ -3774,7 +3775,7 @@ if(prodData){
 
 // 上半部分两列：转换风格+常用提示词（左）| 生成结果+预设方案（右）
 var resultCardHTML='<div class="prompt-result-card"><div class="prompt-result-header"><div class="prompt-result-header-left"><span class="prompt-title">生成结果</span><span class="prompt-char-count" id="promptCharCount">0 字符</span></div><div class="prompt-result-header-actions"><button class="prompt-result-header-btn copy" id="promptCopyBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 复制</button><button class="prompt-result-header-btn preset" id="promptPresetBtn">存为预设</button><button class="prompt-result-header-btn close" id="promptClearBtn">&times;</button></div></div><div class="prompt-result-body"><textarea class="prompt-result-textarea" id="promptResultText" placeholder="点击左侧关键词，生成结果将显示在这里" rows="4"></textarea></div></div>';
-var styleCardHTML='<div class="prompt-param-card"><div class="prompt-param-card-title"><span>转换风格</span><button class="prompt-style-add-btn" id="promptStyleAddBtn">+</button></div><div class="prompt-style-tags-grid" id="promptStyleGrid"></div></div>'+
+var styleCardHTML='<div class="prompt-param-card"><div class="prompt-param-card-title"><span>风格转换</span><button class="prompt-style-add-btn" id="promptStyleAddBtn">+</button></div><div class="prompt-style-tags-grid" id="promptStyleGrid"></div></div>'+
   '<div class="prompt-quick-prompt-card" id="promptQuickPromptCard"><button class="prompt-quick-prompt-add" id="promptAddQuickPromptBtn">+</button><div class="prompt-quick-prompt-body" id="promptQuickPromptBody"><div class="prompt-quick-prompt-empty">暂无常用提示词</div></div></div>';
 PS('#promptStyleCol').innerHTML=styleCardHTML;
 var presetListHTML='<div class="prompt-preset-list-card" id="promptPresetListCard"><div class="prompt-preset-list-body" id="promptPresetListBody"><div class="prompt-preset-empty">暂无预设方案</div></div></div>';
@@ -4410,7 +4411,7 @@ function bindStyleBtn(btn){
         btn.classList.toggle('faved',!isF);
         sortStyleTags();
       }},
-      {label:'\u270E 编辑风格',action:function(){openPromptModal('编辑转换风格',oldT,oldP,function(kw,pr){
+      {label:'\u270E 编辑风格',action:function(){openPromptModal('编辑风格转换',oldT,oldP,function(kw,pr){
         btn.textContent=kw;btn.dataset.value=pr;
         if(btn.classList.contains('selected'))pState.style=pr;
         var fv=JSON.parse(localStorage.getItem(styleFavKey)||'[]'),fi=fv.indexOf(oldP);
@@ -4418,7 +4419,7 @@ function bindStyleBtn(btn){
         var oi=styleOriginalOrder.indexOf(oldP);if(oi!==-1&&oldP!==pr)styleOriginalOrder[oi]=pr;
         updatePromptResult();
       },'风格名称','提示词内容');}},
-      {label:'\u2716 删除风格',action:function(){openPromptConfirm('删除转换风格','确定要删除风格 "'+oldT+'" 吗？',function(){
+      {label:'\u2716 删除风格',action:function(){openPromptConfirm('删除风格转换','确定要删除风格 "'+oldT+'" 吗？',function(){
         if(btn.classList.contains('selected'))pState.style=null;
         btn.remove();pStyleBtns=PSS('.prompt-style-tag');
         var fv=JSON.parse(localStorage.getItem(styleFavKey)||'[]'),fi=fv.indexOf(oldP);
@@ -4431,7 +4432,7 @@ function bindStyleBtn(btn){
 }
 pStyleBtns.forEach(bindStyleBtn);
 sortStyleTags();
-PS('#promptStyleAddBtn').addEventListener('click',function(){openPromptModal('新增转换风格','','',function(kw,pr){var btn=document.createElement('button');btn.className='prompt-style-tag';btn.textContent=kw;btn.dataset.value=pr;bindStyleBtn(btn);PS('.prompt-style-tags-grid').appendChild(btn);styleOriginalOrder.push(pr);pStyleBtns=PSS('.prompt-style-tag');},'风格名称','提示词内容');});
+PS('#promptStyleAddBtn').addEventListener('click',function(){openPromptModal('新增风格转换','','',function(kw,pr){var btn=document.createElement('button');btn.className='prompt-style-tag';btn.textContent=kw;btn.dataset.value=pr;bindStyleBtn(btn);PS('.prompt-style-tags-grid').appendChild(btn);styleOriginalOrder.push(pr);pStyleBtns=PSS('.prompt-style-tag');},'风格名称','提示词内容');});
 
 // ====== Update Result ======
 function updatePromptResult(){
