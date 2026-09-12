@@ -902,12 +902,12 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-ratio-btn.selected .prompt-star,.prompt-ratio-btn.selected .prompt-star.faved{color:var(--prompt-accent)}
 .prompt-style-add-btn{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
 .prompt-style-tags-grid{display:flex;flex-wrap:wrap;gap:6px}
-/* v4.6.1 转换风格标签描边统一为中性灰（与其他标签一致），选中/收藏底色与文字色保留 */
+/* v4.7.1 转换风格标签：默认描边中性灰，hover/收藏/选中描边随板块橙系（与其他标签按色系变化一致） */
 .prompt-style-tag{padding:3px 8px;border:1px solid rgba(0,0,0,.1);border-radius:9px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
-.prompt-style-tag:hover{border-color:rgba(0,0,0,.28);background:rgba(255,255,255,.62)}
-.prompt-style-tag.faved{border-color:rgba(0,0,0,.28);color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
-.prompt-style-tag.selected{border-color:rgba(0,0,0,.28);background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 1px 3px rgba(194,86,31,.18)}
-.prompt-style-tag.faved.selected{border-color:rgba(0,0,0,.28);background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212}
+.prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
+.prompt-style-tag.faved{border-color:#C2561F;color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
+.prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 1px 3px rgba(194,86,31,.18)}
+.prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
 .prompt-quick-prompt-card .prompt-quick-prompt-add{flex-shrink:0;margin-top:2px;order:2;margin-left:auto}
 .prompt-quick-prompt-add{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
@@ -1051,9 +1051,9 @@ body.dark [data-gtitle="产品描述"]{color:hsl(133,55%,70%) !important}
 body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 /* 转换风格：暖橙系在深空蓝底上提亮一档 */
 body.dark .prompt-style-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
-body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);color:var(--prompt-text-primary)}
-body.dark .prompt-style-tag.faved{border-color:rgba(255,255,255,.28);color:#F5B183;background:transparent}
-body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:rgba(255,255,255,.28);background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE}
+body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
+body.dark .prompt-style-tag.faved{border-color:#F0955C;color:#F5B183;background:transparent}
+body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE}
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
 body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
 body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
@@ -3316,7 +3316,7 @@ function promptTagHTML(label,prompt,group,opts){
     if(opts.fav&&/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(opts.fav))s+='--tag-fav-soft:'+opts.fav+'26;';
     style=' style="'+s+'"';
   }
-  return '<button class="prompt-tag"'+style+' data-prompt="'+promptEscapeAttr(prompt)+'" title="'+promptEscapeAttr(prompt)+'" data-group="'+promptEscapeAttr(group)+'">'+promptEscapeHtml(label)+'</button>';
+  return '<button class="prompt-tag"'+style+' data-prompt="'+promptEscapeAttr(prompt)+'" data-group="'+promptEscapeAttr(group)+'">'+promptEscapeHtml(label)+'</button>';
 }
 
 var navIcons={image:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M21 15l-5-5L5 21"/></svg>',product:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>'};
@@ -3488,6 +3488,7 @@ typography:[
 ]},
 // ── 文字排向：可与上两组叠加（多选）──
 {icon:'排',color:'#4A7FB5',title:'文字排向',gradient:'linear-gradient(135deg,#D9E7F4 0%,#93BCDF 100%)',tcolor:'#1F4E79',tags:[
+['横向排列','横向排列','标题字横向排列，单行通栏排布，字距匀称，阅读顺序自然'],
 ['竖向排列','竖向排列','标题字竖向排列，自上而下，行气贯通'],
 ['右端齐平','右端齐平','标题字右端齐平，末端收齐，左端自然错落'],
 ['倾斜动态','倾斜动态','标题字倾斜排列，整体欹侧，动感强'],
@@ -3640,7 +3641,7 @@ product:[
 };
 
 // ====== Data version migration (clears stale backups from prior structures) ======
-var PROMPT_DATA_VERSION='v4.7.0-order';
+var PROMPT_DATA_VERSION='v4.7.1-dir-heng';
 // v4.4.8 文字列重构：废弃的旧标签（精简删减 + 拆组后改名），不参与自定义标签恢复
 var PROMPT_LEGACY_NAMES=["云雾留白", "大理石纹", "磨砂金属", "宣纸纤维", "柔光散景", "沙画质感", "湿画法水彩", "版画拓印", "丝网印刷", "极简细线", "萌系Q版", "印章篆意", "横排居中", "竖排居中", "顶部横排", "底部横排", "留白布局", "草书狂放", "魏碑雄健", "瘦金清瘦", "随笔手写", "钢笔细线", "朱砂批注", "藏书朱印", "石刻碑文", "凹凸压字", "圆体软萌", "横向排列", "左端齐平", "居中对齐"];
 // v4.4.8 文字列新增「字效材质」插在第 2 位，原第 1 组（文字排向）后移到第 2 位：下标=旧组序，值=新组序
