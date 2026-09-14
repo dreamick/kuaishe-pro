@@ -225,25 +225,6 @@ body:not(.dark) {
   width: 32px; height: 32px;
   margin: 2px 0 0 0;
 }
-.tab-bar .zoom-ctrl {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  margin-top: 6px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
-  box-sizing: border-box;
-}
-.tab-bar .zoom-ctrl .zoom-head {
-  display: flex; align-items: center; justify-content: space-between;
-  width: 100%; padding: 0 2px; box-sizing: border-box;
-  font-size: 10px; color: var(--text-secondary);
-}
-.tab-bar .zoom-ctrl input[type=range] {
-  width: 100%; margin: 0; accent-color: var(--accent); cursor: pointer;
-}
 .tab-title { display: none; }
 .tab-spacer { display: none; }
 .tab-actions { display: flex; align-items: center; gap: 4px; flex-direction: column; }
@@ -1362,10 +1343,6 @@ body.dark .ai-field input { background:#141e2d; }
         <button class="tab-btn default" id="actPromptRestore" style="display:none" onclick="promptShowRestoreMenu()">恢复</button>
       </div>
       <button class="tab-theme-toggle" id="mergedThemeToggle" title="切换夜间/日间模式">&#127769;</button>
-      <div class="zoom-ctrl" id="zoomCtrl">
-        <div class="zoom-head"><span>页面缩放</span><span id="zoomVal">100%</span></div>
-        <input type="range" id="zoomRange" min="50" max="150" step="5" value="100" title="手动缩放页面（叠加在自适应缩放之上）">
-      </div>
     </div>
   </div>
 
@@ -6037,7 +6014,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   var shell=document.getElementById('pageScaleShell');
   var container=shell&&shell.querySelector('.container');
   var _psQueued=false,_psScale=-1,_psH=-1;
-  var _psZoom=parseFloat(localStorage.getItem('mergedToolPageZoom')||'1')||1;
   function updatePageScale(){
     if(_psQueued)return;
     _psQueued=true;
@@ -6045,7 +6021,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       _psQueued=false;
       var vw=Math.max(document.documentElement.clientWidth||0,window.innerWidth||0);
       var effective=Math.min(DESIGN_WIDTH,Math.max(MIN_WIDTH,vw));
-      var scale=(effective/DESIGN_WIDTH)*_psZoom;
+      var scale=effective/DESIGN_WIDTH;
       if(scale!==_psScale){
         root.style.setProperty('--page-scale',scale.toFixed(6));
         _psScale=scale;
@@ -6058,19 +6034,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
         }
       }
     });
-  }
-  // 手动缩放滑块（叠加在自适应缩放之上）
-  var zoomRange=document.getElementById('zoomRange'), zoomVal=document.getElementById('zoomVal');
-  function applyZoom(v){
-    _psZoom=v;
-    localStorage.setItem('mergedToolPageZoom',String(v));
-    if(zoomVal)zoomVal.textContent=Math.round(v*100)+'%';
-    updatePageScale();
-  }
-  if(zoomRange){
-    zoomRange.value=Math.round(_psZoom*100);
-    if(zoomVal)zoomVal.textContent=Math.round(_psZoom*100)+'%';
-    zoomRange.addEventListener('input',function(){applyZoom(parseFloat(zoomRange.value)/100);});
   }
   updatePageScale();
   window.addEventListener('resize',updatePageScale);
