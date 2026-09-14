@@ -225,6 +225,25 @@ body:not(.dark) {
   width: 32px; height: 32px;
   margin: 2px 0 0 0;
 }
+.tab-bar .zoom-ctrl {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  box-sizing: border-box;
+}
+.tab-bar .zoom-ctrl .zoom-head {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 0 2px; box-sizing: border-box;
+  font-size: 10px; color: var(--text-secondary);
+}
+.tab-bar .zoom-ctrl input[type=range] {
+  width: 100%; margin: 0; accent-color: var(--accent); cursor: pointer;
+}
 .tab-title { display: none; }
 .tab-spacer { display: none; }
 .tab-actions { display: flex; align-items: center; gap: 4px; flex-direction: column; }
@@ -1343,6 +1362,10 @@ body.dark .ai-field input { background:#141e2d; }
         <button class="tab-btn default" id="actPromptRestore" style="display:none" onclick="promptShowRestoreMenu()">恢复</button>
       </div>
       <button class="tab-theme-toggle" id="mergedThemeToggle" title="切换夜间/日间模式">&#127769;</button>
+      <div class="zoom-ctrl" id="zoomCtrl">
+        <div class="zoom-head"><span>页面缩放</span><span id="zoomVal">100%</span></div>
+        <input type="range" id="zoomRange" min="50" max="150" step="5" value="100" title="手动缩放页面（叠加在自适应缩放之上）">
+      </div>
     </div>
   </div>
 
@@ -1503,7 +1526,7 @@ body.dark .ai-field input { background:#141e2d; }
                 <button class="harmony-btn" data-rule="tetradic">四角</button>
                 <button class="harmony-btn" data-rule="monochromatic">单色</button>
               </div>
-              <button class="btn btn-sm" onclick="paletteCopyAllSvg()" title="点击复制整组6色SVG" style="background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:7px;width:auto;min-width:52px;min-height:26px;box-sizing:border-box;padding:5px 16px;font-weight:500;flex-shrink:0;font-size:12px;line-height:1.4;">全选</button>
+              <button class="btn btn-sm" onclick="paletteCopyAllSvg()" title="复制整组6色和谐配色SVG" style="background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:7px;width:auto;min-width:52px;min-height:26px;box-sizing:border-box;padding:5px 16px;font-weight:500;flex-shrink:0;font-size:12px;line-height:1.4;">复制6色</button>
             </div>
             <div class="palette-grid" id="paletteGrid"></div>
 
@@ -1513,6 +1536,7 @@ body.dark .ai-field input { background:#141e2d; }
             <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
               <span>调色盘</span>
               <div style="display:flex;gap:6px;align-items:center;">
+                <button class="btn btn-sm" onclick="paletteCopyPaletteSvg()" title="复制调色盘SVG（粘贴到Illustrator）" style="background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:13px;height:26px;width:52px;font-weight:600;font-size:12px;padding:0;display:inline-flex;align-items:center;justify-content:center;letter-spacing:1px;">复制</button>
                 <button class="btn btn-sm" onclick="paletteAddColor()" style="background:var(--dopa-blue);color:#fff;border:none;border-radius:13px;height:26px;width:52px;font-weight:600;font-size:12px;padding:0;display:inline-flex;align-items:center;justify-content:center;letter-spacing:1px;">添加</button>
                 <button class="btn btn-sm" onclick="paletteClear()" style="background:var(--dopa-red);color:#fff;border:none;border-radius:13px;height:26px;width:52px;font-weight:600;font-size:12px;padding:0;display:inline-flex;align-items:center;justify-content:center;letter-spacing:1px;">清空</button>
               </div>
@@ -1894,7 +1918,7 @@ function showToast(msg, type) {
 
   window.layoutClearInput = function(id) { DOM[id].value = ''; DOM[id].dispatchEvent(new Event('input')); };
   window.layoutClearReplace = function() {
-    DOM.replaceToText.value = ''; layoutLayout(true);
+    DOM.replaceToText.value = ''; savedExtract = ''; layoutLayout(true);
   };
 
   function initToggles() {
@@ -1948,8 +1972,8 @@ function showToast(msg, type) {
     if (isMerge) text = mergePara(text);
     if (FLAGS.punct) text = fixPunct(text);
     if (FLAGS.fixWrap) text = fixWrap(text);
-    if (FLAGS.autoSpace) text = addCnEnSpace(text);
     if (FLAGS.delSpace) text = removeSpaces(text, isMerge);
+    if (FLAGS.autoSpace) text = addCnEnSpace(text);
     if (!skipRep) { _lastNoRep = text; text = doReplace(text, DOM.findText.value, DOM.replaceToText.value); }
     else { DOM.output.value = _lastNoRep; calc(); highlight(); return; }
     text = joinGap(text.replace(/\r\n/g, '\n').split('\n'), Math.max(0, Math.min(5, +DOM.lineGapNum.value || 0)));
@@ -2004,8 +2028,7 @@ function highlight() {
   DOM.outMirror.innerHTML = outHtml; DOM.outMirror.style.visibility = 'visible';
 }
 
-const addCnEnSpace = t => t.split('\n').map(line => {
-    if (!/[a-zA-Z]/.test(line)) return line;
+  const addCnEnSpace = t => t.split('\n').map(line => {
     return line.replace(/([\u4e00-\u9fa5])([a-zA-Z0-9])/g, '$1 $2').replace(/([a-zA-Z0-9])([\u4e00-\u9fa5])/g, '$1 $2').replace(/ +/g, ' ');
   }).join('\n');
 
@@ -3012,6 +3035,15 @@ function setCompressedPreview(img){
     var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'">'+rects+'</svg>';
     navigator.clipboard.writeText(svg).then(function(){showToast('已复制配色SVG（'+n+'色），可粘贴到Illustrator');}).catch(function(){showToast('复制失败');});
   };
+  window.paletteCopyPaletteSvg=function(){
+    if(!paletteColors||!paletteColors.length){showToast('请先在调色盘添加颜色');return;}
+    var hexes=paletteColors.map(function(c){return hslToHex(c.h,c.s,c.l);});
+    var n=hexes.length,S=200,gap=6;
+    var W=S,H=n*S+(n-1)*gap;
+    var rects=hexes.map(function(h,i){var y=i*(S+gap);return '<rect x="0" y="'+y+'" width="'+S+'" height="'+S+'" fill="'+h+'"/>';}).join('');
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'">'+rects+'</svg>';
+    navigator.clipboard.writeText(svg).then(function(){showToast('已复制调色盘SVG（'+n+'色），可粘贴到Illustrator');}).catch(function(){showToast('复制失败');});
+  };
   window.paletteReverseGrad=function(){
     if(paletteColors.length<2){showToast('至少需要2个颜色');return;}
     var selIndices=[];for(var k in paletteSelected){if(paletteSelected[k])selIndices.push(parseInt(k));}
@@ -3035,7 +3067,7 @@ function setCompressedPreview(img){
     var ctx=c.getContext('2d');
     var grad;
     if(paletteMode==='radial'){grad=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*0.7);}
-    else if(paletteMode==='conic'){grad=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*0.7);}
+    else if(paletteMode==='conic'){grad=(ctx.createConicGradient?ctx.createConicGradient(0,W/2,H/2):ctx.createLinearGradient(0,0,W,0));}
     else{
       var rad=(paletteAngle-90)*Math.PI/180;
       var len=Math.abs(W*Math.cos(rad))+Math.abs(H*Math.sin(rad));
@@ -6005,6 +6037,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   var shell=document.getElementById('pageScaleShell');
   var container=shell&&shell.querySelector('.container');
   var _psQueued=false,_psScale=-1,_psH=-1;
+  var _psZoom=parseFloat(localStorage.getItem('mergedToolPageZoom')||'1')||1;
   function updatePageScale(){
     if(_psQueued)return;
     _psQueued=true;
@@ -6012,7 +6045,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       _psQueued=false;
       var vw=Math.max(document.documentElement.clientWidth||0,window.innerWidth||0);
       var effective=Math.min(DESIGN_WIDTH,Math.max(MIN_WIDTH,vw));
-      var scale=effective/DESIGN_WIDTH;
+      var scale=(effective/DESIGN_WIDTH)*_psZoom;
       if(scale!==_psScale){
         root.style.setProperty('--page-scale',scale.toFixed(6));
         _psScale=scale;
@@ -6025,6 +6058,19 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
         }
       }
     });
+  }
+  // 手动缩放滑块（叠加在自适应缩放之上）
+  var zoomRange=document.getElementById('zoomRange'), zoomVal=document.getElementById('zoomVal');
+  function applyZoom(v){
+    _psZoom=v;
+    localStorage.setItem('mergedToolPageZoom',String(v));
+    if(zoomVal)zoomVal.textContent=Math.round(v*100)+'%';
+    updatePageScale();
+  }
+  if(zoomRange){
+    zoomRange.value=Math.round(_psZoom*100);
+    if(zoomVal)zoomVal.textContent=Math.round(_psZoom*100)+'%';
+    zoomRange.addEventListener('input',function(){applyZoom(parseFloat(zoomRange.value)/100);});
   }
   updatePageScale();
   window.addEventListener('resize',updatePageScale);
