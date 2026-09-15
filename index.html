@@ -1258,22 +1258,35 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
   color: #333; font-size: 12px; font-weight: 700; letter-spacing: -2px;
 }
 .cmp-slider-tag {
-  position: absolute; bottom: 12px; font-size: 11px; font-weight: 600; color: #fff;
-  background: rgba(0,0,0,0.55); padding: 3px 10px; border-radius: 5px;
-  pointer-events: none; letter-spacing: 0.5px; z-index: 3;
+  position: absolute; bottom: 14px; font-size: 11px; font-weight: 600; line-height: 1.4;
+  color: rgba(255,255,255,0.95);
+  background: rgba(22,26,34,0.40);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,0.30);
+  padding: 4px 12px; border-radius: 999px; pointer-events: none; letter-spacing: 0.5px; z-index: 3;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.14);
 }
-.cmp-slider-tag.left { left: 12px; }
-.cmp-slider-tag.right { right: 12px; }
+.cmp-slider-tag.left { left: 14px; }
+.cmp-slider-tag.right { right: 14px; }
 .cmp-slider-close {
   position: absolute; top: 12px; right: 12px; z-index: 4;
-  width: 28px; height: 28px; border-radius: 50%; border: none; cursor: pointer;
-  background: rgba(0,0,0,0.55); color: #fff; font-size: 13px; line-height: 1;
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.30);
+  background: rgba(22,26,34,0.40);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+  color: rgba(255,255,255,0.95); font-size: 12px; line-height: 1;
   display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.14); transition: background 0.15s ease;
 }
-.cmp-slider-close:hover { background: rgba(0,0,0,0.78); }
+.cmp-slider-close:hover { background: rgba(22,26,34,0.62); }
 /* 对比模式开启时隐藏结果标签与缩放条，避免重叠 */
 .cmp-canvas-wrap.slider-on > .zoom-bar,
 .cmp-canvas-wrap.slider-on > .cmp-tag-res { visibility: hidden; }
+/* 对比模式：结果真正居中（去掉为缩略图预留的左内边距），缩略图淡化避免抢焦点 */
+.matting-sidebyside.comparing .cmp-result { padding-left: 0; }
+.matting-sidebyside.comparing .cmp-thumb { opacity: 0.25; }
+.matting-sidebyside { overflow-anchor: none; }   /* 防止容器放大时浏览器滚动锚定跳动 */
+.cmp-canvas-wrap { flex-shrink: 0; }             /* 容器放大时不被 flex 压缩 */
 /* 质量档：长按「AI 抠图」弹出的选择菜单（平时隐藏），向右弹出 */
 .mq-popup {
   display: none; position: absolute; top: calc(100% + 8px); right: 0; left: auto; bottom: auto;
@@ -1341,9 +1354,9 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 /* 抠图板块统一去阴影与 hover 位移(仅作用于 .matting-body 内，含所有抠图按钮) */
 .matting-body,
 .matting-body * { box-shadow: none !important; }
-.matting-body *:not(.cmp-canvas-wrap):not(.zoom-bar):not(.cmp-transform):hover,
-.matting-body *:not(.cmp-canvas-wrap):not(.zoom-bar):not(.cmp-transform):focus,
-.matting-body *:not(.cmp-canvas-wrap):not(.zoom-bar):not(.cmp-transform):active { box-shadow: none !important; transform: none !important; filter: none !important; opacity: 1 !important; }
+.matting-body *:not(.cmp-canvas-wrap):not(.zoom-bar):not(.cmp-transform):not(.cmp-thumb):hover,
+.matting-body *:not(.cmp-canvas-wrap):not(.zoom-bar):not(.cmp-transform):not(.cmp-thumb):focus,
+.matting-body *:not(.cmp-canvas-wrap):not(.zoom-bar):not(.cmp-transform):not(.cmp-thumb):active { box-shadow: none !important; transform: none !important; filter: none !important; opacity: 1 !important; }
 
 /* ============================================================
    AI 提示词扩写
@@ -4793,6 +4806,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const cmpBase = document.getElementById('cmpBase');
   const cmpWrap = document.getElementById('cmpCanvasWrap');
   const cmpTransform = document.getElementById('cmpTransform');
+  const mattingCompareEl = document.getElementById('mattingCompare');
   const cmpThumb = document.getElementById('cmpThumb');
   const cmpSlider = document.getElementById('cmpSlider');
   const cmpSliderTop = document.getElementById('cmpSliderTop');
@@ -5903,6 +5917,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     cmpSliderOn = false;
     if(cmpSlider) cmpSlider.style.display = 'none';
     if(cmpWrap) cmpWrap.classList.remove('slider-on');
+    if(mattingCompareEl) mattingCompareEl.classList.remove('comparing');
   }
   function openCmpSlider(){
     if(!resultBlob || !canvas.width || !canvas.height) return;
@@ -5931,14 +5946,33 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     cmpSliderOn = true;
     if(cmpSlider) cmpSlider.style.display = 'block';
     if(cmpWrap) cmpWrap.classList.add('slider-on');
+    if(mattingCompareEl) mattingCompareEl.classList.add('comparing');
     updateCmpSliderClip();
   }
   // ---- 平移 / 缩放（作用于结果画布容器 .cmp-canvas-wrap）----
   const MIN_ZOOM = 0.1, MAX_ZOOM = 16;
   const zoomLabel = document.getElementById('zoomLabel');
   function clampZoom(z){ return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z)); }
+  // 容器跟随缩放：外框 .cmp-canvas-wrap 尺寸 = 基准显示尺寸 × zoom，放大不再被裁切、更容易操作
+  let wrapBaseW = 0, wrapBaseH = 0, wrapBaseKey = '';
   function applyTransform(){
     if(!cmpTransform || !cmpWrap) return;
+    if(canvas.width > 0 && canvas.height > 0 && resultBlob){
+      // 基准尺寸：结果变化或 fitTopWidth 清掉内联宽高后，按当前可用宽度重新测量并锁定
+      const key = canvas.width + 'x' + canvas.height + '/' + (canvas.style.width === '' ? 'auto' : 'locked');
+      if(key !== wrapBaseKey && canvas.style.width === ''){
+        wrapBaseKey = key;
+        wrapBaseW = canvas.offsetWidth || canvas.width;
+        wrapBaseH = canvas.offsetHeight || canvas.height;
+        canvas.style.width = wrapBaseW + 'px';
+        canvas.style.height = wrapBaseH + 'px';
+      }
+      if(wrapBaseW > 0 && wrapBaseH > 0){
+        cmpWrap.style.maxWidth = 'none';
+        cmpWrap.style.width = (wrapBaseW * zoom) + 'px';
+        cmpWrap.style.height = (wrapBaseH * zoom) + 'px';
+      }
+    }
     cmpTransform.style.transformOrigin = '0 0';
     cmpTransform.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
     // 棋盘格反向补偿：仅调 background-size（屏幕格子恒定 22px），position 相位固定（4 层正棋盘格）
@@ -5956,11 +5990,18 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   function zoomAt(mx, my, newZoom){
     newZoom = clampZoom(newZoom);
     if(newZoom === zoom) return;
+    const r0 = cmpWrap ? cmpWrap.getBoundingClientRect() : null;
     const sf = newZoom / zoom;
     panX = mx - (mx - panX) * sf;
     panY = my - (my - panY) * sf;
     zoom = newZoom;
     applyTransform();
+    // 容器放大后 flex 重新居中会挪动外框，补偿平移使光标下的像素保持不动
+    if(r0 && cmpWrap){
+      const r1 = cmpWrap.getBoundingClientRect();
+      const dx = r0.left - r1.left, dy = r0.top - r1.top;
+      if(dx || dy){ panX += dx; panY += dy; applyTransform(); }
+    }
     updateZoomLabel();
   }
   // 以画布中心为锚点（工具栏按钮 / 键盘）
