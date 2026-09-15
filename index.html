@@ -1127,7 +1127,7 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .matting-drop-title { font-size: 16px; font-weight: 600; }
 .matting-drop-sub { font-size: 12px; color: var(--text-muted); }
 .matting-canvas {
-  max-width: 100%; max-height: min(76vh, 860px);
+  max-width: 100%; max-height: calc(min(64vh, 760px) - 24px);
   display: block; margin: 0 auto;
   border-radius: 8px;
   /* 背景透明：透明区域透出 .cmp-canvas-wrap 的纯色中性底（仅图像内容缩放） */
@@ -1202,7 +1202,7 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 /* 预览：左上角原图缩略图 + 居中放大结果 */
 .matting-sidebyside {
   position: relative; display: flex; align-items: center; justify-content: center;
-  width: 100%; min-height: min(76vh, 860px); padding: 12px; border-radius: 8px;
+  width: 100%; height: min(64vh, 760px); padding: 12px; border-radius: 8px;
 }
 .cmp-thumb {
   position: absolute; top: 12px; left: 12px; z-index: 10;
@@ -1729,7 +1729,7 @@ body.dark .ai-field input { background:#141e2d; }
       </div>
       <div class="matting-grid" id="mattingGrid" style="display:none"></div>
       <div class="matting-brushbar" id="mattingBrushBar" style="display:none">
-        <label class="brush-size-label" id="brushSizeLabel">笔刷 <input type="range" id="brushSize" min="8" max="120" value="10"> <span id="brushSizeVal">10</span></label>
+        <label class="brush-size-label" id="brushSizeLabel">笔刷 <input type="range" id="brushSize" min="8" max="120" value="50"> <span id="brushSizeVal">50</span></label>
         <label class="brush-size-label" id="wmHardnessLabel" style="display:none">硬度 <input type="range" id="wmHardness" min="0" max="100" value="0"> <span id="wmHardnessVal">0</span></label>
         <span class="brush-dir-label add" id="brushDirLabel">增加</span>
         <label class="brush-size-label" id="wandTolLabel">容差 <input type="range" id="wandTolerance" min="0" max="255" value="40"> <span id="wandTolVal">40</span></label>
@@ -5942,7 +5942,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const MIN_ZOOM = 0.1, MAX_ZOOM = 16;
   const zoomLabel = document.getElementById('zoomLabel');
   function clampZoom(z){ return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z)); }
-  // 容器跟随缩放：外框 .cmp-canvas-wrap 尺寸 = 基准显示尺寸 × zoom，放大不再被裁切、更容易操作
+  // 预览框锁定：外框 .cmp-canvas-wrap 不超过预览区可用宽高（自适应网页），超出部分框内裁切、空格/中键/V 平移查看
+  // 上方模式按钮与下方工具条位置因此固定不动，不会被放大的画布推走
   let wrapBaseW = 0, wrapBaseH = 0, wrapBaseKey = '', wrapBaseRafPending = false;
   // 画布/对比区尚未参与布局时（offsetWidth=0）绝不能测量：旧实现会兜底取 canvas.width（内部像素），
   // 把容器锁成超大尺寸 → 结果图贴在左上角、棋盘格铺满。此时推迟到下一帧（对比区显示后）重测。
@@ -5970,10 +5971,12 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
         }
       }
       if(wrapBaseW > 0 && wrapBaseH > 0){
-        cmpWrap.style.maxWidth = 'none';
-        // 外框不锁定：容器尺寸 = 基准显示尺寸 × zoom，随缩放自然放大/缩小（布局随之流动）
-        cmpWrap.style.width = (wrapBaseW * zoom) + 'px';
-        cmpWrap.style.height = (wrapBaseH * zoom) + 'px';
+        // 外框锁定为预览区自适应尺寸：≤ min(基准×zoom, 可用宽高)，缩放只在框内裁切，不推开页面布局
+        const vw = mattingCompareEl ? Math.max(200, mattingCompareEl.clientWidth - 24) : Infinity;
+        const vh = mattingCompareEl ? Math.max(200, mattingCompareEl.clientHeight - 24) : Math.max(200, Math.min(window.innerHeight * 0.64, 760));
+        cmpWrap.style.maxWidth = '';
+        cmpWrap.style.width = Math.min(wrapBaseW * zoom, vw) + 'px';
+        cmpWrap.style.height = Math.min(wrapBaseH * zoom, vh) + 'px';
         // 缩略图避让动态化：结果图矩形与左上角缩略图矩形（12,132，含 8px 余量）真实相交时
         // 才保留左内边距避让，否则去掉边距让结果真正居中
         if(mattingCompareEl){
@@ -6120,7 +6123,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   // 画笔事件（指针事件兼容鼠标 / 触摸）
   // 笔刷 / 容差滑块：拖到默认点附近时吸附到默认值
   if(brushSize) brushSize.addEventListener('input', function(){
-    if(Math.abs((+brushSize.value) - 10) <= 5) brushSize.value = 10;
+    if(Math.abs((+brushSize.value) - 50) <= 5) brushSize.value = 50;
     if(brushSizeVal) brushSizeVal.textContent = brushSize.value;
   });
   if(wmHardnessEl) wmHardnessEl.addEventListener('input', function(){
