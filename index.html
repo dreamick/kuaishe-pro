@@ -1232,6 +1232,48 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
   letter-spacing: 0.4px;
 }
 .cmp-tag-res { left: auto; right: 6px; }
+/* 原图缩略图：点击进入「放大对比」 */
+.cmp-thumb { cursor: pointer; transition: border-color 0.15s; }
+.cmp-thumb:hover { border-color: var(--dopa-blue); }
+.cmp-thumb-zoom {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 22px; line-height: 22px;
+  text-align: center; font-size: 10px; font-weight: 600; color: #fff;
+  background: rgba(0,0,0,0.55); letter-spacing: 0.5px; visibility: hidden; pointer-events: none;
+}
+.cmp-thumb:hover .cmp-thumb-zoom { visibility: visible; }
+/* 原图 / 结果 左右拖动对比层（点击左上角原图缩略图打开） */
+.cmp-slider { position: absolute; inset: 0; z-index: 40; overflow: hidden; cursor: ew-resize; touch-action: none; }
+.cmp-slider-pane { position: absolute; inset: 0; overflow: hidden; }
+.cmp-slider-pane canvas { position: absolute; inset: 0; margin: auto; max-width: 100%; max-height: 100%; display: block; pointer-events: none; }
+.cmp-slider-top { clip-path: inset(0 50% 0 0); }
+.cmp-slider-line {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px;
+  background: rgba(255,255,255,0.95); box-shadow: 0 0 0 1px rgba(0,0,0,0.28), 0 0 10px rgba(0,0,0,0.35);
+  pointer-events: none;
+}
+.cmp-slider-knob {
+  position: absolute; top: 50%; left: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px;
+  border-radius: 50%; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  color: #333; font-size: 12px; font-weight: 700; letter-spacing: -2px;
+}
+.cmp-slider-tag {
+  position: absolute; bottom: 12px; font-size: 11px; font-weight: 600; color: #fff;
+  background: rgba(0,0,0,0.55); padding: 3px 10px; border-radius: 5px;
+  pointer-events: none; letter-spacing: 0.5px; z-index: 3;
+}
+.cmp-slider-tag.left { left: 12px; }
+.cmp-slider-tag.right { right: 12px; }
+.cmp-slider-close {
+  position: absolute; top: 12px; right: 12px; z-index: 4;
+  width: 28px; height: 28px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(0,0,0,0.55); color: #fff; font-size: 13px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.cmp-slider-close:hover { background: rgba(0,0,0,0.78); }
+/* 对比模式开启时隐藏结果标签与缩放条，避免重叠 */
+.cmp-canvas-wrap.slider-on > .zoom-bar,
+.cmp-canvas-wrap.slider-on > .cmp-tag-res { visibility: hidden; }
 /* 质量档：长按「AI 抠图」弹出的选择菜单（平时隐藏），向右弹出 */
 .mq-popup {
   display: none; position: absolute; top: calc(100% + 8px); right: 0; left: auto; bottom: auto;
@@ -1641,9 +1683,10 @@ body.dark .ai-field input { background:#141e2d; }
           <div class="matting-drop-sub">可一次拖入多张，串行批量抠图（下载方式见「自动下载」开关）；建议纯色背景效果最佳</div>
         </div>
         <div class="matting-sidebyside" id="mattingCompare" style="display:none">
-          <div class="cmp-thumb" id="cmpThumb">
+          <div class="cmp-thumb" id="cmpThumb" title="点击放大原图，拖动滑块与原图对比">
             <span class="cmp-tag">原图</span>
             <img class="cmp-base" id="cmpBase" alt="原图">
+            <span class="cmp-thumb-zoom">点击放大对比</span>
           </div>
           <div class="cmp-result">
             <div class="cmp-canvas-wrap" id="cmpCanvasWrap">
@@ -1656,6 +1699,18 @@ body.dark .ai-field input { background:#141e2d; }
               </div>
               <div class="zoom-bar" id="zoomBar">
                 <button type="button" class="zb-btn zb-reset" id="zoomReset" title="复原为 100% 大小与位置">复原</button>
+              </div>
+              <div class="cmp-slider" id="cmpSlider" style="display:none">
+                <div class="cmp-slider-pane">
+                  <canvas id="cmpSliderRes"></canvas>
+                </div>
+                <div class="cmp-slider-pane cmp-slider-top" id="cmpSliderTop">
+                  <canvas id="cmpSliderBase"></canvas>
+                </div>
+                <span class="cmp-slider-tag left">原图</span>
+                <span class="cmp-slider-tag right">结果</span>
+                <div class="cmp-slider-line" id="cmpSliderLine"><span class="cmp-slider-knob">&#9664;&#9654;</span></div>
+                <button type="button" class="cmp-slider-close" id="cmpSliderClose" title="退出对比（Esc）">&#10005;</button>
               </div>
             </div>
           </div>
@@ -4738,6 +4793,13 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const cmpBase = document.getElementById('cmpBase');
   const cmpWrap = document.getElementById('cmpCanvasWrap');
   const cmpTransform = document.getElementById('cmpTransform');
+  const cmpThumb = document.getElementById('cmpThumb');
+  const cmpSlider = document.getElementById('cmpSlider');
+  const cmpSliderTop = document.getElementById('cmpSliderTop');
+  const cmpSliderResEl = document.getElementById('cmpSliderRes');
+  const cmpSliderBaseEl = document.getElementById('cmpSliderBase');
+  const cmpSliderLine = document.getElementById('cmpSliderLine');
+  const cmpSliderClose = document.getElementById('cmpSliderClose');
   // 交互式「保留画笔」相关
   const brushCanvas = document.getElementById('brushCanvas');
   const brushCtx = brushCanvas.getContext('2d');
@@ -4778,6 +4840,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   let wmHard = 0;                   // 图章硬度 0=最柔(羽化) … 1=最硬(清晰实边)
   // 平移 / 缩放状态：V 键进入移动模式拖动平移，Cmd/Ctrl + 滚轮以光标为中心缩放
   let zoom = 1, panX = 0, panY = 0, panMode = false;
+  let cmpSliderOn = false, cmpSliderPct = 50;   // 原图/结果 拖动对比层状态
   let panOverlay = null;
   // 十字光标：绿 = 保留/增加，红 = 删除/减去，随工具模式实时切换
   function buildCrosshairCursor(color){
@@ -4949,6 +5012,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(brushBar) brushBar.style.display = '';
       enableBrush();   // 出结果后默认开启画笔，用户可直接在窗内/书本涂抹，省一步点击
       // 新结果：退出移动模式并复位平移/缩放
+      if(cmpSliderOn) closeCmpSlider();   // 新结果：旧对比层内容失效，先关闭
       panMode = false;
       if(panOverlay) panOverlay.style.pointerEvents = 'none';
       resetTransform();
@@ -4979,6 +5043,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     cmpBase.src = baseUrl;
   }
   function syncView(){
+    if(cmpSliderOn && !resultBlob) closeCmpSlider();
     if(resultBlob){ compareEl.style.display = 'flex'; dropEl.style.display = 'none'; fitTopWidth(); }
     else { compareEl.style.display = 'none'; dropEl.style.display = currentSourceBlob ? 'none' : 'flex'; }
   }
@@ -5814,6 +5879,46 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandActive) toggleWandMode();   // 魔棒已开：仅切换 清除 ↔ 保留
     else enableWand();                  // 魔棒未开：开启魔棒（默认清除），不关闭任何工具
   }
+  // ---- 原图 / 结果 左右拖动对比（点击左上角原图缩略图打开）----
+  function updateCmpSliderClip(){
+    const p = Math.max(0, Math.min(100, cmpSliderPct));
+    if(cmpSliderTop) cmpSliderTop.style.clipPath = 'inset(0 ' + (100 - p).toFixed(2) + '% 0 0)';
+    if(cmpSliderLine) cmpSliderLine.style.left = p.toFixed(2) + '%';
+  }
+  function closeCmpSlider(){
+    cmpSliderOn = false;
+    if(cmpSlider) cmpSlider.style.display = 'none';
+    if(cmpWrap) cmpWrap.classList.remove('slider-on');
+  }
+  function openCmpSlider(){
+    if(!resultBlob || !canvas.width || !canvas.height) return;
+    resetTransform();                     // 对比层按 1:1 适配显示，与结果画布的缩放/平移无关
+    if(stampActive) disableStamp();       // 图章环/取样标记会干扰对比，先关闭
+    if(panMode) exitPanMode(false);
+    const rw = canvas.width, rh = canvas.height;
+    if(cmpSliderResEl){                   // 结果层：复制结果画布位图
+      cmpSliderResEl.width = rw; cmpSliderResEl.height = rh;
+      const rc = cmpSliderResEl.getContext('2d');
+      rc.clearRect(0, 0, rw, rh);
+      rc.drawImage(canvas, 0, 0);
+    }
+    if(cmpSliderBaseEl){                  // 原图层：缩放到与结果同分辨率，保证像素级重合
+      cmpSliderBaseEl.width = rw; cmpSliderBaseEl.height = rh;
+      const bc = cmpSliderBaseEl.getContext('2d');
+      bc.clearRect(0, 0, rw, rh);
+      if(currentWorkBlob){
+        blobToImageDataScaled(currentWorkBlob, rw, rh).then(function(res){
+          bc.putImageData(res, 0, 0);
+          updateCmpSliderClip();
+        }).catch(function(){});
+      }
+    }
+    cmpSliderPct = 50;
+    cmpSliderOn = true;
+    if(cmpSlider) cmpSlider.style.display = 'block';
+    if(cmpWrap) cmpWrap.classList.add('slider-on');
+    updateCmpSliderClip();
+  }
   // ---- 平移 / 缩放（作用于结果画布容器 .cmp-canvas-wrap）----
   const MIN_ZOOM = 0.1, MAX_ZOOM = 16;
   const zoomLabel = document.getElementById('zoomLabel');
@@ -5988,6 +6093,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     const t = e.target;
     const inField = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
     const key = (e.key || '').toLowerCase();
+    if(key === 'escape' && cmpSliderOn){ closeCmpSlider(); return; }   // Esc：退出原图/结果对比
     // 撤销 / 重做：Ctrl/Cmd+Z 撤销；Ctrl/Cmd+Shift+Z 或 Ctrl/Cmd+Y 重做
     if((e.ctrlKey || e.metaKey) && (key === 'z' || key === 'y')){
       if(inField) return;
@@ -6083,6 +6189,34 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   // 缩放控制条按钮
   const zoomResetBtn = document.getElementById('zoomReset');
   if(zoomResetBtn) zoomResetBtn.addEventListener('click', function(){ if(resultBlob) resetTransform(); });
+
+  // ---- 原图缩略图：点击打开 / 关闭「放大对比」滑块 ----
+  if(cmpThumb) cmpThumb.addEventListener('click', function(){
+    if(cmpSliderOn) closeCmpSlider(); else openCmpSlider();
+  });
+  if(cmpSliderClose){
+    cmpSliderClose.addEventListener('pointerdown', function(e){ e.stopPropagation(); });
+    cmpSliderClose.addEventListener('click', function(e){ e.stopPropagation(); closeCmpSlider(); });
+  }
+  if(cmpSlider){
+    let cmpDragging = false;
+    function cmpPosFromX(clientX){
+      const r = cmpSlider.getBoundingClientRect();
+      if(!r.width) return;
+      cmpSliderPct = (clientX - r.left) / r.width * 100;
+      updateCmpSliderClip();
+    }
+    cmpSlider.addEventListener('pointerdown', function(e){
+      cmpDragging = true;
+      try { cmpSlider.setPointerCapture(e.pointerId); } catch(_){}
+      cmpPosFromX(e.clientX);
+      e.preventDefault();
+    });
+    cmpSlider.addEventListener('pointermove', function(e){ if(cmpDragging) cmpPosFromX(e.clientX); });
+    function cmpEndDrag(){ cmpDragging = false; }
+    cmpSlider.addEventListener('pointerup', cmpEndDrag);
+    cmpSlider.addEventListener('pointercancel', cmpEndDrag);
+  }
 
   // ---- 交互绑定 ----
   dropEl.addEventListener('click', function(){ fileInput.click(); });
@@ -6291,6 +6425,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     currentSourceBlob = null; resultBlob = null; baseResultBlob = null; currentWorkBlob = null;
     if(baseUrl){ URL.revokeObjectURL(baseUrl); baseUrl = null; }
     cmpBase.src = '';
+    if(cmpSliderOn) closeCmpSlider();
     canvas.style.display = 'none';
     if(brushCtx) brushCtx.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
     brushDirty = false; undoStack = []; histIndex = 0;
