@@ -6033,10 +6033,9 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(nextMode === 'solid'){ if(typeof showToast === 'function') showToast('正在按纯色底重新处理…','info'); }
       else { if(typeof showToast === 'function') showToast('正在快速去除白底…','info'); }
       processImage(currentSourceBlob);
-    } else if(key === 'shift'){           // Shift：在「AI 抠图」与「去水印」模式间切换
+    } else if(key === 'shift'){           // Shift：切换到「去水印」模式（已在该模式下不再切回 AI 抠图）
       if(panMode) exitPanMode(false);
-      if(mattingMode === 'watermark'){ applyMode('ai', true); }
-      else { selectWatermarkMode(); }
+      if(mattingMode !== 'watermark'){ selectWatermarkMode(); }
     }
   });
 
