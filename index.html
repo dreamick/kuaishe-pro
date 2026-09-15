@@ -1283,7 +1283,8 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 .cmp-canvas-wrap.slider-on > .zoom-bar,
 .cmp-canvas-wrap.slider-on > .cmp-tag-res { visibility: hidden; }
 /* 对比模式：结果真正居中（去掉为缩略图预留的左内边距），缩略图淡化避免抢焦点 */
-.matting-sidebyside.comparing .cmp-result { padding-left: 0; }
+.matting-sidebyside.comparing .cmp-result,
+.matting-sidebyside.thumb-clear .cmp-result { padding-left: 0; }
 .matting-sidebyside.comparing .cmp-thumb { opacity: 0.25; }
 .matting-sidebyside { overflow-anchor: none; }   /* 防止容器放大时浏览器滚动锚定跳动 */
 .cmp-canvas-wrap { flex-shrink: 0; }             /* 容器放大时不被 flex 压缩 */
@@ -5069,6 +5070,9 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   function fitTopWidth(){
     canvas.style.width = '';
     canvas.style.height = '';
+    wrapBaseW = 0; wrapBaseH = 0; wrapBaseKey = '';   // 基准失效：必须按新布局重新测量
+    if(cmpWrap){ cmpWrap.style.width = ''; cmpWrap.style.height = ''; }
+    if(resultBlob) scheduleApplyTransform();
   }
   window.addEventListener('resize', fitTopWidth);
 
@@ -5954,23 +5958,46 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const zoomLabel = document.getElementById('zoomLabel');
   function clampZoom(z){ return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z)); }
   // 容器跟随缩放：外框 .cmp-canvas-wrap 尺寸 = 基准显示尺寸 × zoom，放大不再被裁切、更容易操作
-  let wrapBaseW = 0, wrapBaseH = 0, wrapBaseKey = '';
+  let wrapBaseW = 0, wrapBaseH = 0, wrapBaseKey = '', wrapBaseRafPending = false;
+  // 画布/对比区尚未参与布局时（offsetWidth=0）绝不能测量：旧实现会兜底取 canvas.width（内部像素），
+  // 把容器锁成超大尺寸 → 结果图贴在左上角、棋盘格铺满。此时推迟到下一帧（对比区显示后）重测。
+  function scheduleApplyTransform(){
+    if(wrapBaseRafPending) return;
+    wrapBaseRafPending = true;
+    requestAnimationFrame(function(){ wrapBaseRafPending = false; applyTransform(); });
+  }
   function applyTransform(){
     if(!cmpTransform || !cmpWrap) return;
     if(canvas.width > 0 && canvas.height > 0 && resultBlob){
-      // 基准尺寸：结果变化或 fitTopWidth 清掉内联宽高后，按当前可用宽度重新测量并锁定
-      const key = canvas.width + 'x' + canvas.height + '/' + (canvas.style.width === '' ? 'auto' : 'locked');
-      if(key !== wrapBaseKey && canvas.style.width === ''){
-        wrapBaseKey = key;
-        wrapBaseW = canvas.offsetWidth || canvas.width;
-        wrapBaseH = canvas.offsetHeight || canvas.height;
-        canvas.style.width = wrapBaseW + 'px';
-        canvas.style.height = wrapBaseH + 'px';
+      // 基准尺寸：内联宽高被清掉（新结果 / fitTopWidth）后，按当前实际显示尺寸重新测量并锁定
+      if(canvas.style.width === ''){
+        if(!canvas.offsetWidth){
+          // 未参与布局：先解除容器锁定，避免沿用上一张图的陈旧尺寸，下一帧布局成立后再测
+          wrapBaseW = 0; wrapBaseH = 0; wrapBaseKey = '';
+          cmpWrap.style.width = ''; cmpWrap.style.height = '';
+          scheduleApplyTransform();
+        } else {
+          wrapBaseKey = canvas.width + 'x' + canvas.height + '/locked';
+          wrapBaseW = canvas.offsetWidth;
+          wrapBaseH = canvas.offsetHeight;
+          canvas.style.width = wrapBaseW + 'px';
+          canvas.style.height = wrapBaseH + 'px';
+        }
       }
       if(wrapBaseW > 0 && wrapBaseH > 0){
         cmpWrap.style.maxWidth = 'none';
         cmpWrap.style.width = (wrapBaseW * zoom) + 'px';
         cmpWrap.style.height = (wrapBaseH * zoom) + 'px';
+        // 缩略图避让动态化：结果图矩形与左上角缩略图矩形（12,132，含 8px 余量）真实相交时
+        // 才保留左内边距避让，否则去掉边距让结果真正居中
+        if(mattingCompareEl){
+          const cr = mattingCompareEl.getBoundingClientRect();
+          const wr = cmpWrap.getBoundingClientRect();
+          const M = 8, T = 12, B = 132;
+          const overlap = wr.left < cr.left + B + M && wr.right > cr.left + T - M &&
+                          wr.top < cr.top + B + M && wr.bottom > cr.top + T - M;
+          mattingCompareEl.classList.toggle('thumb-clear', !overlap);
+        }
       }
     }
     cmpTransform.style.transformOrigin = '0 0';
