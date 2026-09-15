@@ -1265,6 +1265,7 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 .brush-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px; touch-action: none; pointer-events: none; opacity: 0.5; }
 .brush-canvas.active { pointer-events: auto; cursor: crosshair; }
 #wmSourceMark { position: absolute; left: 0; top: 0; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid #3b82f6; border-radius: 50%; background: rgba(59,130,246,0.15); pointer-events: none; display: none; z-index: 6; box-shadow: 0 0 0 1px rgba(255,255,255,0.85); }
+#wmBrushRing { position: absolute; left: 0; top: 0; border: 1.5px dashed rgba(59,130,246,0.9); border-radius: 50%; pointer-events: none; display: none; z-index: 5; background: rgba(59,130,246,0.06); box-shadow: 0 0 0 1px rgba(255,255,255,0.6); }
 #stampToolBtn.active { background: var(--dopa-blue); color: #fff; border-color: var(--dopa-blue); }
 /* 平移覆盖层：仅「移动模式」时启用 pointer-events，平时不拦截画笔/魔棒事件 */
 .matting-pan-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; cursor: grab; z-index: 5; }
@@ -1638,6 +1639,7 @@ body.dark .ai-field input { background:#141e2d; }
                 <canvas id="mattingCanvas" class="matting-canvas"></canvas>
                 <canvas id="brushCanvas" class="brush-canvas"></canvas>
                 <div id="wmSourceMark"></div>
+                <div id="wmBrushRing"></div>
               </div>
               <div class="zoom-bar" id="zoomBar">
                 <button type="button" class="zb-btn zb-reset" id="zoomReset" title="复原为 100% 大小与位置">复原</button>
@@ -4741,6 +4743,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const wandTolVal = document.getElementById('wandTolVal');
   const stampToolBtn = document.getElementById('stampToolBtn');
   const wmSourceMark = document.getElementById('wmSourceMark');
+  const wmBrushRing = document.getElementById('wmBrushRing');
   let brushActive = false, brushDirty = false, brushDrawing = false, brushLast = null;
   let brushDir = 'add';   // 画笔方向：'add' 增加（还原原图）/ 'sub' 减去（擦除已涂笔刷）
   let undoStack = [], histIndex = 0, activeCard = null, wandSrcCache = null;
@@ -5532,7 +5535,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
-    if(brushHint) brushHint.textContent = 'Alt 或 Shift+点击 取样，然后涂抹覆盖水印；源点跟随鼠标连续复制';
+    if(brushHint) brushHint.textContent = 'Alt 或 Shift+点击 取样，然后涂抹覆盖目标；固定从取样点复制，不会偏移';
     updateToolCursor();
     updateWmUndoButtons();
   }
@@ -5540,6 +5543,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     stampActive = false;
     brushCanvas.classList.remove('active');
     if(wmSourceMark) wmSourceMark.style.display = 'none';
+    if(wmBrushRing) wmBrushRing.style.display = 'none';
     if(wandTools) wandTools.style.display = '';
     if(wandTolLabel) wandTolLabel.style.display = '';
     if(brushDirLabel) brushDirLabel.style.display = '';
@@ -5547,11 +5551,27 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     updateToolCursor();
     enableBrush();
   }
+  function wmLocalScale(){ return brushCanvas.clientWidth / (brushCanvas.width || 1); }
   function wmSetSource(p){
     wmSource = { x: Math.round(p[0]), y: Math.round(p[1]) };
-    wmFirst = null;
-    if(wmSourceMark){ wmSourceMark.style.display = 'block'; wmSourceMark.style.left = wmSource.x + 'px'; wmSourceMark.style.top = wmSource.y + 'px'; }
-    if(brushHint) brushHint.textContent = '已取样，涂抹覆盖目标区域；源点会跟随鼠标连续复制';
+    const sc = wmLocalScale();
+    if(wmSourceMark){
+      wmSourceMark.style.display = 'block';
+      wmSourceMark.style.left = (wmSource.x * sc) + 'px';
+      wmSourceMark.style.top  = (wmSource.y * sc) + 'px';
+    }
+    if(brushHint) brushHint.textContent = '已取样：涂抹即从该点复制像素覆盖目标；可重复涂抹盖住更大区域';
+  }
+  function wmMoveCursor(e){
+    if(!stampActive || !wmBrushRing) return;
+    const sc = wmLocalScale();
+    const p = brushPos(e);
+    const R = brushRadiusInternal() * sc;
+    wmBrushRing.style.display = 'block';
+    wmBrushRing.style.width = (R * 2) + 'px';
+    wmBrushRing.style.height = (R * 2) + 'px';
+    wmBrushRing.style.left = (p[0] * sc - R) + 'px';
+    wmBrushRing.style.top  = (p[1] * sc - R) + 'px';
   }
   function wmSchedulePut(){
     if(wmRafPending) return;
@@ -5563,24 +5583,31 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     const W = wmWorking.width, H = wmWorking.height;
     const R = brushRadiusInternal();
     const cx = p[0], cy = p[1];
-    const sx0 = wmSource.x + (wmFirst ? (cx - wmFirst.x) : 0);
-    const sy0 = wmSource.y + (wmFirst ? (cy - wmFirst.y) : 0);
+    const sx0 = wmSource.x, sy0 = wmSource.y;   // 固定取样点：涂抹始终从取样点取像素覆盖目标
     const d = wmWorking.data, od = wmOriginal.data, ow = wmOriginal.width, oh = wmOriginal.height;
     const x0 = Math.max(0, Math.floor(cx - R)), x1 = Math.min(W - 1, Math.ceil(cx + R));
     const y0 = Math.max(0, Math.floor(cy - R)), y1 = Math.min(H - 1, Math.ceil(cy + R));
     for(let y = y0; y <= y1; y++){
+      const dy = y - cy;
       for(let x = x0; x <= x1; x++){
-        const dx = x - cx, dy = y - cy, dist = Math.sqrt(dx * dx + dy * dy);
+        const dx = x - cx, dist = Math.sqrt(dx * dx + dy * dy);
         if(dist > R) continue;
-        const wgt = Math.cos(dist / R * Math.PI / 2);
+        const wgt = Math.cos(dist / R * Math.PI / 2);   // 软边
         if(wgt <= 0.003) continue;
         const sx = Math.round(sx0 + dx), sy = Math.round(sy0 + dy);
         if(sx < 0 || sy < 0 || sx >= ow || sy >= oh) continue;
-        const di = (y * W + x) * 4, si = (sy * ow + sx) * 4;
-        d[di]     = d[di]     * (1 - wgt) + od[si]     * wgt;
-        d[di + 1] = d[di + 1] * (1 - wgt) + od[si + 1] * wgt;
-        d[di + 2] = d[di + 2] * (1 - wgt) + od[si + 2] * wgt;
-        d[di + 3] = d[di + 3] * (1 - wgt) + od[si + 3] * wgt;
+        const si = (sy * ow + sx) * 4, di = (y * W + x) * 4;
+        const sa = od[si + 3] / 255;
+        if(sa <= 0) continue;                           // 源透明则保留目标，避免挖空（消除）
+        const da = d[di + 3] / 255;
+        const a = sa * wgt;                             // 软边有效源透明度
+        const outA = a + da * (1 - a);                 // OVER 合成
+        if(outA <= 0.0001) continue;
+        const ia = 1 / outA;
+        d[di]     = (od[si]     * a + d[di]     * da * (1 - a)) * ia;
+        d[di + 1] = (od[si + 1] * a + d[di + 1] * da * (1 - a)) * ia;
+        d[di + 2] = (od[si + 2] * a + d[di + 2] * da * (1 - a)) * ia;
+        d[di + 3] = outA * 255;
       }
     }
   }
@@ -5596,7 +5623,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(!wmSource){ if(typeof showToast === 'function') showToast('先按住 Alt 或 Shift 点击设置取样点', 'warn'); return; }
     wmDrawing = true; wmLast = p; wmRedo = [];
     wmWorking = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    wmFirst = p;
     wmStampInto(p); wmSchedulePut();
     updateWmUndoButtons();
   }
@@ -5670,7 +5696,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(stampToolBtn){ stampToolBtn.style.display = 'none'; stampToolBtn.classList.remove('active'); }
       enableStamp({ fromMode: 'watermark' });
       prepareBase();
-      if(brushHint) brushHint.textContent = '去水印：Alt+点击 取样，再涂抹覆盖水印；源点跟随鼠标连续复制';
+      if(brushHint) brushHint.textContent = '去水印：Alt 或 Shift+点击 取样，再涂抹覆盖水印；固定从取样点复制';
       syncView();
       fitTopWidth();
     }catch(e){ console.error(e); if(typeof showError === 'function') showError('去水印模式加载失败'); }
@@ -5682,7 +5708,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
     if(stampToolBtn){ stampToolBtn.style.display = 'none'; stampToolBtn.classList.remove('active'); }
-    if(brushHint) brushHint.textContent = '去水印模式：上传或粘贴图片后，Alt+点击 取样，再涂抹覆盖水印';
+    if(brushHint) brushHint.textContent = '去水印模式：上传或粘贴图片后，Alt 或 Shift+点击 取样，再涂抹覆盖水印';
     if(currentSourceBlob){ wmLoadOriginal(currentSourceBlob); }
   }
   // 用「笔刷 / 容差」文字高亮表示当前激活的工具（画笔→高亮笔刷，魔棒→高亮容差）；画笔按钮已隐藏
@@ -5921,7 +5947,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     try { brushCanvas.setPointerCapture(e.pointerId); } catch(_){}
   });
   brushCanvas.addEventListener('pointermove', function(e){
-    if(stampActive){ wmPointerMove(e); return; }
+    if(stampActive){ wmMoveCursor(e); wmPointerMove(e); return; }
     if(!brushActive || !brushDrawing) return; e.preventDefault();
     const p = brushPos(e);
     if(brushLast) brushLine(brushLast, p); else brushStroke(p[0], p[1]);
@@ -5929,7 +5955,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   });
   function brushEnd(){ brushDrawing = false; brushLast = null; if(brushDirty) bakeBrush(); }
   brushCanvas.addEventListener('pointerup', function(e){ if(stampActive){ wmPointerUp(e); return; } brushEnd(e); });
-  brushCanvas.addEventListener('pointerleave', function(e){ if(stampActive){ wmPointerUp(e); return; } brushEnd(e); });
+  brushCanvas.addEventListener('pointerleave', function(e){ if(stampActive){ if(wmBrushRing) wmBrushRing.style.display = 'none'; wmPointerUp(e); return; } brushEnd(e); });
   brushCanvas.addEventListener('pointercancel', function(e){ if(stampActive){ wmPointerUp(e); return; } brushEnd(e); });
   // 全局快捷键
   document.addEventListener('keydown', function(e){
