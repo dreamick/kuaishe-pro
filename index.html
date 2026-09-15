@@ -1663,6 +1663,7 @@ body.dark .ai-field input { background:#141e2d; }
       <div class="matting-grid" id="mattingGrid" style="display:none"></div>
       <div class="matting-brushbar" id="mattingBrushBar" style="display:none">
         <label class="brush-size-label" id="brushSizeLabel">笔刷 <input type="range" id="brushSize" min="8" max="120" value="34"> <span id="brushSizeVal">34</span></label>
+        <label class="brush-size-label" id="wmHardnessLabel" style="display:none">硬度 <input type="range" id="wmHardness" min="0" max="100" value="50"> <span id="wmHardnessVal">50</span></label>
         <span class="brush-dir-label add" id="brushDirLabel">增加</span>
         <label class="brush-size-label" id="wandTolLabel">容差 <input type="range" id="wandTolerance" min="0" max="255" value="40"> <span id="wandTolVal">40</span></label>
         <span class="wand-tools" id="wandTools">
@@ -4738,6 +4739,9 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const wandTolerance = document.getElementById('wandTolerance');
   const wandModeBtn = document.getElementById('wandModeBtn');
   const brushSizeLabel = document.getElementById('brushSizeLabel');
+  const wmHardnessEl = document.getElementById('wmHardness');
+  const wmHardnessVal = document.getElementById('wmHardnessVal');
+  const wmHardnessLabel = document.getElementById('wmHardnessLabel');
   const brushDirLabel = document.getElementById('brushDirLabel');
   const wandTolLabel = document.getElementById('wandTolLabel');
   const wandTolVal = document.getElementById('wandTolVal');
@@ -4759,6 +4763,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   let wmDrawing = false, wmLast = null;
   let wmWorking = null;             // 当前笔画正在编辑的 ImageData
   let wmRafPending = false;
+  let wmHard = 0.5;                 // 图章硬度 0=最柔(羽化) … 1=最硬(清晰实边)
+  let wmShiftToggleTimer = null;    // Shift 呼出/收起图章的延迟定时器（避免与 Shift+点击取样冲突）
   // 平移 / 缩放状态：V 键进入移动模式拖动平移，Cmd/Ctrl + 滚轮以光标为中心缩放
   let zoom = 1, panX = 0, panY = 0, panMode = false;
   let panOverlay = null;
@@ -5532,6 +5538,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     wmDrawing = false; wmLast = null; wmWorking = null;
     if(opts && opts.fromTool && !wmOriginal){ wmOriginal = ctx.getImageData(0, 0, canvas.width, canvas.height); }
     if(brushSizeLabel) brushSizeLabel.style.visibility = 'visible';
+    if(wmHardnessLabel) wmHardnessLabel.style.display = '';
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
@@ -5544,6 +5551,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     brushCanvas.classList.remove('active');
     if(wmSourceMark) wmSourceMark.style.display = 'none';
     if(wmBrushRing) wmBrushRing.style.display = 'none';
+    if(wmHardnessLabel) wmHardnessLabel.style.display = 'none';
     if(wandTools) wandTools.style.display = '';
     if(wandTolLabel) wandTolLabel.style.display = '';
     if(brushDirLabel) brushDirLabel.style.display = '';
@@ -5587,12 +5595,17 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     const d = wmWorking.data, od = wmOriginal.data, ow = wmOriginal.width, oh = wmOriginal.height;
     const x0 = Math.max(0, Math.floor(cx - R)), x1 = Math.min(W - 1, Math.ceil(cx + R));
     const y0 = Math.max(0, Math.floor(cy - R)), y1 = Math.min(H - 1, Math.ceil(cy + R));
+    const h = wmHard;                       // 硬度：0 最柔、1 最硬
+    const Ri = R * h;                       // 硬核半径（完全不透明），随硬度增大
     for(let y = y0; y <= y1; y++){
       const dy = y - cy;
       for(let x = x0; x <= x1; x++){
         const dx = x - cx, dist = Math.sqrt(dx * dx + dy * dy);
         if(dist > R) continue;
-        const wgt = Math.cos(dist / R * Math.PI / 2);   // 软边
+        let wgt;
+        if(dist <= Ri) wgt = 1;             // 硬核：清晰实边
+        else if(Ri >= R) wgt = 1;
+        else wgt = Math.cos((dist - Ri) / (R - Ri) * Math.PI / 2);   // 过渡羽化
         if(wgt <= 0.003) continue;
         const sx = Math.round(sx0 + dx), sy = Math.round(sy0 + dy);
         if(sx < 0 || sy < 0 || sx >= ow || sy >= oh) continue;
@@ -5619,7 +5632,10 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     e.preventDefault();
     try { brushCanvas.setPointerCapture(e.pointerId); } catch(_){}
     const p = brushPos(e);
-    if(e.altKey || e.shiftKey){ wmSetSource(p); return; }
+    if(e.altKey || e.shiftKey){
+      if(wmShiftToggleTimer){ clearTimeout(wmShiftToggleTimer); wmShiftToggleTimer = null; }  // 取消 Shift 收起，改为取样
+      wmSetSource(p); return;
+    }
     if(!wmSource){ if(typeof showToast === 'function') showToast('先按住 Alt 或 Shift 点击设置取样点', 'warn'); return; }
     wmDrawing = true; wmLast = p; wmRedo = [];
     wmWorking = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -5925,6 +5941,11 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(Math.abs((+brushSize.value) - 34) <= 5) brushSize.value = 34;
     if(brushSizeVal) brushSizeVal.textContent = brushSize.value;
   });
+  if(wmHardnessEl) wmHardnessEl.addEventListener('input', function(){
+    if(Math.abs((+wmHardnessEl.value) - 50) <= 5) wmHardnessEl.value = 50;
+    wmHard = (+wmHardnessEl.value) / 100;
+    if(wmHardnessVal) wmHardnessVal.textContent = wmHardnessEl.value;
+  });
   if(wandTolerance) wandTolerance.addEventListener('input', function(){
     if(Math.abs((+wandTolerance.value) - 40) <= 10) wandTolerance.value = 40;
     if(wandTolVal) wandTolVal.textContent = wandTolerance.value;
@@ -5972,6 +5993,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     }
     // 单键快捷键：不在输入框、且无 Ctrl/Cmd/Alt 组合键时生效（Ctrl+S 等交给浏览器）
     if(inField || e.ctrlKey || e.metaKey || e.altKey) return;
+    if(e.repeat) return;             // 长按不重复触发
+    if(e.shiftKey && key !== 'shift') return;   // Shift+其他键不触发单键快捷键（仅独立 Shift 用于图章）
     if(key === 'b'){                      // B：画笔开启 + 方向切换；开启后只在「增加/减去」间循环，不自动关闭
       if(panMode) exitPanMode(false);     // 先退出移动模式
       if(!brushActive){                   // 关 → 增加：开启画笔，默认还原误删
@@ -5998,13 +6021,18 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(resultBlob) zoomCenter(zoom / 1.25);
     } else if(key === '0'){               // 0：复位 100%
       if(resultBlob) zoomCenter(1);
-    } else if(key === 's'){               // S：开启/关闭「仿制图章」去水印工具
+    } else if(key === 'shift'){           // Shift：开启/关闭「仿制图章」去水印工具
       if(panMode) exitPanMode(false);
       if(mattingMode === 'watermark') return;          // 去水印模式本就内置图章，不重复切换
       if(!resultBlob){ if(typeof showToast==='function') showToast('先上传并处理图片再使用图章','warn'); return; }
       if(stampActive){
-        disableStamp();
-        if(stampToolBtn) stampToolBtn.classList.remove('active');
+        // 延迟关闭：若紧接着 Shift+点击取样，则取消关闭（Shift 同时是取样修饰键）
+        if(wmShiftToggleTimer) clearTimeout(wmShiftToggleTimer);
+        wmShiftToggleTimer = setTimeout(function(){
+          disableStamp();
+          if(stampToolBtn) stampToolBtn.classList.remove('active');
+          wmShiftToggleTimer = null;
+        }, 220);
       } else {
         enableStamp({ fromTool: true });
         if(stampToolBtn) stampToolBtn.classList.add('active');
