@@ -5532,7 +5532,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
-    if(brushHint) brushHint.textContent = 'Alt+点击 取样，然后涂抹覆盖水印；源点跟随鼠标连续复制';
+    if(brushHint) brushHint.textContent = 'Alt 或 Shift+点击 取样，然后涂抹覆盖水印；源点跟随鼠标连续复制';
     updateToolCursor();
     updateWmUndoButtons();
   }
@@ -5592,8 +5592,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     e.preventDefault();
     try { brushCanvas.setPointerCapture(e.pointerId); } catch(_){}
     const p = brushPos(e);
-    if(e.altKey){ wmSetSource(p); return; }
-    if(!wmSource){ if(typeof showToast === 'function') showToast('先按住 Alt 点击设置取样点', 'warn'); return; }
+    if(e.altKey || e.shiftKey){ wmSetSource(p); return; }
+    if(!wmSource){ if(typeof showToast === 'function') showToast('先按住 Alt 或 Shift 点击设置取样点', 'warn'); return; }
     wmDrawing = true; wmLast = p; wmRedo = [];
     wmWorking = ctx.getImageData(0, 0, canvas.width, canvas.height);
     wmFirst = p;
