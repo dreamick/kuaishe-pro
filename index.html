@@ -1266,7 +1266,6 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 .brush-canvas.active { pointer-events: auto; cursor: crosshair; }
 #wmSourceMark { position: absolute; left: 0; top: 0; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid #3b82f6; border-radius: 50%; background: rgba(59,130,246,0.15); pointer-events: none; display: none; z-index: 6; box-shadow: 0 0 0 1px rgba(255,255,255,0.85); }
 #wmBrushRing { position: absolute; left: 0; top: 0; border: 1.5px dashed rgba(59,130,246,0.9); border-radius: 50%; pointer-events: none; display: none; z-index: 5; background: rgba(59,130,246,0.06); box-shadow: 0 0 0 1px rgba(255,255,255,0.6); }
-#stampToolBtn.active { background: var(--dopa-blue); color: #fff; border-color: var(--dopa-blue); }
 /* 平移覆盖层：仅「移动模式」时启用 pointer-events，平时不拦截画笔/魔棒事件 */
 .matting-pan-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; cursor: grab; z-index: 5; }
 .matting-pan-overlay.grabbing { cursor: grabbing; }
@@ -1662,15 +1661,14 @@ body.dark .ai-field input { background:#141e2d; }
       </div>
       <div class="matting-grid" id="mattingGrid" style="display:none"></div>
       <div class="matting-brushbar" id="mattingBrushBar" style="display:none">
-        <label class="brush-size-label" id="brushSizeLabel">笔刷 <input type="range" id="brushSize" min="8" max="120" value="34"> <span id="brushSizeVal">34</span></label>
-        <label class="brush-size-label" id="wmHardnessLabel" style="display:none">硬度 <input type="range" id="wmHardness" min="0" max="100" value="50"> <span id="wmHardnessVal">50</span></label>
+        <label class="brush-size-label" id="brushSizeLabel">笔刷 <input type="range" id="brushSize" min="8" max="120" value="10"> <span id="brushSizeVal">10</span></label>
+        <label class="brush-size-label" id="wmHardnessLabel" style="display:none">硬度 <input type="range" id="wmHardness" min="0" max="100" value="0"> <span id="wmHardnessVal">0</span></label>
         <span class="brush-dir-label add" id="brushDirLabel">增加</span>
         <label class="brush-size-label" id="wandTolLabel">容差 <input type="range" id="wandTolerance" min="0" max="255" value="40"> <span id="wandTolVal">40</span></label>
         <span class="wand-tools" id="wandTools">
           <span class="brush-dir-label sub" id="wandModeBtn" title="点击切换：删除（抠除相似区域）/ 保留（还原误删）">删除</span>
         </span>
         <button type="button" class="btn btn-sm btn-gray" id="brushClear">清除</button>
-        <button type="button" class="btn btn-sm btn-gray" id="stampToolBtn" style="display:none">仿制图章</button>
         <span class="matting-brush-hint" id="brushHint">打开画笔，在窗户/书本里涂抹，实时还原被误删的风景</span>
         <button type="button" class="btn btn-sm btn-gray" id="brushUndo" style="display:none;margin-left:auto">撤销</button>
         <button type="button" class="btn btn-sm btn-gray" id="brushRedo" style="display:none">重做</button>
@@ -4745,7 +4743,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const brushDirLabel = document.getElementById('brushDirLabel');
   const wandTolLabel = document.getElementById('wandTolLabel');
   const wandTolVal = document.getElementById('wandTolVal');
-  const stampToolBtn = document.getElementById('stampToolBtn');
   const wmSourceMark = document.getElementById('wmSourceMark');
   const wmBrushRing = document.getElementById('wmBrushRing');
   let brushActive = false, brushDirty = false, brushDrawing = false, brushLast = null;
@@ -4763,8 +4760,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   let wmDrawing = false, wmLast = null;
   let wmWorking = null;             // 当前笔画正在编辑的 ImageData
   let wmRafPending = false;
-  let wmHard = 0.5;                 // 图章硬度 0=最柔(羽化) … 1=最硬(清晰实边)
-  let wmShiftToggleTimer = null;    // Shift 呼出/收起图章的延迟定时器（避免与 Shift+点击取样冲突）
+  let wmHard = 0;                   // 图章硬度 0=最柔(羽化) … 1=最硬(清晰实边)
   // 平移 / 缩放状态：V 键进入移动模式拖动平移，Cmd/Ctrl + 滚轮以光标为中心缩放
   let zoom = 1, panX = 0, panY = 0, panMode = false;
   let panOverlay = null;
@@ -4936,7 +4932,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       brushCtx.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
       brushDirty = false;
       if(brushBar) brushBar.style.display = '';
-      if(stampToolBtn){ stampToolBtn.style.display = (mattingMode === 'watermark') ? 'none' : ''; stampToolBtn.classList.remove('active'); }
       enableBrush();   // 出结果后默认开启画笔，用户可直接在窗内/书本涂抹，省一步点击
       // 新结果：退出移动模式并复位平移/缩放
       panMode = false;
@@ -5633,7 +5628,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     try { brushCanvas.setPointerCapture(e.pointerId); } catch(_){}
     const p = brushPos(e);
     if(e.altKey || e.shiftKey){
-      if(wmShiftToggleTimer){ clearTimeout(wmShiftToggleTimer); wmShiftToggleTimer = null; }  // 取消 Shift 收起，改为取样
       wmSetSource(p); return;
     }
     if(!wmSource){ if(typeof showToast === 'function') showToast('先按住 Alt 或 Shift 点击设置取样点', 'warn'); return; }
@@ -5709,7 +5703,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(wandTools) wandTools.style.display = 'none';
       if(wandTolLabel) wandTolLabel.style.display = 'none';
       if(brushDirLabel) brushDirLabel.style.display = 'none';
-      if(stampToolBtn){ stampToolBtn.style.display = 'none'; stampToolBtn.classList.remove('active'); }
       enableStamp({ fromMode: 'watermark' });
       prepareBase();
       if(brushHint) brushHint.textContent = '去水印：Alt 或 Shift+点击 取样，再涂抹覆盖水印；固定从取样点复制';
@@ -5723,7 +5716,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
-    if(stampToolBtn){ stampToolBtn.style.display = 'none'; stampToolBtn.classList.remove('active'); }
     if(brushHint) brushHint.textContent = '去水印模式：上传或粘贴图片后，Alt 或 Shift+点击 取样，再涂抹覆盖水印';
     if(currentSourceBlob){ wmLoadOriginal(currentSourceBlob); }
   }
@@ -5938,11 +5930,11 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   // 画笔事件（指针事件兼容鼠标 / 触摸）
   // 笔刷 / 容差滑块：拖到默认点附近时吸附到默认值
   if(brushSize) brushSize.addEventListener('input', function(){
-    if(Math.abs((+brushSize.value) - 34) <= 5) brushSize.value = 34;
+    if(Math.abs((+brushSize.value) - 10) <= 5) brushSize.value = 10;
     if(brushSizeVal) brushSizeVal.textContent = brushSize.value;
   });
   if(wmHardnessEl) wmHardnessEl.addEventListener('input', function(){
-    if(Math.abs((+wmHardnessEl.value) - 50) <= 5) wmHardnessEl.value = 50;
+    if(+wmHardnessEl.value <= 5) wmHardnessEl.value = 0;
     wmHard = (+wmHardnessEl.value) / 100;
     if(wmHardnessVal) wmHardnessVal.textContent = wmHardnessEl.value;
   });
@@ -5953,11 +5945,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   if(brushClear) brushClear.addEventListener('click', discardBrush);
   if(brushUndo) brushUndo.addEventListener('click', function(){ if(stampActive){ wmUndo(); return; } undoBrush(); });
   if(brushRedo) brushRedo.addEventListener('click', function(){ if(stampActive){ wmStepRedo(); return; } redoBrush(); });
-  if(stampToolBtn) stampToolBtn.addEventListener('click', function(){
-    if(!resultBlob){ if(typeof showToast === 'function') showToast('请先抠图或上传图片', 'warn'); return; }
-    if(stampActive){ disableStamp(); stampToolBtn.classList.remove('active'); }
-    else { enableStamp({ fromTool: true }); stampToolBtn.classList.add('active'); }
-  });
   if(brushDirLabel) brushDirLabel.addEventListener('click', toggleBrushDir);
   if(wandModeBtn) wandModeBtn.addEventListener('click', toggleWandMode);
   if(canvas) canvas.addEventListener('click', function(e){ if(wandActive) wandClick(e); });
@@ -5988,7 +5975,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(inField) return;
       if(!resultBlob) return;
       e.preventDefault();
-      if(key === 'y' || (key === 'z' && e.shiftKey)) redoBrush(); else undoBrush();
+      if(key === 'y' || (key === 'z' && e.shiftKey)){ if(stampActive) wmStepRedo(); else redoBrush(); }
+      else { if(stampActive) wmUndo(); else undoBrush(); }
       return;
     }
     // 单键快捷键：不在输入框、且无 Ctrl/Cmd/Alt 组合键时生效（Ctrl+S 等交给浏览器）
@@ -6021,22 +6009,10 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(resultBlob) zoomCenter(zoom / 1.25);
     } else if(key === '0'){               // 0：复位 100%
       if(resultBlob) zoomCenter(1);
-    } else if(key === 'shift'){           // Shift：开启/关闭「仿制图章」去水印工具
+    } else if(key === 'shift'){           // Shift：在「AI 抠图」与「去水印」模式间切换
       if(panMode) exitPanMode(false);
-      if(mattingMode === 'watermark') return;          // 去水印模式本就内置图章，不重复切换
-      if(!resultBlob){ if(typeof showToast==='function') showToast('先上传并处理图片再使用图章','warn'); return; }
-      if(stampActive){
-        // 延迟关闭：若紧接着 Shift+点击取样，则取消关闭（Shift 同时是取样修饰键）
-        if(wmShiftToggleTimer) clearTimeout(wmShiftToggleTimer);
-        wmShiftToggleTimer = setTimeout(function(){
-          disableStamp();
-          if(stampToolBtn) stampToolBtn.classList.remove('active');
-          wmShiftToggleTimer = null;
-        }, 220);
-      } else {
-        enableStamp({ fromTool: true });
-        if(stampToolBtn) stampToolBtn.classList.add('active');
-      }
+      if(mattingMode === 'watermark'){ applyMode('ai', true); }
+      else { selectWatermarkMode(); }
     }
   });
 
@@ -6265,7 +6241,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(stampActive) disableStamp();
     stampActive = false; wmSource = null; wmFirst = null; wmStack = []; wmHist = 0; wmRedo = []; wmDrawing = false; wmLast = null; wmWorking = null;
     if(wmSourceMark) wmSourceMark.style.display = 'none';
-    if(stampToolBtn) stampToolBtn.style.display = 'none';
     if(brushCanvas) brushCanvas.classList.remove('active');
     if(wandTools) wandTools.style.display = '';
     if(wandTolLabel) wandTolLabel.style.display = '';
