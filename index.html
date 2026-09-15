@@ -1127,7 +1127,7 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .matting-drop-title { font-size: 16px; font-weight: 600; }
 .matting-drop-sub { font-size: 12px; color: var(--text-muted); }
 .matting-canvas {
-  max-width: 100%; max-height: 600px;
+  max-width: 100%; max-height: min(76vh, 860px);
   display: block; margin: 0 auto;
   border-radius: 8px;
   /* 背景透明：透明区域透出 .cmp-canvas-wrap 的纯色中性底（仅图像内容缩放） */
@@ -1155,7 +1155,7 @@ body.dark .matting-progress-fill { background: linear-gradient(90deg, var(--prim
   color: #fff; background: #d9363e; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s, transform 0.1s;
 }
 .matting-stop:active { transform: translateY(1px); }
-.matting-footer { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.matting-footer { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
 .matting-hint { font-size: 12px; color: var(--text-muted); }
 .matting-sab { display: none; }
 .matting-modebar {
@@ -1202,7 +1202,7 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 /* 预览：左上角原图缩略图 + 居中放大结果 */
 .matting-sidebyside {
   position: relative; display: flex; align-items: center; justify-content: center;
-  width: 100%; min-height: 520px; padding: 12px; border-radius: 8px;
+  width: 100%; min-height: min(76vh, 860px); padding: 12px; border-radius: 8px;
 }
 .cmp-thumb {
   position: absolute; top: 12px; left: 12px; z-index: 10;
@@ -1280,7 +1280,7 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 .matting-sidebyside.thumb-clear .cmp-result { padding-left: 0; }
 .matting-sidebyside.comparing .cmp-thumb { opacity: 0.25; }
 .matting-sidebyside { overflow-anchor: none; }   /* 防止视口尺寸变化时浏览器滚动锚定跳动 */
-.cmp-canvas-wrap { flex-shrink: 0; }             /* 视口尺寸锁定，不被 flex 压缩 */
+.cmp-canvas-wrap { flex-shrink: 0; }             /* 外框尺寸随 zoom 变化，不被 flex 压缩 */
 /* 质量档：长按「AI 抠图」弹出的选择菜单（平时隐藏），向右弹出 */
 .mq-popup {
   display: none; position: absolute; top: calc(100% + 8px); right: 0; left: auto; bottom: auto;
@@ -1298,14 +1298,14 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 .mq-btn.active { border-color: transparent; color: #fff; background: var(--dopa-blue); }
 
 /* 交互式「保留画笔」 */
-/* 结果视口：尺寸固定（= 基准显示尺寸），缩放只作用于内层 .cmp-transform 图片层，
-   UI（标签/缩放条/工具条/页面布局）完全不受缩放影响；透明区域显示纯色中性底，不用棋盘格 */
+/* 结果外框（不锁定）：尺寸 = 基准显示尺寸 × zoom，随缩放自然放大/缩小（页面随之流动）；
+   透明区域显示纯色中性底，不用棋盘格 */
 .cmp-canvas-wrap { position: relative; display: inline-block; line-height: 0; max-width: 100%; border-radius: 8px; overflow: hidden;
   background-color: #eef0f3;
   box-shadow: inset 0 0 0 1px rgba(15,23,42,0.06);
 }
 body.dark .cmp-canvas-wrap { background-color: #1a1d23; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
-/* 变换层：承载平移/缩放 transform；外框 .cmp-canvas-wrap 锁定尺寸不缩放 */
+/* 变换层：承载平移/缩放 transform；外框 .cmp-canvas-wrap 尺寸跟随 zoom */
 .cmp-transform { position: relative; display: inline-block; transform-origin: 0 0; will-change: transform; }
 /* 复原标签：之前配色；仅当比例/位置已更改(dirty)且鼠标悬停在复原位置时才显示 */
 .zoom-bar { position: absolute; top: 8px; right: 8px; z-index: 6; display: inline-flex; align-items: center;
@@ -1324,7 +1324,8 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 /* 平移覆盖层：仅「移动模式」时启用 pointer-events，平时不拦截画笔/魔棒事件 */
 .matting-pan-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; cursor: grab; z-index: 5; }
 .matting-pan-overlay.grabbing { cursor: grabbing; }
-.matting-brushbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+.matting-brushbar { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; width: fit-content; max-width: 100%; margin: 12px auto 0; padding: 10px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+.matting-brushbar #brushUndo { margin-left: 2px !important; }
 .brush-size-label { font-size: 12px; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 6px; }
 .brush-size-label input[type=range] { width: 110px; }
 .brush-size-label.tool-active { color: var(--primary); font-weight: 700; }
@@ -5970,10 +5971,9 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       }
       if(wrapBaseW > 0 && wrapBaseH > 0){
         cmpWrap.style.maxWidth = 'none';
-        // 视口模型：外框锁定为基准显示尺寸，不随 zoom 变化——缩放只作用于内层图片层，
-        // 工具条/标签/页面布局保持原位，放大后靠平移（空格+拖动 / 中键拖动）查看其余部分
-        cmpWrap.style.width = wrapBaseW + 'px';
-        cmpWrap.style.height = wrapBaseH + 'px';
+        // 外框不锁定：容器尺寸 = 基准显示尺寸 × zoom，随缩放自然放大/缩小（布局随之流动）
+        cmpWrap.style.width = (wrapBaseW * zoom) + 'px';
+        cmpWrap.style.height = (wrapBaseH * zoom) + 'px';
         // 缩略图避让动态化：结果图矩形与左上角缩略图矩形（12,132，含 8px 余量）真实相交时
         // 才保留左内边距避让，否则去掉边距让结果真正居中
         if(mattingCompareEl){
@@ -5988,7 +5988,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     }
     cmpTransform.style.transformOrigin = '0 0';
     cmpTransform.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
-    // 视口底为纯色：外框不参与缩放，无需棋盘格反向补偿
+    // 底为纯色：透明区域透出容器底色，无需棋盘格反向补偿
     cmpWrap.style.backgroundSize = '';
     cmpWrap.style.backgroundPosition = '';
     // 比例/位置已更改时才允许「复原」浮现；复原后自动消失
