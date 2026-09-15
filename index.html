@@ -5552,7 +5552,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
-    if(brushHint) brushHint.textContent = 'Alt 或 Shift+点击 取样，然后涂抹覆盖目标；固定从取样点复制，不会偏移';
+    if(brushHint) brushHint.textContent = 'Alt 或 Shift+点击 取样（基准点），然后涂抹覆盖；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
     updateToolCursor();
     updateWmUndoButtons();
   }
@@ -5572,13 +5572,14 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   function wmLocalScale(){ return brushCanvas.clientWidth / (brushCanvas.width || 1); }
   function wmSetSource(p){
     wmSource = { x: Math.round(p[0]), y: Math.round(p[1]) };
+    wmFirst = null;                           // 重新取样后，下一笔重新锚定目标点（对齐模式）
     const sc = wmLocalScale();
     if(wmSourceMark){
       wmSourceMark.style.display = 'block';
       wmSourceMark.style.left = (wmSource.x * sc) + 'px';
       wmSourceMark.style.top  = (wmSource.y * sc) + 'px';
     }
-    if(brushHint) brushHint.textContent = '已取样：涂抹即从该点复制像素覆盖目标；可重复涂抹盖住更大区域';
+    if(brushHint) brushHint.textContent = '已取样：以该点为基准复制像素，涂抹时周围纹理随笔刷一起盖过来（对齐模式）';
   }
   function wmMoveCursor(e){
     if(!stampActive || !wmBrushRing) return;
@@ -5601,7 +5602,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     const W = wmWorking.width, H = wmWorking.height;
     const R = brushRadiusInternal();
     const cx = p[0], cy = p[1];
-    const sx0 = wmSource.x, sy0 = wmSource.y;   // 固定取样点：涂抹始终从取样点取像素覆盖目标
+    const fx = wmFirst ? wmFirst.x : cx, fy = wmFirst ? wmFirst.y : cy;   // 首绘点锚定（Photoshop 对齐模式）
+    const sx0 = wmSource.x + (cx - fx), sy0 = wmSource.y + (cy - fy);   // 取样点为基准，源区域随笔刷滑动，周围内容一起覆盖
     const d = wmWorking.data, od = wmOriginal.data, ow = wmOriginal.width, oh = wmOriginal.height;
     const x0 = Math.max(0, Math.floor(cx - R)), x1 = Math.min(W - 1, Math.ceil(cx + R));
     const y0 = Math.max(0, Math.floor(cy - R)), y1 = Math.min(H - 1, Math.ceil(cy + R));
@@ -5646,6 +5648,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       wmSetSource(p); return;
     }
     if(!wmSource){ if(typeof showToast === 'function') showToast('先按住 Alt 或 Shift 点击设置取样点', 'warn'); return; }
+    if(wmFirst === null) wmFirst = p;          // 本笔首绘点作为目标锚点（对齐模式）
     wmDrawing = true; wmLast = p; wmRedo = [];
     wmWorking = ctx.getImageData(0, 0, canvas.width, canvas.height);
     wmStampInto(p); wmSchedulePut();
@@ -5720,7 +5723,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(brushDirLabel) brushDirLabel.style.display = 'none';
       enableStamp({ fromMode: 'watermark' });
       prepareBase();
-      if(brushHint) brushHint.textContent = '去水印：Alt 或 Shift+点击 取样，再涂抹覆盖水印；固定从取样点复制';
+      if(brushHint) brushHint.textContent = '去水印：Alt 或 Shift+点击 取样（基准点），再涂抹覆盖水印；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
       syncView();
       fitTopWidth();
     }catch(e){ console.error(e); if(typeof showError === 'function') showError('去水印模式加载失败'); }
