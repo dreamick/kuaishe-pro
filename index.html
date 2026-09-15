@@ -1172,6 +1172,12 @@ body.dark .matting-progress-fill { background: linear-gradient(90deg, var(--prim
 .mp-btn { border: none; background: transparent; color: var(--text-secondary); font-size: 12px; font-weight: 600; height: 28px; line-height: 1; padding: 0 14px; border-radius: 7px; cursor: pointer; transition: all 0.15s; }
 .mp-btn.active { background: var(--dopa-blue); color: #fff; }
 body.dark .mp-btn.active { background: var(--dopa-blue); color: #fff; }
+.mp-btn.mp-bg.active { background: #10b981; color: #fff; }
+.mp-btn.mp-wm.active { background: #3b82f6; color: #fff; }
+.mp-btn.mp-ai.active { background: var(--primary); color: #fff; }
+body.dark .mp-btn.mp-bg.active { background: #10b981; color: #fff; }
+body.dark .mp-btn.mp-wm.active { background: #3b82f6; color: #fff; }
+body.dark .mp-btn.mp-ai.active { background: var(--primary); color: #fff; }
 /* 批量结果网格 */
 .matting-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
 .mq-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; transition: border-color .15s; }
@@ -1200,14 +1206,22 @@ body.dark .mq-card-cell { background: #0f1620; }
 .matting-batchbar { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
 body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 .matting-batch-info { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
-/* 并排预览：左原图 / 右结果（无拖动条） */
+/* 预览：左上角原图缩略图 + 居中放大结果 */
 .matting-sidebyside {
-  display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; justify-content: center;
-  padding: 4px; border-radius: 8px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 520px; padding: 12px; border-radius: 8px;
 }
-.cmp-cell {
-  position: relative; flex: 1 1 260px; min-width: 0;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
+.cmp-thumb {
+  position: absolute; top: 12px; left: 12px; z-index: 10;
+  width: 120px; height: 120px; border-radius: 8px; overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+}
+.cmp-thumb .cmp-base { display: block; max-width: 100%; max-height: 100%; border-radius: 0; }
+.cmp-thumb .cmp-tag { top: 4px; left: 4px; font-size: 9px; padding: 1px 5px; }
+.cmp-result {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  max-width: 100%; padding-left: 136px; /* 为左上角缩略图留出空间，避免重叠 */
 }
 .cmp-base { display: block; max-width: 100%; max-height: 560px; border-radius: 8px; }
 .cmp-tag {
@@ -1217,9 +1231,10 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
   padding: 2px 7px; border-radius: 4px; line-height: 1.3; pointer-events: none;
   letter-spacing: 0.4px;
 }
+.cmp-tag-res { left: auto; right: 6px; }
 /* 质量档：长按「AI 抠图」弹出的选择菜单（平时隐藏），向右弹出 */
 .mq-popup {
-  display: none; position: absolute; top: 0; left: calc(100% + 8px); bottom: auto;
+  display: none; position: absolute; top: calc(100% + 8px); right: 0; left: auto; bottom: auto;
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   padding: 8px; z-index: 20; min-width: 100px;
@@ -1607,10 +1622,9 @@ body.dark .ai-field input { background:#141e2d; }
       <div class="matting-modebar" id="mattingModeBar">
         <div class="matting-pickwrap" id="mattingPickWrap">
           <div class="matting-modepick" id="mattingModePick">
-            <button type="button" class="mp-btn" data-mode="white">白底</button>
-            <button type="button" class="mp-btn" data-mode="solid">纯色底</button>
-            <button type="button" class="mp-btn active" data-mode="ai">AI 抠图</button>
-            <button type="button" class="mp-btn" data-mode="watermark">去水印</button>
+            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 K：在白底 / 纯色底之间切换">白底</button>
+            <button type="button" class="mp-btn mp-wm" data-mode="watermark">去水印</button>
+            <button type="button" class="mp-btn mp-ai" data-mode="ai">AI 抠图</button>
           </div>
           <div class="mq-popup" id="mqPopup">
             <button class="mq-btn" data-model="isnet_quint8" data-res="1280">快速</button>
@@ -1627,13 +1641,13 @@ body.dark .ai-field input { background:#141e2d; }
           <div class="matting-drop-sub">可一次拖入多张，串行批量抠图（下载方式见「自动下载」开关）；建议纯色背景效果最佳</div>
         </div>
         <div class="matting-sidebyside" id="mattingCompare" style="display:none">
-          <div class="cmp-cell">
+          <div class="cmp-thumb" id="cmpThumb">
             <span class="cmp-tag">原图</span>
             <img class="cmp-base" id="cmpBase" alt="原图">
           </div>
-          <div class="cmp-cell">
-            <span class="cmp-tag">结果</span>
+          <div class="cmp-result">
             <div class="cmp-canvas-wrap" id="cmpCanvasWrap">
+              <span class="cmp-tag cmp-tag-res">结果</span>
               <div class="cmp-transform" id="cmpTransform">
                 <canvas id="mattingCanvas" class="matting-canvas"></canvas>
                 <canvas id="brushCanvas" class="brush-canvas"></canvas>
@@ -4718,6 +4732,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const modePick = document.getElementById('mattingModePick');
   const qualityBox = document.getElementById('mattingQuality');
   const mpBtns = document.querySelectorAll('.mp-btn');
+  const bgModeBtn = document.getElementById('bgModeBtn');
   const ctx = canvas.getContext('2d');
   const compareEl = document.getElementById('mattingCompare');
   const cmpBase = document.getElementById('cmpBase');
@@ -4816,7 +4831,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   let currentMaxDim = 1536;       // 输入压缩上限（质量档联动）
   let currentModel = 'crispcut';   // 抠图模型：isnet_quint8(快) / isnet_fp16(标准) / isnet(高清) / crispcut(设计·BiRefNet蒸馏，默认保主体)
   let preloaded = false;
-  let mattingMode = 'ai';      // 抠图模式：ai(通用 AI 模型) / solid(纯色底色键算法，离线秒出) / white(快速去白底，固定阈值)
+  let mattingMode = 'white';   // 抠图模式：ai(通用 AI 模型) / solid(纯色底色键算法，离线秒出) / white(快速去白底，固定阈值)
   let queueActive = false;     // 是否处于批量处理（影响 loading 遮罩与停止按钮的归属）
   let queueTotal = 0, queueDone = 0;
   // 并排预览固定为「左原图 / 右结果」，不再有对比/结果切换
@@ -6009,6 +6024,15 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(resultBlob) zoomCenter(zoom / 1.25);
     } else if(key === '0'){               // 0：复位 100%
       if(resultBlob) zoomCenter(1);
+    } else if(key === 'k'){               // K：在白底 / 纯色底之间切换
+      if(panMode) exitPanMode(false);
+      if(stampActive) disableStamp();
+      const nextMode = toggleBgMode();
+      if(!currentSourceBlob){ if(typeof showToast === 'function') showToast('请先上传图片','warn'); return; }
+      if(busy){ if(typeof showToast === 'function') showToast('正在处理中，请稍候','warn'); return; }
+      if(nextMode === 'solid'){ if(typeof showToast === 'function') showToast('正在按纯色底重新处理…','info'); }
+      else { if(typeof showToast === 'function') showToast('正在快速去除白底…','info'); }
+      processImage(currentSourceBlob);
     } else if(key === 'shift'){           // Shift：在「AI 抠图」与「去水印」模式间切换
       if(panMode) exitPanMode(false);
       if(mattingMode === 'watermark'){ applyMode('ai', true); }
@@ -6168,6 +6192,17 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(persist){ try { localStorage.setItem(MATTING_MODE_KEY, mode); } catch(e){} }
     updateBgGroup(mode);
   }
+  function setBgButton(mode){
+    if(!bgModeBtn) return;
+    bgModeBtn.dataset.mode = mode;
+    bgModeBtn.textContent = (mode === 'solid') ? '纯色底' : '白底';
+  }
+  function toggleBgMode(){
+    const next = (mattingMode === 'solid') ? 'white' : 'solid';
+    setBgButton(next);
+    applyMode(next, true);
+    return next;
+  }
   mpBtns.forEach(function(b){
     b.addEventListener('click', function(){
       // 长按「AI 抠图」已弹出档位菜单（lpFired），此处吞掉本次 click，不切换模式
@@ -6175,7 +6210,9 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       var mode = b.dataset.mode;
       if(mode === 'watermark'){ selectWatermarkMode(); return; }
       if(stampActive) disableStamp();
-      applyMode(mode, true);
+      // 背景底按钮：点击在白底 / 纯色底之间切换
+      if(mode === 'white' || mode === 'solid'){ mode = toggleBgMode(); }
+      else { applyMode(mode, true); }
       if(!currentSourceBlob){ if(typeof showToast === 'function') showToast('请先上传图片','warn'); return; }
       if(busy){ if(typeof showToast === 'function') showToast('正在处理中，请稍候','warn'); return; }
       if(mode === 'solid'){ if(typeof showToast === 'function') showToast('正在按纯色底重新处理…','info'); }
@@ -6187,8 +6224,12 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   (function restoreMattingMode(){
     let saved;
     try { saved = localStorage.getItem(MATTING_MODE_KEY); } catch(e){ saved = null; }
-    if(saved === 'white' || saved === 'solid' || saved === 'ai'){ applyMode(saved, false); }
-    else { updateBgGroup(mattingMode); }
+    if(saved === 'white' || saved === 'solid' || saved === 'ai'){
+      if(saved === 'white' || saved === 'solid') setBgButton(saved);
+      applyMode(saved, false);
+    } else {
+      updateBgGroup(mattingMode);
+    }
   })();
   // 顶部「白底 / 纯色底 / AI抠图」按钮组已统一由上方 mpBtns 绑定处理（各自点击即按该方式处理当前图）
 
