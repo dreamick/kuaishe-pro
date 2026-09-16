@@ -1654,8 +1654,8 @@ body.dark .ai-field input { background:#141e2d; }
       <div class="matting-modebar" id="mattingModeBar">
         <div class="matting-pickwrap" id="mattingPickWrap">
           <div class="matting-modepick" id="mattingModePick">
-            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 K：在白底 / 纯色底之间切换">白底</button>
-            <button type="button" class="mp-btn mp-wm" data-mode="watermark">去水印</button>
+            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 Z：在白底 / 纯色底之间切换">白底</button>
+            <button type="button" class="mp-btn mp-wm" data-mode="watermark" title="快捷键 Shift：进入去水印模式（按 Z 返回白底）">去水印</button>
             <button type="button" class="mp-btn mp-ai" data-mode="ai">AI 抠图</button>
           </div>
           <div class="mq-popup" id="mqPopup">
@@ -5624,7 +5624,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
-    if(brushHint) brushHint.textContent = 'Alt 或 Shift+点击 取样（基准点），然后涂抹覆盖；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
+    if(brushClear) brushClear.style.display = 'none';   // 去水印：屏蔽画笔「清除」（其依赖抠图基图，会污染结果）
+    if(brushHint) brushHint.textContent = 'Shift+点击 取样（基准点），然后涂抹覆盖；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
     updateToolCursor();
     updateWmUndoButtons();
   }
@@ -5637,6 +5638,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = '';
     if(wandTolLabel) wandTolLabel.style.display = '';
     if(brushDirLabel) brushDirLabel.style.display = '';
+    if(brushClear) brushClear.style.display = '';
     wmSource = null; wmFirst = null; wmStack = []; wmHist = 0; wmRedo = []; wmWorking = null;
     updateToolCursor();
     enableBrush();
@@ -5726,7 +5728,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(e.altKey || e.shiftKey){
       wmSetSource(p); return;
     }
-    if(!wmSource){ if(typeof showToast === 'function') showToast('先按住 Alt 或 Shift 点击设置取样点', 'warn'); return; }
+    if(!wmSource){ if(typeof showToast === 'function') showToast('请先按住 Shift 点击设置取样点', 'warn'); return; }
     if(wmFirst === null) wmFirst = { x: p[0], y: p[1] };   // 本笔首绘点作为目标锚点（对象，与 wmStampInto 的读取方式一致）
     wmPainted = false;                        // 本笔是否真的写入了像素（用于“没反应”时提示）
     wmDrawing = true; wmLast = p; wmRedo = [];
@@ -5751,7 +5753,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     wmDrawing = false; wmLast = null;
     if(wasDrawing && !wmPainted && wmSource){
       // 本笔一个像素都没写入：通常是「对齐」偏移后取样区域整体在画面外
-      if(typeof showToast === 'function') showToast('取样区域已偏移到画面外，请重新 Alt/Shift 取样后涂抹', 'warn');
+      if(typeof showToast === 'function') showToast('取样区域已偏移到画面外，请重新 Shift 取样后涂抹', 'warn');
     }
     wmCommit();
     const snap = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -5808,7 +5810,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(brushDirLabel) brushDirLabel.style.display = 'none';
       enableStamp({ fromMode: 'watermark' });
       prepareBase();
-      if(brushHint) brushHint.textContent = '去水印：Alt 或 Shift+点击 取样（基准点），再涂抹覆盖水印；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
+      if(brushHint) brushHint.textContent = '去水印：Shift+点击 取样（基准点），再涂抹覆盖水印；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
       syncView();
       fitTopWidth();
     }catch(e){ console.error(e); if(typeof showError === 'function') showError('去水印模式加载失败'); }
@@ -5819,7 +5821,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
-    if(brushHint) brushHint.textContent = '去水印模式：上传或粘贴图片后，Alt 或 Shift+点击 取样，再涂抹覆盖水印';
+    if(brushHint) brushHint.textContent = '去水印模式：上传或粘贴图片后，Shift+点击 取样，再涂抹覆盖水印';
     if(currentSourceBlob){ wmLoadOriginal(currentSourceBlob); }
   }
   // 用「笔刷 / 容差」文字高亮表示当前激活的工具（画笔→高亮笔刷，魔棒→高亮容差）；画笔按钮已隐藏
@@ -5848,6 +5850,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   }
   // 统一切换画笔开关的 UI 状态（显示 / 事件 / 提示文案）
   function enableBrush(){
+    if(stampActive) return;          // 去水印（图章）模式下屏蔽画笔
     if(wandActive) disableWand();
     brushActive = true;
     brushCanvas.classList.add('active');
@@ -5863,6 +5866,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     updateToolCursor();
   }
   function enableWand(initialMode){
+    if(stampActive) return;          // 去水印（图章）模式下屏蔽魔棒
     if(brushActive) disableBrush();
     wandActive = true;
     if(initialMode) wandMode = initialMode;   // 点击「保留/删除」标签直接以该模式开启
@@ -6067,6 +6071,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   }
   function dist2(r1,g1,b1,r2,g2,b2){ const dr=r1-r2,dg=g1-g2,db=b1-b2; return dr*dr+dg*dg+db*db; }
   async function wandClick(e){
+    if(stampActive) return;          // 去水印（图章）模式下屏蔽魔棒
     if(!resultBlob || !currentWorkBlob) return;
     const rect = canvas.getBoundingClientRect();
     const cx = Math.floor((e.clientX - rect.left) / rect.width * canvas.width);
@@ -6215,6 +6220,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(inField || e.ctrlKey || e.metaKey || e.altKey) return;
     if(e.repeat) return;             // 长按不重复触发
     if(e.shiftKey && key !== 'shift') return;   // Shift+其他键不触发单键快捷键（仅独立 Shift 用于图章）
+    if(mattingMode === 'watermark' && (key === 'b' || key === 'w' || key === 'm')) return;   // 去水印模式：屏蔽画笔 / 魔棒快捷键
     if(key === 'b'){                      // B：画笔开启 + 方向切换；开启后只在「增加/减去」间循环，不自动关闭
       if(panMode) exitPanMode(false);     // 先退出移动模式
       if(!brushActive){                   // 关 → 增加：开启画笔，默认还原误删
@@ -6241,8 +6247,18 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(resultBlob) zoomCenter(zoom / 1.25);
     } else if(key === '0'){               // 0：完整复位（100% 且回归视口原点）
       if(resultBlob) resetTransform();
-    } else if(key === 'k'){               // K：在白底 / 纯色底之间切换
+    } else if(key === 'z'){               // Z：白底 / 纯色底切换；去水印模式下按 Z 回到白底
       if(panMode) exitPanMode(false);
+      if(mattingMode === 'watermark'){    // 去水印 → 白底
+        if(stampActive) disableStamp();
+        setBgButton('white');
+        applyMode('white', true);
+        if(!currentSourceBlob){ if(typeof showToast === 'function') showToast('请先上传图片','warn'); return; }
+        if(busy){ if(typeof showToast === 'function') showToast('正在处理中，请稍候','warn'); return; }
+        if(typeof showToast === 'function') showToast('正在快速去除白底…','info');
+        processImage(currentSourceBlob);
+        return;
+      }
       if(stampActive) disableStamp();
       const nextMode = toggleBgMode();
       if(!currentSourceBlob){ if(typeof showToast === 'function') showToast('请先上传图片','warn'); return; }
@@ -6250,7 +6266,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(nextMode === 'solid'){ if(typeof showToast === 'function') showToast('正在按纯色底重新处理…','info'); }
       else { if(typeof showToast === 'function') showToast('正在快速去除白底…','info'); }
       processImage(currentSourceBlob);
-    } else if(key === 'shift'){           // Shift：切换到「去水印」模式（已在该模式下不再切回 AI 抠图）
+    } else if(key === 'shift'){           // Shift：切换到「去水印」模式（进入后用 Z 返回白底）
       if(panMode) exitPanMode(false);
       if(mattingMode !== 'watermark'){ selectWatermarkMode(); }
     }
@@ -6509,11 +6525,12 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   (function restoreMattingMode(){
     let saved;
     try { saved = localStorage.getItem(MATTING_MODE_KEY); } catch(e){ saved = null; }
-    if(saved === 'white' || saved === 'solid' || saved === 'ai'){
-      if(saved === 'white' || saved === 'solid') setBgButton(saved);
-      applyMode(saved, false);
+    // 抠图默认白底（按 Z 在白底/纯色底间切换，故不记忆纯色底）；仅记忆 AI 模式，避免每次重选模型
+    if(saved === 'ai'){
+      applyMode('ai', false);
     } else {
-      updateBgGroup(mattingMode);
+      setBgButton('white');
+      applyMode('white', false);
     }
   })();
   // 顶部「白底 / 纯色底 / AI抠图」按钮组已统一由上方 mpBtns 绑定处理（各自点击即按该方式处理当前图）
