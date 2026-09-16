@@ -5946,7 +5946,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     updateCmpSliderClip();
   }
   // ---- 平移 / 缩放（作用于结果画布容器 .cmp-canvas-wrap）----
-  const MIN_ZOOM = 0.1, MAX_ZOOM = 16;
+  const MIN_ZOOM = 1, MAX_ZOOM = 16;   // 预览框最小缩到图片 100%（基准显示）大小：不允许缩得比原图更小
   const zoomLabel = document.getElementById('zoomLabel');
   function clampZoom(z){ return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z)); }
   // 预览框锁定：外框 .cmp-canvas-wrap 不超过预览区可用宽高（自适应网页），超出部分框内裁切、空格/中键/V 平移查看
