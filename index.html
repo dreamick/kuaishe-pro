@@ -1254,6 +1254,7 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
   position: absolute; bottom: 14px; font-size: 11px; font-weight: 600; line-height: 1.4;
   color: rgba(255,255,255,0.95);
   background: rgba(22,26,34,0.40);
+  opacity: 0.3; transition: opacity 0.18s ease;   /* 默认半透明，鼠标移入对比图才完整显示 */
   -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
   border: 1px solid rgba(255,255,255,0.30);
   padding: 4px 12px; border-radius: 999px; pointer-events: none; letter-spacing: 0.5px; z-index: 3;
@@ -1261,17 +1262,7 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 }
 .cmp-slider-tag.left { left: 14px; }
 .cmp-slider-tag.right { right: 14px; }
-.cmp-slider-close {
-  position: absolute; top: 12px; right: 12px; z-index: 4;
-  width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.30);
-  background: rgba(22,26,34,0.40);
-  -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
-  color: rgba(255,255,255,0.95); font-size: 12px; line-height: 1;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.14); transition: background 0.15s ease;
-}
-.cmp-slider-close:hover { background: rgba(22,26,34,0.62); }
+.cmp-slider:hover .cmp-slider-tag { opacity: 1; }
 /* 对比模式开启时隐藏结果标签与缩放条，避免重叠 */
 .cmp-canvas-wrap.slider-on > .zoom-bar,
 .cmp-canvas-wrap.slider-on > .cmp-tag-res { visibility: hidden; }
@@ -1709,7 +1700,6 @@ body.dark .ai-field input { background:#141e2d; }
                 <span class="cmp-slider-tag left">原图</span>
                 <span class="cmp-slider-tag right">结果</span>
                 <div class="cmp-slider-line" id="cmpSliderLine"><span class="cmp-slider-knob">&#9664;&#9654;</span></div>
-                <button type="button" class="cmp-slider-close" id="cmpSliderClose" title="退出对比（Esc）">&#10005;</button>
               </div>
             </div>
           </div>
@@ -4805,7 +4795,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const cmpSliderResEl = document.getElementById('cmpSliderRes');
   const cmpSliderBaseEl = document.getElementById('cmpSliderBase');
   const cmpSliderLine = document.getElementById('cmpSliderLine');
-  const cmpSliderClose = document.getElementById('cmpSliderClose');
   // 交互式「保留画笔」相关
   const brushCanvas = document.getElementById('brushCanvas');
   const brushCtx = brushCanvas.getContext('2d');
@@ -6331,10 +6320,6 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   if(cmpThumb) cmpThumb.addEventListener('click', function(){
     if(cmpSliderOn) closeCmpSlider(); else openCmpSlider();
   });
-  if(cmpSliderClose){
-    cmpSliderClose.addEventListener('pointerdown', function(e){ e.stopPropagation(); });
-    cmpSliderClose.addEventListener('click', function(e){ e.stopPropagation(); closeCmpSlider(); });
-  }
   if(cmpSlider){
     let cmpDragging = false;
     function cmpPosFromX(clientX){
