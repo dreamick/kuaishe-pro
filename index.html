@@ -1290,12 +1290,28 @@ body.dark .matting-batchbar { background: #1c2530; border-color: #2a3340; }
 
 /* 交互式「保留画笔」 */
 /* 结果外框（不锁定）：尺寸 = 基准显示尺寸 × zoom，随缩放自然放大/缩小（页面随之流动）；
-   透明区域显示纯色中性底，不用棋盘格 */
+   透明区域显示「透明图层通用棋盘格」（明暗两套），对齐设计软件透明底惯例 */
 .cmp-canvas-wrap { position: relative; display: inline-block; line-height: 0; max-width: 100%; border-radius: 8px; overflow: hidden;
-  background-color: #eef0f3;
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(45deg, #d2d6dc 25%, transparent 25%),
+    linear-gradient(-45deg, #d2d6dc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #d2d6dc 75%),
+    linear-gradient(-45deg, transparent 75%, #d2d6dc 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
   box-shadow: inset 0 0 0 1px rgba(15,23,42,0.06);
 }
-body.dark .cmp-canvas-wrap { background-color: #1a1d23; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
+body.dark .cmp-canvas-wrap {
+  background-color: #1c1f25;
+  background-image:
+    linear-gradient(45deg, #2b2f37 25%, transparent 25%),
+    linear-gradient(-45deg, #2b2f37 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2b2f37 75%),
+    linear-gradient(-45deg, transparent 75%, #2b2f37 75%);
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
 /* 变换层：承载平移/缩放 transform；外框 .cmp-canvas-wrap 尺寸跟随 zoom */
 .cmp-transform { position: relative; display: inline-block; transform-origin: 0 0; will-change: transform; }
 /* 复原标签：之前配色；仅当比例/位置已更改(dirty)且鼠标悬停在复原位置时才显示 */
@@ -1719,7 +1735,7 @@ body.dark .ai-field input { background:#141e2d; }
       </div>
       <div class="matting-grid" id="mattingGrid" style="display:none"></div>
       <div class="matting-brushbar" id="mattingBrushBar" style="display:none">
-        <label class="brush-size-label" id="brushSizeLabel">笔刷 <input type="range" id="brushSize" min="8" max="120" value="50"> <span id="brushSizeVal">50</span></label>
+        <label class="brush-size-label" id="brushSizeLabel">笔刷 <input type="range" id="brushSize" min="8" max="120" value="25"> <span id="brushSizeVal">25</span></label>
         <label class="brush-size-label" id="wmHardnessLabel" style="display:none">硬度 <input type="range" id="wmHardness" min="0" max="100" value="0"> <span id="wmHardnessVal">0</span></label>
         <span class="brush-dir-label add" id="brushDirLabel">增加</span>
         <label class="brush-size-label" id="wandTolLabel">容差 <input type="range" id="wandTolerance" min="0" max="255" value="40"> <span id="wandTolVal">40</span></label>
@@ -3347,6 +3363,16 @@ document.addEventListener('keydown', function(e) {
     if (colorTab && colorTab.classList.contains('active') && typeof window.colorPickScreen === 'function') {
       e.preventDefault();
       window.colorPickScreen();
+    }
+  }
+  // [ ] : 极速抠图笔刷大小（步进 5，[ 缩小 / ] 放大）；输入框/文本框中不拦截
+  if (e.key === '[' || e.key === ']') {
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    var mt = document.querySelector('.tab-item[data-tab="matting"]');
+    if (mt && mt.classList.contains('active') && typeof window.mattingAdjustBrush === 'function') {
+      e.preventDefault();
+      window.mattingAdjustBrush(e.key === ']' ? 5 : -5);
     }
   }
 });
@@ -6134,9 +6160,30 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   // 画笔事件（指针事件兼容鼠标 / 触摸）
   // 笔刷 / 容差滑块：拖到默认点附近时吸附到默认值
   if(brushSize) brushSize.addEventListener('input', function(){
-    if(Math.abs((+brushSize.value) - 50) <= 5) brushSize.value = 50;
+    if(Math.abs((+brushSize.value) - 25) <= 5) brushSize.value = 25;
     if(brushSizeVal) brushSizeVal.textContent = brushSize.value;
   });
+  // 键盘 [ ] 调整笔刷大小（由全局 keydown 调用）；步进 5，越界钳制，不触发滑块吸附
+  window.mattingAdjustBrush = function(delta){
+    if(!brushSize) return;
+    const min = +brushSize.min || 8, max = +brushSize.max || 120;
+    let v = (+brushSize.value) + delta;
+    v = Math.max(min, Math.min(max, v));
+    brushSize.value = v;
+    if(brushSizeVal) brushSizeVal.textContent = v;
+    // 去水印（图章）模式下实时跟随环尺寸
+    if(stampActive && wmBrushRing && wmBrushRing.style.display === 'block' && typeof wmLocalScale === 'function'){
+      const sc = wmLocalScale();
+      const R = brushRadiusInternal() * sc;
+      const left = parseFloat(wmBrushRing.style.left) || 0, top = parseFloat(wmBrushRing.style.top) || 0;
+      const cx = left + R, cy = top + R;
+      wmBrushRing.style.width = (R * 2) + 'px';
+      wmBrushRing.style.height = (R * 2) + 'px';
+      wmBrushRing.style.left = (cx - R) + 'px';
+      wmBrushRing.style.top  = (cy - R) + 'px';
+    }
+  };
+
   if(wmHardnessEl) wmHardnessEl.addEventListener('input', function(){
     if(+wmHardnessEl.value <= 5) wmHardnessEl.value = 0;
     wmHard = (+wmHardnessEl.value) / 100;
