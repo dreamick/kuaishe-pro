@@ -811,7 +811,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.4.8 转换风格卡片：暖橙底色 + 标题同系深色（与三列卡片的「底色+深标题」保持一致） */
 #promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#FFF7F0 0%,#FFE9D6 100%);border-color:rgba(214,138,66,.30)}
-#promptStyleCol .prompt-param-card-title{padding-left:18px} /* v4.7.2 标题与三列卡片标题文字（拖拽把手后）左端对齐 */
+#promptStyleCol .prompt-param-card-title{padding-left:0;margin-left:-4px} /* 与「背景风格」标题文本左对齐（拖拽把手已删除，旧 18px 偏移作废；-4px 抵消卡片 14px 与列 10px 的 padding 差） */
 #promptStyleCol .prompt-param-card-title{color:#B4621F}
 .prompt-param-options{display:flex;gap:4px;flex-wrap:wrap;flex:1}
 .prompt-param-btn{padding:4px 9px;border:1px solid var(--prompt-border);border-radius:8px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:var(--prompt-transition);font-family:inherit;white-space:nowrap}
