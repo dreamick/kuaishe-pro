@@ -807,9 +807,6 @@ body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(2
 .prompt-subgroup:last-child{margin-bottom:0}
 body.dark .prompt-subgroup-title{color:var(--text-muted)}
 /* 收藏标签不再显示装饰星号（已移除） */
-.prompt-drag-handle{cursor:grab;color:var(--prompt-text-muted);font-size:14px;letter-spacing:1px;user-select:none;flex-shrink:0;line-height:1;padding:0 2px}
-.prompt-drag-handle:active{cursor:grabbing}
-.prompt-collapsible.dragging{opacity:.5}
 .prompt-param-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.4.8 转换风格卡片：暖橙底色 + 标题同系深色（与三列卡片的「底色+深标题」保持一致） */
@@ -955,7 +952,6 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
   gap:6px;
   background:transparent;
 }
-#promptProductInputCard .prompt-drag-handle,
 #promptProductInputCard .prompt-arrow{display:none;}
 #promptProductInputCard .prompt-collapsible-header .prompt-title{
   flex:0 0 auto;
@@ -3683,7 +3679,7 @@ quickPromptText:'',
 
 function collapsibleHTML(c,bodyHtml){
   var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-  var header='<div class="prompt-collapsible-header"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+c.tcolor+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
+  var header='<div class="prompt-collapsible-header"><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+c.tcolor+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
   return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="background:'+c.gradient+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
@@ -3692,7 +3688,7 @@ var COL_TITLE_COLOR={background:'#9B4513',subject:'#A33646',typography:'#2C5286'
 function flatGroupHTML(c,bodyHtml,extraTitleHtml,sec){
   var tcol=(sec&&COL_TITLE_COLOR[sec])||c.tcolor||c.color||'#9B4513';
   // v4.4.8 「+」紧跟分组标题右侧；自定义描述框（如有）靠右排
-  var title='<div class="prompt-flat-title"><span class="prompt-drag-handle">&#8285;&#8285;</span><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+tcol+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+(extraTitleHtml||'')+'</div>';
+  var title='<div class="prompt-flat-title"><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+tcol+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+(extraTitleHtml||'')+'</div>';
   return '<div class="prompt-flat-group">'+title+bodyHtml+'</div>';
 }
 // Build three columns
@@ -3926,130 +3922,7 @@ if(promptNavBar){
 // Collapse
 PSS('.prompt-collapsible-header').forEach(function(h){var body=h.nextElementSibling,arrow=h.querySelector('.prompt-arrow');if(body&&body.classList.contains('open')&&arrow)arrow.classList.add('open');h.addEventListener('click',function(){var b=this.nextElementSibling,a=this.querySelector('.prompt-arrow');if(b)b.classList.toggle('open');if(a)a.classList.toggle('open');});});
 
-// ====== Drag collapsible ======
-var dragEl=null,_dragEvt=null,_dragRAF=0;
-document.addEventListener('mousedown',function(e){
-  var h=e.target.closest('.prompt-drag-handle');if(!h)return;
-  dragEl=h.closest('.prompt-collapsible,.prompt-flat-group');if(!dragEl)return;
-  e.preventDefault();dragEl.classList.add('dragging');
-  document.addEventListener('mousemove',_onDragMove);
-  document.addEventListener('mouseup',_onDragUp);
-});
-function _onDragMove(e){
-  _dragEvt=e;
-  if(_dragRAF)return;
-  _dragRAF=requestAnimationFrame(_doDragReflow);
-}
-function _doDragReflow(){
-  _dragRAF=0;
-  var e=_dragEvt;if(!e||!dragEl)return;
-  var t=e.target.closest('.prompt-collapsible,.prompt-flat-group');
-  if(t&&t!==dragEl){
-    var parent=dragEl.parentNode;
-    // Grid 容器按水平方向判断（产品 tab 的 5 列横向排列），其余按垂直方向判断
-    var horizontal=(parent&&getComputedStyle(parent).display==='grid');
-    var r=t.getBoundingClientRect();
-    if(horizontal){
-      var mx=r.left+r.width/2;
-      e.clientX<mx?parent.insertBefore(dragEl,t):parent.insertBefore(dragEl,t.nextSibling);
-    }else{
-      var my=r.top+r.height/2;
-      e.clientY<my?parent.insertBefore(dragEl,t):parent.insertBefore(dragEl,t.nextSibling);
-    }
-  }
-}
-function _onDragUp(){
-  if(dragEl){dragEl.classList.remove('dragging');dragEl=null;}
-  document.removeEventListener('mousemove',_onDragMove);
-  document.removeEventListener('mouseup',_onDragUp);
-  if(_dragRAF){cancelAnimationFrame(_dragRAF);_dragRAF=0;}
-  saveColOrder();   // 拖动结束后保存板块顺序
-}
 
-// ====== 板块顺序持久化（拖动后保存，下次打开恢复）======
-var COL_ORDER_KEY='mergedPromptColOrder';
-var COL_ORDER_MAP={promptColBgScroll:'background',promptColElementScroll:'subject',promptColFontScroll:'typography'};
-function _getCollapsibleKey(el){
-  var t=el.querySelector('.prompt-title');
-  if(!t) return '';
-  for(var i=0;i<t.childNodes.length;i++){
-    var n=t.childNodes[i];
-    if(n.nodeType===3){var s=n.textContent.trim();if(s)return s;}
-  }
-  return t.textContent.trim();
-}
-function saveColOrder(){
-  try{
-    var order={};
-    Object.keys(COL_ORDER_MAP).forEach(function(id){
-      var c=PS('#'+id);if(!c)return;
-      var els=c.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group');
-      order[COL_ORDER_MAP[id]]=Array.prototype.map.call(els,_getCollapsibleKey);
-    });
-    // 产品列：板块在 .prompt-product-column 内
-    var pc=PS('#promptProductLayout');
-    if(pc){
-      var pl=pc.querySelector('.prompt-product-col-layout');
-      if(pl){
-        var els=[];
-        pl.querySelectorAll('.prompt-product-column').forEach(function(col){
-          col.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(el){ els.push(el); });
-        });
-        order.product=els.map(_getCollapsibleKey);
-      }
-    }
-    localStorage.setItem(COL_ORDER_KEY,JSON.stringify(order));
-  }catch(_){}
-}
-function restoreColOrder(){
-  try{
-    var order=JSON.parse(localStorage.getItem(COL_ORDER_KEY)||'{}');
-    if(!order||typeof order!=='object')return;
-    Object.keys(COL_ORDER_MAP).forEach(function(id){
-      var key=COL_ORDER_MAP[id];var saved=order[key];if(!saved||!saved.length)return;
-      var c=PS('#'+id);if(!c)return;
-      saved.forEach(function(k){
-        if(!k)return;
-        var found=null;
-        c.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(e){
-          if(!found&&_getCollapsibleKey(e)===k)found=e;
-        });
-        if(found)c.appendChild(found);   // appendChild 移动元素到末尾，按 saved 顺序依次追加即恢复
-      });
-    });
-    // 产品列
-    var pc=PS('#promptProductLayout');
-    if(pc&&order.product&&order.product.length){
-      var pl=pc.querySelector('.prompt-product-col-layout');
-      if(pl){
-        var cols=pl.querySelectorAll('.prompt-product-column');
-        if(cols.length){
-          var byKey={};
-          cols.forEach(function(col){
-            col.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(e){
-              var k=_getCollapsibleKey(e); if(k) byKey[k]=e;
-            });
-          });
-          order.product.forEach(function(k,idx){
-            if(!k)return;
-            var found=byKey[k];
-            if(!found){
-              cols.forEach(function(col){
-                col.querySelectorAll(':scope > .prompt-collapsible, :scope > .prompt-flat-group').forEach(function(e){
-                  if(!found&&_getCollapsibleKey(e)===k)found=e;
-                });
-              });
-            }
-            if(found){
-              var colIdx=idx===0?0:(idx<=2?1:2);
-              if(cols[colIdx]) cols[colIdx].appendChild(found);
-            }
-          });
-        }
-      }
-    }
-  }catch(_){}
-}
 
 // ====== Backup / Restore ======
 var PROMPT_BAK_KEY='mergedPromptBackupIndex';
@@ -4275,8 +4148,6 @@ promptSaveTagOrder();
   var el=PS('#'+id);if(!el)return;
   el.querySelectorAll('.prompt-tag-group').forEach(function(g){renderTagGroup(g);});
 });
-// 恢复上次的板块拖动顺序
-restoreColOrder();
 
 // ====== Context Menu ======
 function showPromptContextMenu(x,y,items){
