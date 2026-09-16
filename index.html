@@ -5055,6 +5055,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   function fitTopWidth(){
     canvas.style.width = '';
     canvas.style.height = '';
+    canvas.style.maxWidth = '';
+    canvas.style.maxHeight = '';
     wrapBaseW = 0; wrapBaseH = 0; wrapBaseKey = '';   // 基准失效：必须按新布局重新测量
     if(cmpWrap){ cmpWrap.style.width = ''; cmpWrap.style.height = ''; }
     if(resultBlob) scheduleApplyTransform();
@@ -5968,6 +5970,10 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
           wrapBaseH = canvas.offsetHeight;
           canvas.style.width = wrapBaseW + 'px';
           canvas.style.height = wrapBaseH + 'px';
+          // 基准锁定后禁用 CSS max 约束：max-width:100%/max-height 会把画布布局尺寸钳到外框，
+          // 与 scale(zoom) 叠加造成双重缩放/畸变（放大偏移、缩小时宽度塌陷的根因）
+          canvas.style.maxWidth = 'none';
+          canvas.style.maxHeight = 'none';
         }
       }
       if(wrapBaseW > 0 && wrapBaseH > 0){
@@ -5988,6 +5994,16 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
           mattingCompareEl.classList.toggle('thumb-clear', !overlap);
         }
       }
+    }
+    // 平移钳制不变式：外框 = min(基准×zoom, 视口)，内容必须始终填满/覆盖外框——
+    // 内容不大于外框时强制归位居中（修复缩小时残留平移量把图像整个移出框外"看不见"）；
+    // 内容大于外框（视口裁切）时平移限制在 [框-内容, 0]（修复放大后越界偏移"偏了"）
+    if(wrapBaseW > 0 && wrapBaseH > 0){
+      const ww = parseFloat(cmpWrap.style.width) || cmpWrap.clientWidth;
+      const wh = parseFloat(cmpWrap.style.height) || cmpWrap.clientHeight;
+      const cw = wrapBaseW * zoom, ch = wrapBaseH * zoom;
+      panX = (ww >= cw - 0.5) ? (ww - cw) / 2 : Math.min(0, Math.max(ww - cw, panX));
+      panY = (wh >= ch - 0.5) ? (wh - ch) / 2 : Math.min(0, Math.max(wh - ch, panY));
     }
     cmpTransform.style.transformOrigin = '0 0';
     cmpTransform.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
