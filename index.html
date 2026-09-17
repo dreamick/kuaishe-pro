@@ -803,17 +803,17 @@ body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(2
 .prompt-tag.selected:hover{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
 
 .prompt-subgroup-title{font-size:11px;font-weight:600;color:var(--prompt-text-secondary);padding:6px 0 2px 2px;letter-spacing:0.3px}
-/* v4.7.2 标签边框对齐所在容器的边框色（生图页三列/产品页卡片/风格转换卡，明暗两套） */
-#promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,0.28)}
-#promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,0.28)}
-#promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,0.28)}
-#promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(0,0,0,.16)}
-.prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.30)}
-body.dark #promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,.22)}
-body.dark #promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,.22)}
-body.dark #promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,.24)}
-body.dark #promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(255,255,255,.09)}
-body.dark .prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.26)}
+/* v4.7.3 标签边框对齐所在容器的边框色，透明度较容器减淡 50%（生图页三列/产品页卡片/风格转换卡，明暗两套） */
+#promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,0.14)}
+#promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,0.14)}
+#promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,0.14)}
+#promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(0,0,0,.08)}
+.prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.15)}
+body.dark #promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,.11)}
+body.dark #promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,.11)}
+body.dark #promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,.12)}
+body.dark #promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(255,255,255,.05)}
+body.dark .prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.13)}
 
 .prompt-subgroup-title:first-child{padding-top:0}
 .prompt-subgroup{margin-bottom:4px}
