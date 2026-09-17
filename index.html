@@ -734,9 +734,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col{min-width:0;width:100%;display:flex;flex-direction:column;gap:10px;height:100%;min-height:0}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-width:0}
 /* v4.3.5 三列各自动底色：列头胶囊色调延伸到整列 */
-.prompt-col-bg{background:linear-gradient(180deg,#FCF8EE 0%,#F0E5C8 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,165,116,0.28);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
-.prompt-col-element{background:linear-gradient(180deg,#FCF5F7 0%,#F0DDE2 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,116,116,0.28);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
-.prompt-col-font{background:linear-gradient(180deg,#F2F4FA 0%,#D8E0F0 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(116,148,180,0.28);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
+.prompt-col-bg{background:linear-gradient(180deg,rgba(252,248,238,.5) 0%,rgba(240,229,200,.5) 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,165,116,0.28);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
+.prompt-col-element{background:linear-gradient(180deg,rgba(252,245,247,.5) 0%,rgba(240,221,226,.5) 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,116,116,0.28);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
+.prompt-col-font{background:linear-gradient(180deg,rgba(242,244,250,.5) 0%,rgba(216,224,240,.5) 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(116,148,180,0.28);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
 /* ===== 新布局：上半部分两列（转换风格+常用提示词 | 生成结果+预设方案）+ 下半部分整宽 ===== */
 .prompt-top-grid{--col-left:300px;display:grid;grid-template-columns:var(--col-left) 4px minmax(0,1fr);gap:4px;align-items:stretch;width:100%;min-width:0;flex:0 0 auto;max-height:42vh}
 .prompt-col-resizer{grid-column:2;align-self:stretch;width:4px;cursor:col-resize;position:relative;touch-action:none}
@@ -803,17 +803,17 @@ body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(2
 .prompt-tag.selected:hover{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
 
 .prompt-subgroup-title{font-size:11px;font-weight:600;color:var(--prompt-text-secondary);padding:6px 0 2px 2px;letter-spacing:0.3px}
-/* v4.7.3 标签边框对齐所在容器的边框色，透明度较容器减淡 50%（生图页三列/产品页卡片/风格转换卡，明暗两套） */
-#promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,0.14)}
-#promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,0.14)}
-#promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,0.14)}
-#promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(0,0,0,.08)}
-.prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.15)}
-body.dark #promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,.11)}
-body.dark #promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,.11)}
-body.dark #promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,.12)}
-body.dark #promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(255,255,255,.05)}
-body.dark .prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.13)}
+/* v4.7.2 标签边框对齐所在容器的边框色（生图页三列/产品页卡片/风格转换卡，明暗两套） */
+#promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,0.28)}
+#promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,0.28)}
+#promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,0.28)}
+#promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(0,0,0,.16)}
+.prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.30)}
+body.dark #promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,.22)}
+body.dark #promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,.22)}
+body.dark #promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,.24)}
+body.dark #promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(255,255,255,.09)}
+body.dark .prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.26)}
 
 .prompt-subgroup-title:first-child{padding-top:0}
 .prompt-subgroup{margin-bottom:4px}
@@ -823,7 +823,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-param-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.4.8 转换风格卡片：暖橙底色 + 标题同系深色（与三列卡片的「底色+深标题」保持一致） */
-#promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#FFF7F0 0%,#FFE9D6 100%);border-color:rgba(214,138,66,.30)}
+#promptStyleCol .prompt-param-card{background:linear-gradient(180deg,rgba(255,247,240,.5) 0%,rgba(255,233,214,.5) 100%);border-color:rgba(214,138,66,.30)}
 #promptStyleCol .prompt-param-card-title{padding-left:0;margin-left:-4px} /* 与「背景风格」标题文本左对齐（拖拽把手已删除，旧 18px 偏移作废；-4px 抵消卡片 14px 与列 10px 的 padding 差） */
 #promptStyleCol .prompt-param-card-title{color:#B4621F}
 .prompt-param-options{display:flex;gap:4px;flex-wrap:wrap;flex:1}
@@ -1001,13 +1001,13 @@ body.dark .prompt-app{
   --prompt-shadow-lg:0 4px 20px rgba(0,0,0,.45);
 }
 /* 三列容器：深色同色系微渐变（顶部带一点本列色调，落回深空蓝底），替代亮色的浅色渐变 */
-body.dark .prompt-col-bg{background:linear-gradient(180deg,#2c2418 0%,#1a2332 100%);border-color:rgba(212,165,116,.22);box-shadow:none}
-body.dark .prompt-col-element{background:linear-gradient(180deg,#2e1f26 0%,#1a2332 100%);border-color:rgba(212,116,116,.22);box-shadow:none}
-body.dark .prompt-col-font{background:linear-gradient(180deg,#1d2537 0%,#1a2332 100%);border-color:rgba(116,148,180,.24);box-shadow:none}
+body.dark .prompt-col-bg{background:linear-gradient(180deg,rgba(44,36,24,.5) 0%,rgba(26,35,50,.5) 100%);border-color:rgba(212,165,116,.22);box-shadow:none}
+body.dark .prompt-col-element{background:linear-gradient(180deg,rgba(46,31,38,.5) 0%,rgba(26,35,50,.5) 100%);border-color:rgba(212,116,116,.22);box-shadow:none}
+body.dark .prompt-col-font{background:linear-gradient(180deg,rgba(29,37,55,.5) 0%,rgba(26,35,50,.5) 100%);border-color:rgba(116,148,180,.24);box-shadow:none}
 body.dark .prompt-quick-prompt-card,
 body.dark .prompt-param-card,
 body.dark .prompt-collapsible{background:#1b2434;border-color:rgba(255,255,255,.10);box-shadow:0 2px 10px rgba(0,0,0,.30)}
-body.dark #promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#2b2119 0%,#1a2332 100%);border-color:rgba(214,138,66,.26)}
+body.dark #promptStyleCol .prompt-param-card{background:linear-gradient(180deg,rgba(43,33,25,.5) 0%,rgba(26,35,50,.5) 100%);border-color:rgba(214,138,66,.26)}
 body.dark .prompt-param-card-title{color:#F2B98C}
 body.dark .prompt-quick-prompt-card .prompt-title{color:var(--prompt-text-primary)}
 body.dark [data-gtitle="产品描述"]{color:hsl(133,55%,70%) !important}
@@ -3289,7 +3289,7 @@ function promptUnifyFirst(sec){if(!PROMPT_UNIFY_SEC[sec])return null;var a=colla
 function promptTagColor(sec,c){var f=promptUnifyFirst(sec);return promptGroupColor(f||c);}
 function promptTagGrad(sec,c){var f=promptUnifyFirst(sec);return ((f||c).gradient)||'';}
 // v4.6 暗色模式：按板块色相重建 HSL 色（保色相去灰，用于暗底上的描边/文字）
-function promptTint(hex,s,l){return 'hsl('+promptHue(hex)+','+s+'%,'+l+'%)';}
+function promptTint(hex,s,l,a){return ((a==null)?'hsl(':'hsla(')+promptHue(hex)+','+s+'%,'+l+'%'+((a==null)?'':','+a)+')';}
 // v4.4.7 板块统一色：优先取分组标题色，缺省回落到分组主色（收藏态与选中态共用）
 function promptGroupColor(c){return (c&&(c.tcolor||c.color))||'#9B4513';}
 function promptTagHTML(label,prompt,group,opts){
@@ -3690,10 +3690,12 @@ quickPromptText:'',
   if(migrated)localStorage.setItem('mergedPromptQuickPrompts',JSON.stringify(pState.quickPrompts));
 })();
 
+// v4.8 容器底色减淡 50%：把渐变里的不透明色转半透明，透过页面底色后视觉浓度减半
+function promptFadeBg(g,a){return (g||'').replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g,function(m){var h=m.slice(1);if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');return 'rgba('+parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16)+','+((a==null)?0.5:a)+')';});}
 function collapsibleHTML(c,bodyHtml){
   var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   var header='<div class="prompt-collapsible-header"><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+c.tcolor+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
-  return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="background:'+c.gradient+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
+  return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="background:'+promptFadeBg(c.gradient)+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 // v4.4.8 同一列内的小标题统一为该列主色（仅标题文字；标签的板块色仍按分组各自保持）
@@ -3766,7 +3768,7 @@ if(prodData){
     return g+':hover{background:'+hovBg+' !important;border-color:'+hovBd+' !important}'
       +g+'.faved{border-color:'+u+' !important;color:'+u+' !important;background:transparent !important}'
       +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:'+u+' !important;color:'+u+' !important;box-shadow:0 1px 3px '+u+'33 !important}'
-      +'body.dark '+gb+'{background:linear-gradient(180deg,'+promptTint(u,26,17)+' 0%,#1a2332 100%) !important;border:1px solid rgba(255,255,255,.09)}'
+      +'body.dark '+gb+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%) !important;border:1px solid rgba(255,255,255,.09)}'
       +'body.dark '+gt+'{color:'+dT+' !important}'
       +'body.dark '+g+'{color:var(--prompt-text-secondary) !important}'
       +'body.dark '+g+':hover{background:rgba(255,255,255,.08) !important;border-color:'+promptTint(u,45,58)+' !important;color:var(--prompt-text-primary) !important}'
