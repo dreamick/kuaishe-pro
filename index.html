@@ -725,7 +725,8 @@ textarea:focus { outline: none; border-color: var(--primary); }
   overflow:hidden;
 }
 .prompt-app *,.prompt-app *::before,.prompt-app *::after{box-sizing:border-box;margin:0;padding:0}
-.prompt-app ::-webkit-scrollbar{width:5px}
+.prompt-app,.prompt-app *{scrollbar-width:none}
+.prompt-app ::-webkit-scrollbar{width:0;height:0;display:none}
 .prompt-app ::-webkit-scrollbar-track{background:transparent}
 .prompt-app ::-webkit-scrollbar-thumb{background:var(--prompt-border);border-radius:3px}
 .prompt-app ::-webkit-scrollbar-thumb:hover{background:var(--prompt-text-muted)}
@@ -770,7 +771,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-title .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-flat-title .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
 .prompt-col-scroll{display:flex;flex-direction:column;min-height:0;overflow-y:auto;padding-right:4px;padding-top:18px;flex:1 1 auto}
-.prompt-col-scroll::-webkit-scrollbar{width:3px}
+.prompt-col-scroll::-webkit-scrollbar{width:0;display:none}
 .prompt-col-scroll::-webkit-scrollbar-thumb{background:var(--prompt-border);border-radius:2px}
 /* 上半折叠体（背景/元素/文字）：紧贴内容，自然高度（v4.2.7 红框整体滚后不再占满/内部滚） */
 .prompt-col-scroll > .prompt-collapsible:nth-of-type(1){flex:0 0 auto}
