@@ -778,6 +778,8 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col-layout > .prompt-col{min-height:0}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-height:0}
 .prompt-collapsible{width:100%;background:var(--prompt-bg-section);border-radius:14px;margin-bottom:8px;border:1px solid rgba(0,0,0,.16);overflow:hidden}
+#promptProductLayout .prompt-collapsible{background:#fff;border-color:var(--gcolor,rgba(0,0,0,.16))}
+body.dark #promptProductLayout .prompt-collapsible{background:#1b2434;border-color:var(--gcolor,rgba(255,255,255,.14))}
 .prompt-collapsible-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;user-select:none;transition:var(--prompt-transition);gap:8px}
 .prompt-collapsible-header .prompt-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);flex:1}
 .prompt-collapsible-header .prompt-arrow{display:flex;align-items:center;color:var(--prompt-text-muted);transition:var(--prompt-transition)}
@@ -793,13 +795,13 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:#fff;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 .prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:transparent}
-.prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.prompt-tag.selected{border-color:transparent;background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0}
 .prompt-tag-add:hover{transform:none;border-color:var(--prompt-border);background:var(--prompt-bg-section)}
 .prompt-tag-add:active{transform:scale(0.96)}
 .prompt-tag:hover{border-color:rgba(0,0,0,.28);background:rgba(255,255,255,.62)}
 body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08)}
-.prompt-tag.selected:hover{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
+.prompt-tag.selected:hover{border-color:transparent;background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
 
 .prompt-subgroup-title{font-size:11px;font-weight:600;color:var(--prompt-text-secondary);padding:6px 0 2px 2px;letter-spacing:0.3px}
 .prompt-subgroup-title:first-child{padding-top:0}
@@ -3680,7 +3682,7 @@ quickPromptText:'',
 function collapsibleHTML(c,bodyHtml){
   var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   var header='<div class="prompt-collapsible-header"><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+c.tcolor+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
-  return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
+  return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="--gcolor:'+c.color+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 // v4.4.8 同一列内的小标题统一为该列主色（仅标题文字；标签的板块色仍按分组各自保持）
@@ -3752,13 +3754,13 @@ if(prodData){
     var gt='[data-gtitle="'+c.title+'"]',gb='[data-gbox="'+c.title+'"]';
     return g+':hover{background:'+hovBg+' !important;border-color:'+hovBd+' !important}'
       +g+'.faved{border-color:'+u+' !important;color:'+u+' !important;background:transparent !important}'
-      +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:'+u+' !important;color:'+u+' !important;box-shadow:0 1px 3px '+u+'33 !important}'
+      +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:transparent !important;color:'+u+' !important;box-shadow:0 1px 3px '+u+'33 !important}'
       +'body.dark '+gb+'{background:linear-gradient(180deg,'+promptTint(u,26,17)+' 0%,#1a2332 100%) !important;border:1px solid rgba(255,255,255,.09)}'
       +'body.dark '+gt+'{color:'+dT+' !important}'
       +'body.dark '+g+'{color:var(--prompt-text-secondary) !important}'
       +'body.dark '+g+':hover{background:rgba(255,255,255,.08) !important;border-color:'+promptTint(u,45,58)+' !important;color:var(--prompt-text-primary) !important}'
       +'body.dark '+g+'.faved{background:transparent !important;border-color:'+dB+' !important;color:'+dT+' !important}'
-      +'body.dark '+g+'.selected,'+'body.dark '+g+'.faved.selected{background:linear-gradient(135deg,'+dSel+' 0%,'+dSel2+' 100%) !important;color:'+promptTint(u,62,80)+' !important;border-color:'+promptTint(u,46,56)+' !important;box-shadow:0 1px 4px rgba(0,0,0,.35) !important}';
+      +'body.dark '+g+'.selected,'+'body.dark '+g+'.faved.selected{background:linear-gradient(135deg,'+dSel+' 0%,'+dSel2+' 100%) !important;color:'+promptTint(u,62,80)+' !important;border-color:transparent !important;box-shadow:0 1px 4px rgba(0,0,0,.35) !important}';
   }).join('');
   var st=document.createElement('style');st.id='promptGroupColorCss';st.textContent=css;document.head.appendChild(st);
 })();
