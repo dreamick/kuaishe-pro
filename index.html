@@ -777,7 +777,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 /* grid 子级允许收缩到剩余空间 */
 .prompt-col-layout > .prompt-col{min-height:0}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-height:0}
-.prompt-collapsible{width:100%;background:var(--prompt-bg-section);border-radius:16px;margin-bottom:8px;border:1px solid rgba(0,0,0,.08);box-shadow:0 2px 10px rgba(0,0,0,.05);overflow:hidden}
+.prompt-collapsible{width:100%;background:var(--prompt-bg-section);border-radius:14px;margin-bottom:8px;border:1px solid rgba(0,0,0,.16);overflow:hidden}
 .prompt-collapsible-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;user-select:none;transition:var(--prompt-transition);gap:8px}
 .prompt-collapsible-header .prompt-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);flex:1}
 .prompt-collapsible-header .prompt-arrow{display:flex;align-items:center;color:var(--prompt-text-muted);transition:var(--prompt-transition)}
@@ -786,18 +786,18 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-collapsible-body{padding:0 12px 10px;display:none}
 .prompt-collapsible-body.open{display:block}
 /* v4.3.0 平铺分组：替换折叠块，层级 列→小标题→标签 */
-.prompt-flat-group{margin-bottom:10px;background:var(--prompt-bg-card);border:1px solid var(--prompt-border-light);border-radius:16px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.prompt-flat-group{margin-bottom:12px}
 .prompt-flat-group:last-child{margin-bottom:0}
 .prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap}
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px}
 .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
-.prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid var(--tag-fav,rgba(0,0,0,.12));border-radius:8px;font-size:11px;font-weight:400;color:var(--prompt-text-muted);background:#fff;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
+.prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:#fff;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 .prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:transparent}
 .prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0}
 .prompt-tag-add:hover{transform:none;border-color:var(--prompt-border);background:var(--prompt-bg-section)}
 .prompt-tag-add:active{transform:scale(0.96)}
-.prompt-tag:hover{border-color:var(--tag-fav,rgba(0,0,0,.28));background:rgba(255,255,255,.62)}
+.prompt-tag:hover{border-color:rgba(0,0,0,.28);background:rgba(255,255,255,.62)}
 body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08)}
 .prompt-tag.selected:hover{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
 
@@ -807,7 +807,7 @@ body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(2
 .prompt-subgroup:last-child{margin-bottom:0}
 body.dark .prompt-subgroup-title{color:var(--text-muted)}
 /* 收藏标签不再显示装饰星号（已移除） */
-.prompt-param-card{background:var(--prompt-bg-card);border-radius:16px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.prompt-param-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.4.8 转换风格卡片：暖橙底色 + 标题同系深色（与三列卡片的「底色+深标题」保持一致） */
 #promptStyleCol .prompt-param-card{background:transparent;border-color:rgba(214,138,66,.30)}
@@ -871,7 +871,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-quick-prompt-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
 .prompt-quick-prompt-tag.selected .prompt-q-text{color:#fff}
 .prompt-quick-prompt-empty{font-size:11px;color:var(--prompt-text-muted);padding:4px 0}
-.prompt-result-card{background:var(--prompt-bg-card);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid transparent;background-clip:padding-box;position:relative;overflow:hidden}
+.prompt-result-card{background:var(--prompt-bg-card);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.05);border:1px solid transparent;background-clip:padding-box;position:relative;overflow:hidden}
 .prompt-result-card::before{content:'';position:absolute;inset:0;border-radius:14px;padding:1px;background:linear-gradient(135deg,#C8B8E8,#F5DCC8);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .prompt-result-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px}
 .prompt-result-header .prompt-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary)}
@@ -998,7 +998,7 @@ body.dark #promptStyleCol .prompt-param-card{background:transparent;border-color
 body.dark .prompt-param-card-title{color:#F2B98C}
 body.dark .prompt-quick-prompt-card .prompt-title{color:var(--prompt-text-primary)}
 body.dark [data-gtitle="产品描述"]{color:hsl(133,55%,70%) !important}
-body.dark .prompt-tag{background:#263040;border-color:var(--tag-fav,rgba(255,255,255,.16));color:var(--prompt-text-muted)}
+body.dark .prompt-tag{background:#263040;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 /* 转换风格：暖橙系在深空蓝底上提亮一档 */
 body.dark .prompt-style-tag{background:#263040;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
@@ -1016,7 +1016,6 @@ body.dark .prompt-param-box,body.dark .prompt-ratio-box{background:#16202f!impor
 body.dark .prompt-flat-title .prompt-col-custom-input{background:var(--bg-card);color:var(--text);border:1px solid rgba(255,255,255,.14)}
 body.dark .prompt-flat-title .prompt-col-custom-input:focus{background:var(--bg-card);border-color:rgba(240,149,92,.55)}
 body.dark .prompt-subgroup-title{color:var(--prompt-text-secondary)}
-body.dark .prompt-flat-group{background:var(--bg-card);border-color:rgba(255,255,255,.08);box-shadow:0 2px 10px rgba(0,0,0,.25)}
 body.dark .prompt-nav-btn{background:#16202f;border-color:rgba(255,255,255,.12);color:var(--prompt-text-secondary)}
 body.dark .prompt-nav-btn.active{background:linear-gradient(135deg,#D4652A,#F29A38);color:#fff;border-color:transparent}
 body.dark .prompt-modal-input,body.dark .prompt-modal-textarea{background:#141d2b;border-color:rgba(255,255,255,.14);color:var(--text)}
@@ -3681,7 +3680,7 @@ quickPromptText:'',
 function collapsibleHTML(c,bodyHtml){
   var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   var header='<div class="prompt-collapsible-header"><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+c.tcolor+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
-  return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="background:'+c.gradient+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
+  return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
 }
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 // v4.4.8 同一列内的小标题统一为该列主色（仅标题文字；标签的板块色仍按分组各自保持）
