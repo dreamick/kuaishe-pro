@@ -15,7 +15,7 @@
    ============================================================ */
 :root {
   --primary: #1f2328;
-  --primary-light: #eef1ff;
+  --primary-light: #eef1f4;
   --success: #34d399;
   --warning: #fbbf24;
   --danger: #f87171;
@@ -29,8 +29,10 @@
   --text: #1f2328;
   --text-secondary: #6b7280;
   --text-muted: #9ca3af;
-  --border: #ececec;
-  --group-bg: #f6f7f8;
+  --border: #e6e9ee;
+  --group-bg: #f1f3f6;
+  --sidebar: #f3f5f8;
+  --sidebar-hover: #e9edf1;
   --shadow: rgba(0,0,0,.05);
   --radius: 18px;
   --radius-sm: 10px;
@@ -41,40 +43,42 @@
   --shadow-lg: 0 10px 30px rgba(0,0,0,.06);
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px;
   --ease: .18s ease;
-  --accent: #e8a98c;
-  --accent-hover: #da8c6e;
-  --accent-active: #c97b58;
-  --accent-soft: #fbede6;
-  --accent-soft-2: #f7e0d6;
+  --accent: #2f9e77;
+  --accent-hover: #288a68;
+  --accent-active: #1e7a58;
+  --accent-soft: #e2f4eb;
+  --accent-soft-2: #d0ede0;
   --toast-bg: #1f2328;
   --toast-text: #ffffff;
   --font-sans: "Microsoft YaHei","PingFang SC","Helvetica Neue",sans-serif;
   --font-mono: 'SF Mono','Fira Code','Consolas',monospace;
 }
 body.dark {
-  --bg: #16181c;
-  --bg-card: #1e2024;
-  --text: #e8e8e8;
-  --text-secondary: #a0a0a0;
-  --text-muted: #6e6e6e;
-  --border: rgba(255,255,255,.09);
-  --group-bg: #23262b;
+  --bg: #17191e;
+  --bg-card: #21242b;
+  --text: #f0f2f6;
+  --text-secondary: #b2bac8;
+  --text-muted: #8b94a3;
+  --border: #343944;
+  --group-bg: #292d35;
   --shadow: rgba(0,0,0,.5);
-  --primary-light: #1e2d4a;
+  --primary-light: #2a3440;
   --primary: #2a2d33;
   --primary-hover: #3a3e45;
-  --accent: #e8a98c;
-  --accent-soft: rgba(232,169,140,.14);
-  --accent-active: #f0b59c;
+  --accent: #6fcf9f;
+  --accent-soft: rgba(111,207,159,.15);
+  --accent-active: #8fdcb4;
   --border-strong: rgba(255,255,255,.16);
   --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
   --shadow-md: 0 6px 16px rgba(0,0,0,.55);
   --shadow-lg: 0 10px 30px rgba(0,0,0,.6);
+  --sidebar: #272b33;
+  --sidebar-hover: #31363f;
   --toast-bg: #f2f3f5;
   --toast-text: #1f2328;
 }
 body.dark textarea { background: #141e2d; color: #e8edf5; border-color: #2a3548; }
-body.dark textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,123,88,0.15); }
+body.dark textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(47,158,119,0.15); }
 body.dark .highlight-mirror { color: transparent; }
 body.dark ::-webkit-scrollbar { width: 8px; height: 8px; }
 body.dark ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
@@ -193,77 +197,54 @@ body:not(.dark) {
    ============================================================ */
 .tab-bar {
   display: flex; flex-direction: column;
-  background: var(--group-bg);
-  border-right: 1px solid var(--border);   /* 还原：侧边栏回到左侧 */
-  padding: 18px 0 8px 6px;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  padding: 14px 0 10px;
   gap: 2px;
   user-select: none;
   transition: background 0.3s;
-  width: 54px;
+  width: 132px;
   flex-shrink: 0;
-  align-items: flex-end;
+  align-items: stretch;
   height: 100%;
 }
-/* ===== 侧边栏标签 — 浏览器标签样式（左侧圆角舌头，彩条在右侧，选中右侧连接内容区）===== */
+/* ===== 侧边栏标签 — mac 侧栏风（纯文字，软底胶囊选中）===== */
 .tab-item {
-  width: 36px; height: 102px; padding: 8px 2px;
-  font-size: 15px; font-weight: 600;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background-color .18s ease, color .18s ease, margin-right .18s ease;
-  white-space: nowrap;
-  position: relative;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  letter-spacing: 2.5px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 10px 0 0 10px;   /* 互换：左侧圆角，舌头朝左指向内容区 */
-  border: none;
-  box-shadow: none;
-  z-index: 1;
-}
-.tab-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 14px; margin: 4px 8px;
-  border-radius: 12px;
+  display: flex; align-items: center;
+  padding: 9px 12px; margin: 2px 8px;
+  border-radius: 8px;
   background: transparent; color: var(--text-secondary);
-  cursor: pointer; font-size: 14px; font-weight: 500;
-  transition: background .15s, color .15s; position: relative;
+  cursor: pointer; font-size: 13px; font-weight: 500;
+  letter-spacing: .3px; white-space: nowrap;
+  transition: background .15s, color .15s;
 }
-.tab-item .tab-ico { width: 20px; height: 20px; flex: 0 0 auto; color: currentColor; }
-.tab-item:hover { background: var(--group-bg); color: var(--text); }
+.tab-item:hover { background: var(--sidebar-hover); color: var(--text); }
 .tab-item.active {
   background: var(--accent-soft); color: var(--accent-active);
-  font-weight: 600; box-shadow: var(--shadow-sm);
-}
-.tab-item.active::before {
-  content: ""; position: absolute;
-  right: 3px; top: var(--hl-inset, 21px); bottom: var(--hl-inset, 21px);
-  width: 3px; border-radius: 3px;
-  background: var(--accent-active);
+  font-weight: 600;
 }
 
 /* 侧边栏底部工具区 */
 .tab-bar .sidebar-toolbar {
   margin-top: auto;
-  padding-top: 8px;
+  padding: 8px 10px 0;
   border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 4px;
   width: 100%;
 }
 .tab-bar .sidebar-toolbar .tab-btn {
-  width: 36px; height: 28px;
+  flex: 1; min-width: 0; height: 28px;
   padding: 0; font-size: 11px;
   border-radius: 5px;
 }
 .tab-bar .tab-theme-toggle {
-  width: 32px; height: 32px;
+  width: 32px; height: 32px; margin: 6px auto 0;
   margin: 2px 0 0 0;
 }
-.tab-actions { display: flex; align-items: center; gap: 4px; flex-direction: column; }
+.tab-actions { display: flex; align-items: center; justify-content: center; gap: 4px; flex-direction: row; }
 /* 主内容区 */
 .tab-main {
   flex: 1;
@@ -458,9 +439,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
    COLOR TOOL STYLES
    ============================================================ */
 .color-app {
-  --accent: #e8a98c;
-  --accent-hover: #da8c6e;
-  --accent-light: #fbede6;
+  --accent: #2f9e77;
+  --accent-hover: #288a68;
+  --accent-light: #e2f4eb;
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 18px;
@@ -736,15 +717,15 @@ textarea:focus { outline: none; border-color: var(--primary); }
   --prompt-bg: var(--bg);
   --prompt-bg-card: var(--bg-card);
   --prompt-bg-section: var(--group-bg);
-  --prompt-bg-hover: #E5E0D8;
-  --prompt-accent: #e8a98c;
-  --prompt-accent-light: #fbede6;
-  --prompt-accent-hover: #f7e0d6;
+  --prompt-bg-hover: #E3EDE7;
+  --prompt-accent: #2f9e77;
+  --prompt-accent-light: #e2f4eb;
+  --prompt-accent-hover: #d0ede0;
   --prompt-accent-text: #FFF;
-  --prompt-accent2: #c97b58;
+  --prompt-accent2: #1e7a58;
   --prompt-accent2-light: #EDF4F3;
-  --prompt-gold: #e8a98c;
-  --prompt-gold-light: #FCF5E8;
+  --prompt-gold: #2f9e77;
+  --prompt-gold-light: #EAF6F0;
   --prompt-text-primary: var(--text);
   --prompt-text-secondary: var(--text-secondary);
   --prompt-text-muted: var(--text-muted);
@@ -836,13 +817,13 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 .prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:transparent}
-.prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,#2f9e77);color:var(--tag-fav,var(--prompt-accent));box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0}
 .prompt-tag-add:hover{transform:none;border-color:var(--prompt-border);background:var(--prompt-bg-section)}
 .prompt-tag-add:active{transform:scale(0.96)}
 .prompt-tag:hover{border-color:rgba(0,0,0,.28);background:rgba(255,255,255,.62)}
 body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08)}
-.prompt-tag.selected:hover{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#E67038,#F29A38))}
+.prompt-tag.selected:hover{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,#2f9e77)}
 
 .prompt-subgroup-title{font-size:11px;font-weight:600;color:var(--prompt-text-secondary);padding:6px 0 2px 2px;letter-spacing:0.3px}
 .prompt-subgroup-title:first-child{padding-top:0}
@@ -853,12 +834,12 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-param-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.4.8 转换风格卡片：暖橙底色 + 标题同系深色（与三列卡片的「底色+深标题」保持一致） */
-#promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#FFF7F0 0%,#FFE9D6 100%);border-color:rgba(214,138,66,.30)}
+#promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#F0FAF5 0%,#DDF2E7 100%);border-color:rgba(30,122,88,.30)}
 #promptStyleCol .prompt-param-card-title{padding-left:0;margin-left:-4px} /* 与「背景风格」标题文本左对齐（拖拽把手已删除，旧 18px 偏移作废；-4px 抵消卡片 14px 与列 10px 的 padding 差） */
 #promptStyleCol .prompt-param-card-title{color:#B4621F}
 .prompt-param-options{display:flex;gap:4px;flex-wrap:wrap;flex:1}
 .prompt-param-btn{padding:4px 9px;border:1px solid var(--prompt-border);border-radius:8px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:var(--prompt-transition);font-family:inherit;white-space:nowrap}
-.prompt-param-btn.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
+.prompt-param-btn.selected{border-color:transparent;background:#2f9e77;color:#fff}
 /* 顶部工具栏：画质 + 比例（移到生图/产品按钮右侧） */
 .prompt-header-spacer{flex:1 1 auto}
 .prompt-param-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -866,14 +847,14 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 /* 画质：整体大外框 + 内部每个按钮自带同款线框 */
 .prompt-param-box{display:inline-flex!important;align-items:center;border:1px solid var(--prompt-border)!important;border-radius:8px!important;padding:3px 6px!important;gap:6px;background:#f3f4f6!important;box-sizing:border-box!important;height:32px}
 .prompt-param-toolbar .prompt-param-box .prompt-param-btn{box-sizing:border-box;height:24px;line-height:1;padding:3px 10px!important;border:1px solid var(--prompt-border)!important;background:var(--prompt-bg-section)!important;border-radius:6px!important;color:var(--prompt-text-secondary)!important;font-size:12px;font-weight:500;transition:transform .15s ease}
-.prompt-param-toolbar .prompt-param-box .prompt-param-btn.selected{border-color:transparent!important;background:linear-gradient(135deg,#E67038,#F29A38)!important;color:#fff!important}
+.prompt-param-toolbar .prompt-param-box .prompt-param-btn.selected{border-color:transparent!important;background:#2f9e77!important;color:#fff!important}
 /* 比例：整体大外框（收藏栏 + +号），与画质外框等高 */
 .prompt-ratio-box{display:inline-flex!important;align-items:center;gap:6px;border:1px solid var(--prompt-border)!important;border-radius:8px!important;padding:3px 6px!important;background:#f3f4f6!important;box-sizing:border-box!important;height:32px}
 .prompt-param-toolbar .prompt-ratio-box .prompt-ratio-btn{box-sizing:border-box;height:24px;line-height:1;padding:3px 10px!important;border:1px solid var(--prompt-border)!important;border-radius:6px!important;background:var(--prompt-bg-section)!important;color:var(--prompt-text-secondary)!important;font-size:12px;font-weight:500}
 .prompt-param-toolbar .prompt-ratio-faved-bar{margin:0;flex:1 1 auto;min-width:0;flex-wrap:nowrap;overflow-x:auto;max-width:42vw;align-items:center}
 /* + 号改为橙色，风格与其它框一致；与比例按钮统一高度 24px */
-.prompt-ratio-toolbar-btn{box-sizing:border-box;height:24px;line-height:1;display:inline-flex!important;align-items:center;justify-content:center;min-width:32px;padding:3px 10px!important;border:none!important;border-radius:6px!important;font-size:16px;font-weight:600;color:#D4652A!important;background:transparent!important;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;white-space:nowrap}
-.prompt-ratio-toolbar-btn.has-value{border:none!important;color:#D4652A!important;background:transparent!important}
+.prompt-ratio-toolbar-btn{box-sizing:border-box;height:24px;line-height:1;display:inline-flex!important;align-items:center;justify-content:center;min-width:32px;padding:3px 10px!important;border:none!important;border-radius:6px!important;font-size:16px;font-weight:600;color:#2f9e77!important;background:transparent!important;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;white-space:nowrap}
+.prompt-ratio-toolbar-btn.has-value{border:none!important;color:#2f9e77!important;background:transparent!important}
 #promptRatioToolbarCurrent{font-weight:600}
 /* 比例弹窗 */
 .prompt-ratio-dialog{width:430px;max-width:92vw;max-height:86vh;display:flex;flex-direction:column}
@@ -884,7 +865,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-ratio-faved-bar{display:flex;gap:4px;flex-wrap:wrap;align-items:center;min-height:24px}
 .prompt-ratio-faved-bar:empty{display:none}
 .prompt-ratio-faved-tag{display:inline-flex;align-items:center;padding:2px 6px;border-radius:5px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);cursor:pointer;transition:var(--prompt-transition);background:var(--prompt-bg-section);border:1px solid var(--prompt-border);white-space:nowrap}
-.prompt-ratio-faved-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
+.prompt-ratio-faved-tag.selected{border-color:transparent;background:#2f9e77;color:#fff}
 .prompt-ratio-empty-hint{font-size:11px;color:var(--prompt-text-muted)}
 .prompt-ratio-panel{display:none}
 .prompt-ratio-panel.open{display:block}
@@ -901,17 +882,17 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-style-tags-grid{display:flex;flex-wrap:wrap;gap:6px}
 /* v4.7.1 转换风格标签：默认描边中性灰，hover/收藏/选中描边随板块橙系（与其他标签按色系变化一致） */
 .prompt-style-tag{padding:3px 8px;border:1px solid rgba(0,0,0,.1);border-radius:9px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
-.prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
-.prompt-style-tag.faved{border-color:#C2561F;color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
-.prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 1px 3px rgba(194,86,31,.18)}
-.prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212}
+.prompt-style-tag:hover{border-color:rgba(30,122,88,.32);background:rgba(255,255,255,.62)}
+.prompt-style-tag.faved{border-color:#1e7a58;color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
+.prompt-style-tag.selected{border-color:#1e7a58;background:var(--accent-soft);color:#1e7a58;box-shadow:0 1px 3px rgba(30,122,88,.18)}
+.prompt-style-tag.faved.selected{border-color:#1e7a58;background:var(--accent-soft);color:#1e7a58}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
 .prompt-quick-prompt-card .prompt-quick-prompt-add{flex-shrink:0;margin-top:2px;order:2;margin-left:auto}
 .prompt-quick-prompt-add{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
 .prompt-quick-prompt-body{display:flex;flex-wrap:wrap;gap:4px}
 .prompt-quick-prompt-tag{display:inline-flex;align-items:center;padding:4px 9px;border:1px solid var(--prompt-border);border-radius:9px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg);cursor:pointer;transition:var(--prompt-transition);white-space:nowrap;font-family:inherit;max-width:280px}
 .prompt-quick-prompt-tag .prompt-q-text{overflow:hidden;text-overflow:ellipsis;max-width:260px}
-.prompt-quick-prompt-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
+.prompt-quick-prompt-tag.selected{border-color:transparent;background:#2f9e77;color:#fff}
 .prompt-quick-prompt-tag.selected .prompt-q-text{color:#fff}
 .prompt-quick-prompt-empty{font-size:11px;color:var(--prompt-text-muted);padding:4px 0}
 .prompt-result-card{background:var(--prompt-bg-card);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.05);border:1px solid transparent;background-clip:padding-box;position:relative;overflow:hidden}
@@ -920,7 +901,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-result-header .prompt-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary)}
 .prompt-result-header-actions{display:flex;gap:6px}
 .prompt-result-header-btn{padding:5px 14px;border:none;border-radius:var(--prompt-radius-pill);font-size:12px;font-weight:600;cursor:pointer;transition:var(--prompt-transition);font-family:inherit}
-.prompt-result-header-btn.copy{background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;display:inline-flex;align-items:center;gap:4px}
+.prompt-result-header-btn.copy{background:#2f9e77;color:#fff;display:inline-flex;align-items:center;gap:4px}
 .prompt-result-header-btn.close{background:var(--prompt-bg-section);color:var(--prompt-text-muted);font-size:18px;padding:4px 10px}
 .prompt-result-body{padding:10px 14px;min-height:100px;background:var(--prompt-bg);border-radius:8px;margin:0 10px 8px}
 .prompt-result-textarea{width:100%;min-height:80px;font-size:13px;line-height:1.6;color:var(--prompt-text-primary);background:transparent;border:none;outline:none;resize:vertical;font-family:inherit;word-break:break-all;white-space:pre-wrap}
@@ -957,7 +938,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-modal-btn{padding:6px 16px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;border:1px solid var(--prompt-border)}
 .prompt-modal-btn-cancel{background:var(--prompt-bg);color:var(--prompt-text-secondary)}
 .prompt-modal-btn-cancel:hover{background:var(--prompt-bg-section)}
-.prompt-modal-btn-confirm{background:linear-gradient(135deg,#E67038,#F29A38);color:#fff;border-color:transparent}
+.prompt-modal-btn-confirm{background:#2f9e77;color:#fff;border-color:transparent}
 .prompt-modal-btn-confirm:hover{opacity:.9}
 .prompt-tag-tooltip{position:fixed;z-index:9999;background:#333;color:#fff;font-size:11px;line-height:1.5;padding:6px 10px;border-radius:6px;max-width:280px;pointer-events:none;opacity:0;transition:opacity .15s ease;word-break:break-all}
 .prompt-tag-tooltip.show{opacity:.82}
@@ -1021,9 +1002,9 @@ body.dark #promptProductInputCard .prompt-product-back:hover{background:linear-g
 
 /* ===== v4.6 暗色模式重做：深空蓝基调，层次靠明度递进、状态色按板块色相重建 ===== */
 body.dark .prompt-app{
-  --prompt-accent:#F0955C;
-  --prompt-accent-light:rgba(240,149,92,.18);
-  --prompt-accent-hover:rgba(240,149,92,.28);
+  --prompt-accent:#6fcf9f;
+  --prompt-accent-light:rgba(111,207,159,.18);
+  --prompt-accent-hover:rgba(111,207,159,.28);
   --prompt-border:rgba(255,255,255,.13);
   --prompt-border-light:rgba(255,255,255,.10);
   --prompt-shadow-sm:0 1px 3px rgba(0,0,0,.35);
@@ -1037,32 +1018,32 @@ body.dark .prompt-col-font{background:linear-gradient(180deg,#1d2537 0%,#1a2332 
 body.dark .prompt-quick-prompt-card,
 body.dark .prompt-param-card,
 body.dark .prompt-collapsible{background:#1b2434;border-color:rgba(255,255,255,.10);box-shadow:0 2px 10px rgba(0,0,0,.30)}
-body.dark #promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#2b2119 0%,#1a2332 100%);border-color:rgba(214,138,66,.26)}
-body.dark .prompt-param-card-title{color:#F2B98C}
+body.dark #promptStyleCol .prompt-param-card{background:linear-gradient(180deg,#1a2b23 0%,#1a2332 100%);border-color:rgba(30,122,88,.26)}
+body.dark .prompt-param-card-title{color:#9fe3c2}
 body.dark .prompt-quick-prompt-card .prompt-title{color:var(--prompt-text-primary)}
 body.dark [data-gtitle="产品描述"]{color:hsl(133,55%,70%) !important}
 body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 /* 转换风格：暖橙系在深空蓝底上提亮一档 */
 body.dark .prompt-style-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
-body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
-body.dark .prompt-style-tag.faved{border-color:#F0955C;color:#F5B183;background:transparent}
-body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE}
+body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(111,207,159,.48);color:var(--prompt-text-primary)}
+body.dark .prompt-style-tag.faved{border-color:#6fcf9f;color:#9fe3c2;background:transparent}
+body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#6fcf9f;background:linear-gradient(135deg,rgba(111,207,159,.28) 0%,rgba(111,207,159,.15) 100%);color:#bfe8d4}
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
-body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
-body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:linear-gradient(135deg,#E67038,#F29A38);color:#fff}
+body.dark .prompt-ratio-btn.selected{background:rgba(111,207,159,.18);color:#6fcf9f;border-color:rgba(111,207,159,.40)}
+body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:#2f9e77;color:#fff}
 body.dark .prompt-result-body{background:#141d2b}
 body.dark .prompt-result-textarea{color:var(--text)}
 body.dark .prompt-preset-item .prompt-preset-name{color:var(--text)}
-body.dark .prompt-tag-add{color:#F0955C}
+body.dark .prompt-tag-add{color:#6fcf9f}
 body.dark .prompt-tag-add:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
 body.dark .prompt-param-box,body.dark .prompt-ratio-box{background:#16202f!important;border-color:rgba(255,255,255,.12)!important}
 body.dark .prompt-flat-title .prompt-col-custom-input{background:var(--bg-card);color:var(--text);border:1px solid rgba(255,255,255,.14)}
-body.dark .prompt-flat-title .prompt-col-custom-input:focus{background:var(--bg-card);border-color:rgba(240,149,92,.55)}
+body.dark .prompt-flat-title .prompt-col-custom-input:focus{background:var(--bg-card);border-color:rgba(111,207,159,.55)}
 body.dark .prompt-subgroup-title{color:var(--prompt-text-secondary)}
 body.dark .prompt-nav-btn{background:#16202f;border-color:rgba(255,255,255,.12);color:var(--prompt-text-secondary)}
 body.dark .prompt-nav-btn.active{background:var(--accent-active);color:#1f2328;border-color:transparent}
 body.dark .prompt-modal-input,body.dark .prompt-modal-textarea{background:#141d2b;border-color:rgba(255,255,255,.14);color:var(--text)}
-body.dark .prompt-modal-input:focus,body.dark .prompt-modal-textarea:focus{border-color:#F0955C;box-shadow:0 0 0 2px rgba(240,149,92,.18)}
+body.dark .prompt-modal-input:focus,body.dark .prompt-modal-textarea:focus{border-color:#6fcf9f;box-shadow:0 0 0 2px rgba(111,207,159,.18)}
 body.dark .prompt-bak-btn#promptBakBtn{background:#2d8a5e;color:#fff}
 body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 @media(max-width:1180px){
@@ -1132,7 +1113,7 @@ body.dark .matting-loading { background: rgba(15,23,36,0.82); }
 .matting-progress { font-size: 12px; color: var(--text-muted); min-height: 16px; }
 .matting-progress-bar { width: 220px; max-width: 72%; height: 8px; border-radius: 999px; background: var(--border); overflow: hidden; }
 .matting-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--primary-light)); border-radius: 999px; transition: width 0.2s ease; }
-body.dark .matting-progress-fill { background: linear-gradient(90deg, var(--primary), #c9603a); }
+body.dark .matting-progress-fill { background: linear-gradient(90deg, var(--primary), #3cb585); }
 .matting-stop {
   margin-top: 4px; padding: 7px 22px; font-size: 13px; font-weight: 600;
   color: #fff; background: #d9363e; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s, transform 0.1s;
@@ -1322,7 +1303,7 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 /* ============================================================
    AI 提示词扩写
    ============================================================ */
-.prompt-result-header-btn.ai { background: linear-gradient(135deg,#9B72F0,#C084FC); color:#fff; display:inline-flex; align-items:center; gap:4px; }
+.prompt-result-header-btn.ai { background: var(--accent); color:#fff; display:inline-flex; align-items:center; gap:4px; }
 .prompt-result-header-btn.ai:hover { filter: brightness(1.05); }
 .prompt-result-header-btn.ai:disabled { opacity:.6; cursor:not-allowed; }
 .prompt-result-header-btn.ai .ai-spin { width:12px; height:12px; border:2px solid rgba(255,255,255,.45); border-top-color:#fff; border-radius:50%; animation: ai-spin .6s linear infinite; display:none; }
@@ -1349,7 +1330,7 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 .ai-settings-footer { display:flex; justify-content:flex-end; gap:10px; padding:12px 18px; border-top:1px solid var(--border); }
 .ai-settings-btn { padding:8px 18px; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
 .ai-settings-btn.cancel { background:var(--group-bg); color:var(--text-secondary); }
-.ai-settings-btn.save { background:linear-gradient(135deg,#9B72F0,#C084FC); color:#fff; }
+.ai-settings-btn.save { background:var(--accent); color:#fff; }
 .ai-settings-btn.save:hover { filter:brightness(1.05); }
 body.dark .ai-field input { background:#141e2d; }
 
@@ -1370,10 +1351,10 @@ body.dark .ai-field input { background:#141e2d; }
 
   <!-- ====== TAB BAR — 左侧竖向侧边栏 ====== -->
   <div class="tab-bar" id="tabBar">
-    <div class="tab-item active" data-tab="prompt"><svg class="tab-ico" viewBox="0 0 24 24"><use href="#icon-prompt"/></svg><span class="tab-text">AI提示词</span></div>
-    <div class="tab-item" data-tab="layout"><svg class="tab-ico" viewBox="0 0 24 24"><use href="#icon-layout"/></svg><span class="tab-text">智能排版</span></div>
-    <div class="tab-item" data-tab="color"><svg class="tab-ico" viewBox="0 0 24 24"><use href="#icon-color"/></svg><span class="tab-text">多彩配色</span></div>
-    <div class="tab-item" data-tab="matting"><svg class="tab-ico" viewBox="0 0 24 24"><use href="#icon-matting"/></svg><span class="tab-text">极速抠图</span></div>
+    <div class="tab-item active" data-tab="prompt"><span class="tab-text">AI提示词</span></div>
+    <div class="tab-item" data-tab="layout"><span class="tab-text">智能排版</span></div>
+    <div class="tab-item" data-tab="color"><span class="tab-text">多彩配色</span></div>
+    <div class="tab-item" data-tab="matting"><span class="tab-text">极速抠图</span></div>
 
     <!-- 底部工具区 -->
     <div class="sidebar-toolbar">
@@ -1887,7 +1868,7 @@ function showToast(msg, type) {
   var ico=iconMap[type]||'\u2713';
   el.innerHTML='<span class="toast-icon">'+ico+'</span><span class="toast-msg">'+msg+'</span>';
   if (type === 'error') { el.style.backgroundColor = '#f53f3f'; el.style.color = '#ffffff'; }
-  else if (type === 'warn') { el.style.backgroundColor = '#c97b58'; el.style.color = '#ffffff'; }
+  else if (type === 'warn') { el.style.backgroundColor = '#e8912d'; el.style.color = '#ffffff'; }
   else { el.style.backgroundColor = ''; el.style.color = ''; }
   el.style.opacity = '1';
   el.style.transform = 'translate(-50%, 0)';
@@ -3939,7 +3920,7 @@ PS('#promptBody').insertBefore(promptHeader,PS('#promptBody').firstChild);
 
 // Style nav buttons
 var pStyle=document.createElement('style');
-pStyle.textContent='.prompt-nav-btn{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 14px;border:none;background:var(--group-bg);border-radius:8px;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:.2s ease;font-family:inherit;white-space:nowrap;border:1px solid var(--border)}.prompt-nav-btn.active{background:var(--accent-active);color:#fff;border-color:transparent}.prompt-nav-btn .nav-icon{display:flex;align-items:center;flex-shrink:0}.prompt-nav-btn.active .nav-icon svg{stroke:#fff;fill:none}.prompt-bak-btn{padding:6px 12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s ease;font-family:inherit;white-space:nowrap;text-align:center}.prompt-bak-btn#promptBakBtn{background:#34d399;color:#fff}.prompt-bak-btn#promptRestoreBtn{background:var(--gray,#9ca3af);color:#fff}.prompt-context-menu{position:fixed;z-index:9998;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.1);padding:5px;min-width:150px;opacity:0;transform:scale(0.95);transition:opacity .12s ease,transform .12s ease;font-family:inherit}.prompt-context-menu-item{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:13px;color:var(--text);cursor:pointer;border-radius:6px;transition:all .12s ease;user-select:none}.prompt-context-menu-item:hover{background:var(--primary-light);color:var(--primary)}.prompt-context-menu-item .ctx-icon{width:18px;text-align:center;font-size:14px;flex-shrink:0;color:var(--text-muted)}.prompt-context-menu-item:hover .ctx-icon{color:var(--primary)}.prompt-context-menu-item.ctx-danger:hover{background:#fef2f2;color:#dc2626}.prompt-context-menu-item.ctx-danger:hover .ctx-icon{color:#dc2626}.prompt-context-menu-item.ctx-faved .ctx-icon{color:var(--prompt-accent,#D4652A)}.prompt-context-menu-item.ctx-faved:hover .ctx-icon{color:var(--prompt-accent,#D4652A)}body.dark .prompt-context-menu{background:var(--bg-card);border-color:var(--border);box-shadow:0 6px 24px rgba(0,0,0,.4)}body.dark .prompt-context-menu-item:hover{background:var(--primary-light)}body.dark .prompt-context-menu-item.ctx-danger:hover{background:#3b1a1a}';
+pStyle.textContent='.prompt-nav-btn{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 14px;border:none;background:var(--group-bg);border-radius:8px;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:.2s ease;font-family:inherit;white-space:nowrap;border:1px solid var(--border)}.prompt-nav-btn.active{background:var(--accent-active);color:#fff;border-color:transparent}.prompt-nav-btn .nav-icon{display:flex;align-items:center;flex-shrink:0}.prompt-nav-btn.active .nav-icon svg{stroke:#fff;fill:none}.prompt-bak-btn{padding:6px 12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s ease;font-family:inherit;white-space:nowrap;text-align:center}.prompt-bak-btn#promptBakBtn{background:#34d399;color:#fff}.prompt-bak-btn#promptRestoreBtn{background:var(--gray,#9ca3af);color:#fff}.prompt-context-menu{position:fixed;z-index:9998;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.1);padding:5px;min-width:150px;opacity:0;transform:scale(0.95);transition:opacity .12s ease,transform .12s ease;font-family:inherit}.prompt-context-menu-item{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:13px;color:var(--text);cursor:pointer;border-radius:6px;transition:all .12s ease;user-select:none}.prompt-context-menu-item:hover{background:var(--primary-light);color:var(--primary)}.prompt-context-menu-item .ctx-icon{width:18px;text-align:center;font-size:14px;flex-shrink:0;color:var(--text-muted)}.prompt-context-menu-item:hover .ctx-icon{color:var(--primary)}.prompt-context-menu-item.ctx-danger:hover{background:#fef2f2;color:#dc2626}.prompt-context-menu-item.ctx-danger:hover .ctx-icon{color:#dc2626}.prompt-context-menu-item.ctx-faved .ctx-icon{color:var(--prompt-accent,#2f9e77)}.prompt-context-menu-item.ctx-faved:hover .ctx-icon{color:var(--prompt-accent,#2f9e77)}body.dark .prompt-context-menu{background:var(--bg-card);border-color:var(--border);box-shadow:0 6px 24px rgba(0,0,0,.4)}body.dark .prompt-context-menu-item:hover{background:var(--primary-light)}body.dark .prompt-context-menu-item.ctx-danger:hover{background:#3b1a1a}';
 document.head.appendChild(pStyle);
 
 function switchPSection(section){
