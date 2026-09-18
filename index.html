@@ -273,7 +273,9 @@ body:not(.dark) {
 .toggle-btn:active { transform: scale(0.95); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
 .toggle-btn.active { border-color: transparent; color: #fff; font-weight: 600; background: var(--dopa-blue); }
 #autoDownloadToggle { width: 72px; height: 28px; font-size: 12px; padding: 0; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
-#autoDownloadToggle:not(.active) { background: #9D94C9 !important; color: #fff !important; border-color: transparent !important; }
+/* v4.8.30 自动按钮去紫改主题色：未激活=白底描边（同次按钮），激活=抠图绿渐变 */
+#autoDownloadToggle:not(.active) { background: var(--surface, #fff) !important; color: var(--text-secondary, #565c70) !important; border-color: var(--border, #d8dce8) !important; }
+#autoDownloadToggle.active { background: var(--g-matting, var(--accent-matting, #16a574)) !important; color: #fff !important; border-color: transparent !important; box-shadow: 0 6px 16px color-mix(in srgb, var(--c-matting, #16a574) 28%, transparent); }
 .param-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .param-item select,
 .param-item input[type="number"],
@@ -2138,9 +2140,11 @@ body.dark{
   box-shadow:0 6px 16px color-mix(in srgb,var(--mod-accent) 28%,transparent);
 }
 /* v4.8.29 抠图模式切换对齐「背景/元素…」容器切换：同尺寸(32px/13px) + hover 不覆盖激活渐变 */
-#tabMatting .mp-btn{background:transparent;border:none;border-radius:8px;font-size:13px;font-weight:500;height:32px;padding:0 14px;color:var(--prompt-text-secondary);}
+#tabMatting .mp-btn{background:transparent;border:none;border-radius:8px;font-size:13px;font-weight:500;height:32px;padding:0 14px;min-width:70px;color:var(--prompt-text-secondary);}
 #tabMatting .mp-btn:hover:not(.active){background:var(--surface);color:var(--prompt-text);}
 #tabMatting .mp-btn.active{color:#fff;font-weight:600;}
+/* v4.8.30 去水印激活改蓝色渐变，与白底/AI抠图的绿色区分 */
+#tabMatting .mp-btn.mp-wm.active{background:linear-gradient(135deg,#5b9cf6,#2f6fe0);box-shadow:0 6px 16px rgba(59,130,246,.28);}
 #tabPrompt .prompt-ratio-btn .prompt-star{color:var(--text-muted);}
 #tabPrompt .prompt-ratio-btn.selected .prompt-star{color:rgba(255,255,255,.85);}
 
@@ -2176,11 +2180,14 @@ body.dark{
 #tabLayout .tool-bar .sep{background:var(--border); height:22px;}
 #tabLayout .box,#tabLayout .split-panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--sh-sm); overflow:hidden;}
 #tabLayout .box-header{background:var(--surface-2); border-bottom:1px solid var(--border); padding:10px 14px; min-height:44px; border-radius:var(--r-md);}
-#tabLayout .box-header .badge,#tabMatting .brush-size-label{background:var(--surface-3,var(--surface-2)); color:var(--text-secondary); border-radius:var(--r-pill); font-size:12px; font-weight:600; padding:3px 9px;}
+#tabLayout .box-header .badge{background:var(--surface-3,var(--surface-2)); color:var(--text-secondary); border-radius:var(--r-pill); font-size:12px; font-weight:600; padding:3px 9px;}
+/* v4.8.30 笔刷/容差标签去芯片底色：纯文字+滑杆，不带胶囊底 */
 #tabMatting .matting-sidebyside{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--sh-sm);}
 #tabMatting .matting-pickwrap{border:none; border-radius:var(--r-xl); background:transparent; transition:all .2s;}
-#tabMatting .zoom-bar,#tabMatting .wand-tools,#tabMatting .mq-popup{
+#tabMatting .zoom-bar,#tabMatting .mq-popup{
   background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); box-shadow:var(--sh-md);}
+/* v4.8.30 wand-tools 去容器：保留/删除胶囊直接落在工具条上，与「增加」一致 */
+#tabMatting .wand-tools{background:transparent;border:none;box-shadow:none;}
 #tabMatting .matting-progress-bar{border-radius:var(--r-pill); background:var(--surface-3,var(--surface-2)); overflow:hidden;}
 #tabMatting .matting-progress-fill{background:var(--g-matting); border-radius:var(--r-pill);}
 #tabMatting .matting-stop{border-radius:var(--r-md); background:var(--err);}
