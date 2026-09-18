@@ -2092,6 +2092,28 @@ body.dark .color-app{
 .color-app .palette-hex{position:absolute;left:14px;bottom:11px;font-family:var(--font-mono);font-size:13px;font-weight:700;color:#fff;letter-spacing:.4px;text-shadow:0 1px 3px rgba(0,0,0,.28);}
 @media(max-width:1400px){.color-app .palette-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* ===== /RESKIN PART 8 ===== */
+
+/* ===== RESKIN PART 9: 取色器+和谐配色上下排 / 取色器横排 / 和谐预览一行 ===== */
+.color-app .color-grid{grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:auto auto;}
+.color-app .color-left{grid-column:1;grid-row:1;}
+.color-app .color-mid{grid-column:1;grid-row:2;}
+.color-app .color-palettes{grid-column:2;grid-row:1 / span 2;}
+/* 取色器横排: 头行跨全宽 | 色块 | 滑轨区 | 数值列 */
+.color-app .color-left{display:grid;grid-template-columns:220px minmax(0,1fr) 250px;gap:14px 18px;align-items:stretch;}
+.color-app .color-left .card-head-row{grid-column:1 / -1;margin-bottom:0;}
+.color-app .color-left .preview-swatch{height:170px;}
+.color-app .color-left .picker-stack{flex:1;gap:10px;}
+.color-app .color-left .sl-picker-wrap{height:auto;flex:1;min-height:110px;}
+.color-app .color-left .color-values{display:flex;flex-direction:column;justify-content:center;gap:8px;}
+/* 和谐配色预览一行 6 张 */
+.color-app .palette-grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(96px,1fr);}
+@media(max-width:1400px){
+  .color-app .color-grid{grid-template-columns:minmax(0,1fr) 300px;}
+  .color-app .color-left{grid-template-columns:190px minmax(0,1fr) 220px;}
+  .color-app .palette-grid{grid-template-columns:repeat(6,minmax(0,1fr));}
+}
+/* ===== /RESKIN PART 9 ===== */
+
 </style>
 </head>
 <body>
