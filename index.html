@@ -2079,6 +2079,19 @@ body.dark .color-app{
 /* —— 提示条 —— */
 .color-app .copy-toast{background:var(--text);color:var(--surface);border-radius:var(--r-md);padding:12px 20px;font-size:13px;font-weight:600;box-shadow:var(--sh-lg)}
 
+
+/* ===== RESKIN PART 8: 配色预览全彩卡 + 顶区高度自适应 ===== */
+.color-app .color-grid{align-items:stretch;}
+.color-app .top-section{height:auto;min-height:340px;}
+.color-app .sl-picker-wrap{height:150px;}
+.color-app .color-mid{min-height:0;}
+.color-app .palette-grid{flex:1 1 auto;min-height:0;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(84px,1fr);gap:12px;}
+.color-app .palette-item{border:none;padding:0;border-radius:18px;position:relative;overflow:hidden;cursor:pointer;box-shadow:0 1px 3px rgba(15,23,42,.10),0 4px 14px rgba(15,23,42,.08);transition:transform .18s ease,box-shadow .18s ease;}
+.color-app .palette-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(15,23,42,.16);}
+.color-app .palette-item:active{transform:translateY(-1px) scale(.99);}
+.color-app .palette-hex{position:absolute;left:14px;bottom:11px;font-family:var(--font-mono);font-size:13px;font-weight:700;color:#fff;letter-spacing:.4px;text-shadow:0 1px 3px rgba(0,0,0,.28);}
+@media(max-width:1400px){.color-app .palette-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ===== /RESKIN PART 8 ===== */
 </style>
 </head>
 <body>
@@ -2242,13 +2255,11 @@ body.dark .color-app{
             <div class="preview-swatch" id="mainSwatch" style="background:#6366F1;"></div>
             <div class="picker-stack">
               <div class="picker-row">
-                <label>H</label>
                 <div class="hue-slider-wrap" id="hueSlider">
                   <div class="hue-slider-thumb" id="hueThumb" style="left:calc(239/360*100%);"></div>
                 </div>
               </div>
               <div class="picker-row" style="align-items:stretch;flex:1;">
-                <label style="writing-mode:vertical-lr;text-orientation:mixed;text-align:center;">S/L</label>
                 <div class="sl-picker-wrap" id="slPicker">
                   <canvas id="slCanvas"></canvas>
                   <div class="sl-picker-thumb" id="slThumb" style="left:58.5%;top:5.3%;"></div>
@@ -3040,9 +3051,8 @@ function highlight() {
     var lbs=labelMap[state.rule]||['色1','色2','色3','色4','色5','色6'];
     paletteGrid.innerHTML=colors.map(function(c,i){
       var h=hslToHex(c.h,c.s,c.l);
-      return '<div class="palette-item" onclick="paletteAddAndCopy('+Math.round(c.h)+','+Math.round(c.s)+','+Math.round(c.l)+',\''+h+'\')" title="添加到调色盘+复制SVG">'+
-        '<div class="palette-swatch" style="background:'+h+';" onclick="event.stopPropagation();colorCopyColorSVG(\''+h+'\',this.parentNode);paletteAddColorFromHSL('+Math.round(c.h)+','+Math.round(c.s)+','+Math.round(c.l)+')" title="复制到Illustrator并添加到调色盘"></div>'+
-        '<div class="palette-info" onclick="event.stopPropagation();colorCopyText(\''+h+'\',this.parentNode)" title="复制色号"><div class="hex">'+h+'</div><div class="desc">'+(lbs[i]||'')+'</div></div></div>';
+      return '<div class="palette-item" style="background:'+h+';" onclick="paletteAddAndCopy('+Math.round(c.h)+','+Math.round(c.s)+','+Math.round(c.l)+',\''+h+'\')" title="添加到调色盘+复制SVG">'+
+        '<span class="palette-hex" onclick="event.stopPropagation();colorCopyText(\''+h+'\',this.parentNode)" title="复制色号">'+h+'</span></div>';
     }).join('');
   }
 
