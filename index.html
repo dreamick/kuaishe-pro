@@ -272,7 +272,7 @@ body:not(.dark) {
 }
 .toggle-btn:active { transform: scale(0.95); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
 .toggle-btn.active { border-color: transparent; color: #fff; font-weight: 600; background: var(--dopa-blue); }
-#autoDownloadToggle { width: 72px; height: 28px; font-size: 12px; padding: 0; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+#autoDownloadToggle { width: auto; height: 32px; font-size: 13px; padding: 0 14px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
 /* v4.8.30 自动按钮去紫改主题色：未激活=白底描边（同次按钮），激活=抠图绿渐变 */
 #autoDownloadToggle:not(.active) { background: var(--surface, #fff) !important; color: var(--text-secondary, #565c70) !important; border-color: var(--border, #d8dce8) !important; }
 #autoDownloadToggle.active { background: var(--g-matting, var(--accent-matting, #16a574)) !important; color: #fff !important; border-color: transparent !important; box-shadow: 0 6px 16px color-mix(in srgb, var(--c-matting, #16a574) 28%, transparent); }
@@ -797,8 +797,10 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px}
 .prompt-tag-group{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
-.prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:transparent}
-.prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#FF7A59,#FFA15C));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 1px 3px rgba(0,0,0,.08)}
+/* v4.8.32 收藏/选中重设计：收藏=无描边浅底+★前缀；选中=渐变实底+白色内圈高光 */
+.prompt-tag.faved{border-color:transparent;color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:color-mix(in srgb,var(--tag-fav,var(--prompt-accent)) 10%,transparent)}
+.prompt-tag.faved::before{content:"★ ";font-size:9px;line-height:1}
+.prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#FF7A59,#FFA15C));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 2px 6px rgba(0,0,0,.12),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0}
 .prompt-tag-add:hover{transform:none;border-color:var(--prompt-border);background:var(--prompt-bg-section)}
 .prompt-tag-add:active{transform:scale(0.96)}
@@ -876,9 +878,10 @@ body.dark [data-gtitle="风格转换"]{color:#F2B98C !important}
 /* v4.8.3 风格转换标签与背景页 .prompt-tag 完全同规格：白底胶囊 + 30px 高（对齐 10.3 芯片规范） */
 .prompt-style-tag{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;height:30px;line-height:1;padding:0 13px;border:1px solid rgba(212,165,116,0.28);border-radius:var(--r-pill,999px);font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--surface,#fff);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
-.prompt-style-tag.faved{border-color:#C2561F;color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
-.prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 1px 3px rgba(194,86,31,.18)}
-.prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212}
+.prompt-style-tag.faved{border-color:transparent;color:#B04A16;background:rgba(194,86,31,.10);font-weight:700;letter-spacing:.2px}
+.prompt-style-tag.faved::before{content:"★ ";font-size:9px;line-height:1}
+.prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
+.prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
 .prompt-quick-prompt-card .prompt-quick-prompt-add{flex-shrink:0;margin-top:2px;order:2;margin-left:auto}
 .prompt-quick-prompt-add{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
@@ -990,8 +993,9 @@ body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.13);
 /* 转换风格：暖橙系在深空蓝底上提亮一档 */
 body.dark .prompt-style-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
-body.dark .prompt-style-tag.faved{border-color:#F0955C;color:#F5B183;background:transparent}
-body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE}
+body.dark .prompt-style-tag.faved{border-color:transparent;color:#F5B183;background:rgba(240,149,92,.13)}
+body.dark .prompt-style-tag.faved::before{content:"★ ";font-size:9px;line-height:1}
+body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
 body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
 body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff}
@@ -1092,7 +1096,9 @@ body.dark .matting-progress-fill { background: linear-gradient(90deg, var(--prim
 .matting-footer .btn-gray.btn-sm{background:var(--surface,#fff);border:1px solid var(--border,#d8dce8);color:var(--text-secondary,#565c70);}
 .matting-footer .btn-gray.btn-sm:hover{border-color:var(--accent-matting,#16a574);color:var(--accent-matting,#16a574);}
 .matting-footer .btn-success.btn-sm{border:none;}
-.matting-footer #autoDownloadToggle{height:30px;display:inline-flex;align-items:center;padding:0 12px;font-weight:600;}
+/* v4.8.41 底栏按钮尺寸优化：去掉 .btn-sm 的 72px 定宽/28px 高，统一 32px 高 + 自适应内边距 */
+.matting-footer .btn.btn-sm{width:auto;min-width:0;height:32px;padding:0 16px;font-size:13px;}
+.matting-footer #autoDownloadToggle{height:32px;padding:0 14px;font-size:13px;}
 .matting-hint { font-size: 12px; color: var(--text-muted); }
 .matting-sab { display: none; }
 .matting-modebar {
@@ -1808,7 +1814,7 @@ body.dark{
 .matting-drop-icon{ color:var(--c-matting); }
 .matting-drop-title{ color:var(--text); }
 /* 模式选择：语义色 + 圆角卡片容器 */
-.matting-modepick{ display:inline-flex; background:transparent; border:none; border-radius:var(--r-md); padding:0; box-shadow:none; }
+.matting-modepick{ display:inline-flex; gap:6px; background:transparent; border:none; border-radius:var(--r-md); padding:0; box-shadow:none; }
 /* v4.8.29 精简：以下 mp-btn 旧配色/阴影规则已全部由 10.3 芯片规范 + #tabMatting 覆盖规则取代 */
 /* 结果对比区：原型 .cmp-box 观感 */
 .matting-sidebyside{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-lg); }
@@ -1888,14 +1894,28 @@ body.dark .topbar-picker .extracted-swatch{border-color:var(--border);}
 
 /* ===== RESKIN PART 6: UI 全屏化 + 顶栏按钮 + 收起按钮归位 ===== */
 .scale-shell{width:100vw !important;min-width:0 !important;margin:0 !important;height:100vh !important;transform:none !important;}
-.container{width:100vw !important;max-width:100vw !important;height:100vh !important;min-height:0 !important;transform:none !important;border-radius:0 !important;box-shadow:none !important;overflow:hidden;}
+.container{width:calc(100vw / var(--app-zoom,1)) !important;max-width:none !important;height:calc(100vh / var(--app-zoom,1)) !important;min-height:0 !important;transform:none !important;border-radius:0 !important;box-shadow:none !important;overflow:hidden;zoom:var(--app-zoom,1);}
 body{background:var(--bg) !important;}
-.tab-bar{height:100vh;}
+.tab-bar{height:calc(100vh / var(--app-zoom,1));}
+/* v4.8.40 全板块最小宽度：内容不换行不溢出；窗口更窄时由 --app-zoom 整页等比缩小 */
+#tabPrompt .prompt-app{min-width:1040px;}
+#tabColor .color-app{min-width:1150px;}
+#tabMatting .matting-body{min-width:900px;}
+#tabLayout .layout-body{min-width:860px;}
 /* 顶栏右侧按钮组 */
 .topbar-actions .topbar-btns{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .topbar-actions .tab-btn{height:32px;min-width:46px;padding:0 14px;font-size:13px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;transition:filter .15s ease,transform .15s ease;font-family:inherit;}
 .topbar-actions .tab-btn.save{background:linear-gradient(135deg,var(--c-layout),#3a6fd8);color:#fff;border:none;}
 .topbar-actions .tab-btn.default{background:var(--surface-2);color:var(--text);border:1px solid var(--border);}
+/* v4.8.39 顶栏按钮图标化：AI设置/备份/恢复/保存/默认 → 幽灵图标钮（28px，与主题月亮钮同规格） */
+.topbar-actions .tab-btn.icon-only{width:28px;height:28px;min-width:28px;padding:0;border-radius:8px;background:transparent;border:1px solid transparent;color:var(--text-secondary);justify-content:center;transition:background .15s ease,color .15s ease;}
+.topbar-actions .tab-btn.icon-only:hover{background:var(--surface-2);color:var(--text);filter:none;transform:none;}
+/* v4.8.41 顶栏图标钮 hover 名称提示（自定义 tooltip，替代原生 title 延迟） */
+.topbar-actions .tab-btn.icon-only{position:relative;}
+.topbar-actions .tab-btn.icon-only::before{content:'';position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%) translateY(-2px);border:4px solid transparent;border-top:none;border-bottom:5px solid #1f2937;opacity:0;pointer-events:none;transition:opacity .15s ease .4s,transform .15s ease .4s;z-index:99;}
+.topbar-actions .tab-btn.icon-only::after{content:attr(data-tip);position:absolute;top:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(-2px);background:#1f2937;color:#fff;font-size:11px;line-height:1;padding:6px 9px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease .4s,transform .15s ease .4s;z-index:99;box-shadow:0 4px 12px rgba(0,0,0,.2);}
+.topbar-actions .tab-btn.icon-only:hover::before{opacity:1;transform:translateX(-50%) translateY(0);}
+.topbar-actions .tab-btn.icon-only:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
 .topbar-actions .tab-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
 body.dark .topbar-actions .tab-btn.default{background:var(--surface-3,var(--surface-2));}
 /* 收起侧栏按钮：侧栏最底部 */
@@ -2059,10 +2079,10 @@ body.dark .color-app{
 .color-app .sl-picker-wrap{height:150px;}
 .color-app .color-mid{min-height:0;}
 .color-app .palette-grid{flex:1 1 auto;min-height:0;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(84px,1fr);gap:12px;}
-.color-app .palette-item{border:none;padding:0;border-radius:18px;position:relative;overflow:hidden;cursor:pointer;box-shadow:0 1px 3px rgba(15,23,42,.10),0 4px 14px rgba(15,23,42,.08);transition:transform .18s ease,box-shadow .18s ease;}
+.color-app .palette-item{border:none;padding:0;border-radius:clamp(10px,2.2cqw,18px);position:relative;overflow:hidden;cursor:pointer;box-shadow:0 1px 3px rgba(15,23,42,.10),0 4px 14px rgba(15,23,42,.08);transition:transform .18s ease,box-shadow .18s ease;}
 .color-app .palette-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(15,23,42,.16);}
 .color-app .palette-item:active{transform:translateY(-1px) scale(.99);}
-.color-app .palette-hex{position:absolute;left:14px;bottom:11px;font-family:var(--font-mono);font-size:13px;font-weight:700;color:#fff;letter-spacing:.4px;text-shadow:0 1px 3px rgba(0,0,0,.28);}
+.color-app .palette-hex{position:absolute;left:14px;bottom:11px;font-family:var(--font-mono);font-size:13px;font-weight:700;color:#fff;letter-spacing:.4px;text-shadow:0 1px 1px rgba(0,0,0,.16);}
 @media(max-width:1400px){.color-app .palette-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* ===== /RESKIN PART 8 ===== */
 
@@ -2145,6 +2165,14 @@ body.dark{
 #tabMatting .mp-btn.active{color:#fff;font-weight:600;}
 /* v4.8.30 去水印激活改蓝色渐变，与白底/AI抠图的绿色区分 */
 #tabMatting .mp-btn.mp-wm.active{background:linear-gradient(135deg,#5b9cf6,#2f6fe0);box-shadow:0 6px 16px rgba(59,130,246,.28);}
+/* v4.8.41 特殊情况显示优化：去点击后的浏览器焦点蓝框（截图1中「纯色底」的突兀蓝边），键盘 Tab 导航仍保留 focus-visible 描边 */
+#tabMatting .mp-btn:focus,#tabMatting .mq-btn:focus{outline:none;}
+#tabMatting .mp-btn:focus-visible{outline:2px solid rgba(91,156,246,.45);outline-offset:2px;}
+/* v4.8.41 白底/纯色底颜色区分：白底=默认绿色渐变，纯色底=橙色渐变 */
+#tabMatting .mp-btn.mp-solid.active{background:linear-gradient(135deg,#f6a35b,#ef7a2f);box-shadow:0 6px 16px rgba(239,122,47,.28);}
+/* v4.8.41 AI 抠图独立样式：紫色系 + 与左侧按钮拉开距离 */
+#tabMatting .mp-btn.mp-ai{margin-left:12px;color:#8b7bd8;}
+#tabMatting .mp-btn.mp-ai.active{background:linear-gradient(135deg,#a78bfa,#7c5ce0);box-shadow:0 6px 16px rgba(139,108,235,.28);}
 #tabPrompt .prompt-ratio-btn .prompt-star{color:var(--text-muted);}
 #tabPrompt .prompt-ratio-btn.selected .prompt-star{color:rgba(255,255,255,.85);}
 
@@ -2227,7 +2255,7 @@ body.dark{
 /* ===== /RESKIN PART 10 ===== */
 
 /* ===== RESKIN PART 11: 多彩配色按用户截图完全重设计（三栏: 取色器 | 和谐配色+调色盘 | 吸色+渐变组合） ===== */
-.color-app .color-grid{grid-template-columns:290px minmax(0,1fr) 320px !important;grid-template-rows:auto !important;gap:16px;}
+.color-app .color-grid{grid-template-columns:290px minmax(500px,1fr) 320px !important;grid-template-rows:auto !important;gap:16px;}
 .color-app .color-left{grid-column:auto;grid-row:auto;display:flex !important;flex-direction:column;gap:14px;}
 .color-app .color-mid{grid-column:auto;grid-row:auto;display:flex;flex-direction:column;gap:12px;min-height:0;}
 /* —— 取色器 —— */
@@ -2261,6 +2289,9 @@ body.dark .color-app .color-left .color-value-row{background:var(--surface-3,var
 .color-app .palette-color-bar .palette-swatch-item{width:22px !important;height:22px !important;aspect-ratio:unset !important;margin:0 !important;border-radius:50%;border:2px solid var(--bg-card,var(--surface));box-shadow:0 0 0 1px var(--border);}
 .color-app .palette-grad-preview{border-radius:var(--r-lg) !important;border:1px solid var(--border);box-shadow:var(--sh-sm);}
 /* —— 屏幕吸色列 —— */
+/* v4.8.36 三卡头部行统一高 30px：标题与右侧按钮垂直中心对齐（吸色按钮 28→30） */
+.color-app .card .card-head-row{min-height:30px;flex-wrap:nowrap;}
+.color-app .card .pick-screen-btn{height:30px;}
 .color-app .color-right{display:flex;flex-direction:column;gap:12px;min-height:0;}
 .color-app .color-right .paste-zone{width:100%;height:120px;flex-shrink:0;border:2px dashed var(--border-2) !important;border-radius:var(--r-lg) !important;background:var(--surface);padding:14px 12px;}
 .color-app .color-right .paste-zone:hover{border-color:var(--c-color) !important;}
@@ -2309,19 +2340,14 @@ body.dark #pickGuide .pg-card{background:var(--surface-2);}
 .color-app .color-right .gradient-preview{aspect-ratio:4/3;}
 .color-app .color-right .gradient-info{display:none;}
 /* —— 响应式 —— */
-@media(max-width:1500px){
-  .color-app .color-grid{grid-template-columns:260px minmax(0,1fr) 290px !important;}
-}
-@media(max-width:1280px){
-  .color-app .color-grid{grid-template-columns:240px minmax(0,1fr) 270px !important;gap:12px;}
-}
+/* v4.8.40 移除 1500/1280 列宽压缩媒体查询：统一由板块 min-width + --app-zoom 整页等比缩小 */
 /* v4.8.14 色卡按比例缩小：去掉 92px 最小宽（多色时撑爆容器、末尾色卡被挤出），等分缩放；hex 文字由容器查询自适应 */
-.color-app .palette-grid{flex:0 0 auto !important;width:100% !important;grid-auto-rows:110px !important;grid-template-columns:repeat(6,minmax(0,1fr)) !important;}
+.color-app .palette-grid{flex:0 0 auto !important;width:100% !important;grid-auto-rows:110px !important;grid-template-columns:repeat(6,minmax(0,1fr)) !important;container-type:inline-size;}
 /* v4.8.10 色卡容器查询：hex 色号随卡片宽度自适应缩小，不溢出裁切 */
 .color-app .palette-item{container-type:inline-size;}
 .color-app .palette-hex{font-size:clamp(9px,10.5cqw,13px);max-width:calc(100% - 22px);white-space:nowrap;overflow:hidden;}
 .color-app .palette-grad-preview{flex:1 1 auto !important;min-height:200px;max-height:400px;}
-@media(max-width:1280px){.color-app .palette-grid{grid-auto-rows:90px !important;}}
+/* v4.8.40 色卡行高统一 110px（原 ≤1280 压缩为 90px，随等比缩放机制一并移除） */
 .color-app .harmony-rules{flex:0 0 auto !important;}
 .color-app .palette-mode-bar{gap:10px;}
 .color-app .palette-mode-btn{flex:0 0 auto !important;padding:0 20px;}
@@ -2369,7 +2395,7 @@ body.dark .color-app .color-right .pick-status.err{color:#ff8098;}
 .prompt-left-view{position:relative;min-width:0;}
 .prompt-left-pane{display:none;flex-direction:column;min-width:0;border-radius:14px;overflow:hidden;box-sizing:border-box;}
 .prompt-left-pane.active{display:flex;}
-.prompt-left-pane .prompt-col-scroll{overflow:visible;padding-top:14px;}
+.prompt-left-pane .prompt-col-scroll{overflow:visible;padding-top:1px;}
 .prompt-left-pane.prompt-col-bg,.prompt-left-pane.prompt-col-element,.prompt-left-pane.prompt-col-font{padding:0 8px 8px;}
 /* v4.8.5 产品页去外框白底：面板透明无边框，分组直接落在页面底色上 */
 .prompt-pane-product{background:transparent;border:none;padding:0 8px 8px;}
@@ -2384,17 +2410,27 @@ body.dark .prompt-pane-style{background:transparent;border:none;box-shadow:none;
 /* 容器切换按钮（位于顶部参数行，样式对齐 prompt-nav-btn 设计规范） */
 .pls-btn{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:500;color:var(--prompt-text-secondary);cursor:pointer;transition:all .15s ease;font-family:inherit;padding:0 14px;white-space:nowrap;}
 .pls-btn:hover{background:var(--surface);}
-.pls-btn.active{background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff;}
+.pls-btn.active{color:#fff;}
+.pls-btn[data-pane="bg"].active{background:linear-gradient(135deg,#CE9040,#A66824);}
+.pls-btn[data-pane="element"].active{background:linear-gradient(135deg,#E96A5E,#B8433C);}
+.pls-btn[data-pane="font"].active{background:linear-gradient(135deg,#5D7FD0,#3E5FB0);}
+.pls-btn[data-pane="product"].active{background:linear-gradient(135deg,#5E9E62,#3E7E4C);}
+.pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#FF7A59,#FFA15C);}
 body.dark .pls-btn{background:transparent;border:none;color:var(--prompt-text-secondary);}
 body.dark .pls-btn:hover{background:#1d2940;}
-body.dark .pls-btn.active{background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff;}
+body.dark .pls-btn.active{color:#fff;}
+body.dark .pls-btn[data-pane="bg"].active{background:linear-gradient(135deg,#CE9040,#A66824);}
+body.dark .pls-btn[data-pane="element"].active{background:linear-gradient(135deg,#E96A5E,#B8433C);}
+body.dark .pls-btn[data-pane="font"].active{background:linear-gradient(135deg,#5D7FD0,#3E5FB0);}
+body.dark .pls-btn[data-pane="product"].active{background:linear-gradient(135deg,#5E9E62,#3E7E4C);}
+body.dark .pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#FF7A59,#FFA15C);}
 /* —— 右列：上=生成结果（原高度 238px） 下=常用提示词 —— */
 .prompt-right-col{display:flex;flex-direction:column;min-width:0;gap:14px;}
 /* v4.8.13 右列（画质/比例行+生成结果卡）滚动冻结：sticky 吸在冻结导航行（高 50px）下方 */
 .prompt-right-col{position:sticky;top:50px;align-self:start;}
 .prompt-right-top{display:flex;flex-direction:column;gap:12px;}
 .prompt-right-top .prompt-result-card{display:flex;flex-direction:column;width:100%;height:238px;flex:0 0 auto;}
-.prompt-right-top .prompt-result-header{padding:10px 12px;}
+.prompt-right-top .prompt-result-header{padding:4px 12px;min-height:39px;box-sizing:border-box;}
 .prompt-right-top .prompt-result-header-left{flex:0 0 auto;white-space:nowrap;}
 /* v4.8.6 标题行与操作按钮同一行水平对齐（原按钮强制换行到第二行） */
 .prompt-right-top .prompt-result-header-actions{flex:0 0 auto;justify-content:flex-end;}
@@ -2430,10 +2466,10 @@ body.dark .pls-btn.active{background:linear-gradient(135deg,#FF7A59,#FFA15C);col
   <div class="topbar">
     <div class="crumb"><h1 id="crumbTitle">AI 提示词</h1><span class="sub" id="crumbSub">为文生图打磨精准指令</span></div>
     <div class="topbar-actions"><div class="topbar-btns" id="topbarBtns">
-        <button class="tab-btn save" id="actLayoutSave" onclick="layoutSaveConfig()" title="保存当前配置">保存</button>
-        <button class="tab-btn default" id="actLayoutDefault" onclick="layoutRestoreConfig()" title="恢复默认配置">默认</button>
-        <button class="tab-btn save" id="actPromptBak" style="display:none" onclick="promptAddBackup()">备份</button>
-        <button class="tab-btn default" id="actPromptRestore" style="display:none" onclick="promptShowRestoreMenu()">恢复</button>
+        <button class="tab-btn icon-only" id="actLayoutSave" onclick="layoutSaveConfig()" data-tip="保存当前配置"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button>
+        <button class="tab-btn icon-only" id="actLayoutDefault" onclick="layoutRestoreConfig()" data-tip="恢复默认配置"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>
+        <button class="tab-btn icon-only" id="actPromptBak" style="display:none" onclick="promptAddBackup()" data-tip="备份当前标签"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
+        <button class="tab-btn icon-only" id="actPromptRestore" style="display:none" onclick="promptShowRestoreMenu()" data-tip="恢复备份"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
       </div><button class="topbar-theme-btn" id="mergedThemeToggle" title="切换夜间/日间模式" aria-label="切换夜间/日间模式">&#127769;</button></div>
   </div>
 
@@ -4764,7 +4800,7 @@ var collapsibleData={
 // 【背景·氛围】
 background:[
 // ── 背景风格 ──
-{icon:'景',color:'#B8955E',title:'背景风格',gradient:'linear-gradient(135deg,#FFF0DC 0%,#FFD8A8 100%)',tcolor:'#9B4513',tags:[
+{icon:'景',color:'#CE9040',title:'背景风格',gradient:'linear-gradient(135deg,#FFF2DE 0%,#FCD9A4 100%)',tcolor:'#96601C',tags:[
 // ── 中式雅韵 ──
 ['极简中式水墨','极简中式水墨','极简中式水墨背景，宣纸肌理底色，淡墨大面积晕染，中央留白充足'],
 ['工笔淡彩','工笔淡彩','工笔淡彩背景，绢本设色，浅绛清雅，细线勾边'],
@@ -4820,7 +4856,7 @@ background:[
 ['网格底纹','浅灰网格底纹','正面平整视图，浅灰细网格底纹背景，线条规整均匀铺满，工程图纸印刷质感，淡雅低对比，无透视变形，无实体纸张']
 ]},
 // ── 空间构图 ──
-{icon:'构',color:'#C08A3E',title:'空间构图',gradient:'linear-gradient(135deg,#FFF3E0 0%,#F3D6A0 100%)',tcolor:'#8A5514',tags:[
+{icon:'构',color:'#B06E3A',title:'空间构图',gradient:'linear-gradient(135deg,#FBEDDC 0%,#EBC79E 100%)',tcolor:'#7E4B1C',tags:[
 // ── 构图法则 ──
 ['中心聚焦','中心聚焦','中心聚焦构图，主体居中，四周留白均分'],
 ['三分法构图','三分法构图','三分法构图，主体置于九宫格交叉点附近，画面均衡不呆板'],
@@ -4843,7 +4879,7 @@ background:[
 // 【主体·元素】
 subject:[
 // ── 元素风格 ──
-{icon:'素',color:'#FF7A59',title:'元素风格',gradient:'linear-gradient(135deg,#FFE0DA 0%,#F4AFA8 100%)',tcolor:'#A33646',tags:[
+{icon:'素',color:'#E96A5E',title:'元素风格',gradient:'linear-gradient(135deg,#FFE3DD 0%,#F5B3A8 100%)',tcolor:'#A63A32',tags:[
 // ── 传统国画 ──
 ['水墨写意','水墨写意','水墨写意，浓淡干湿变化，随性笔触，大面积留白'],
 ['工笔细描','工笔细描','工笔细描，游丝细线勾边，层层罩染，细节精致'],
@@ -4882,7 +4918,7 @@ subject:[
 ['3D黏土','3D黏土','3D黏土，圆润饱满造型，哑光材质，柔和全局光']
 ]},
 // ── 取景构图 ──
-{icon:'取',color:'#C96A75',title:'取景构图',gradient:'linear-gradient(135deg,#FBE6E2 0%,#EFB6AE 100%)',tcolor:'#8F3A44',tags:[
+{icon:'取',color:'#C75B7A',title:'取景构图',gradient:'linear-gradient(135deg,#FBE3EA 0%,#EFB6C8 100%)',tcolor:'#93395A',tags:[
 // ── 景别 ──
 ['极特写','极特写','极特写，聚焦最细微局部，细节极致放大'],
 ['特写','特写','特写构图，主体局部占满画面，背景虚化'],
@@ -4907,7 +4943,7 @@ subject:[
 // 【材质·文字】
 typography:[
 // ── 文字风格：书法笔意 → 印刷美术体 → 手写涂鸦（单选）──
-{icon:'文',color:'#6A5ACD',title:'文字风格',gradient:'linear-gradient(135deg,#DDE9F2 0%,#9CC0E0 100%)',tcolor:'#2C5286',tags:[
+{icon:'文',color:'#5D7FD0',title:'文字风格',gradient:'linear-gradient(135deg,#E1E9F9 0%,#AFC4EF 100%)',tcolor:'#2F4F94',tags:[
 ['篆书典雅','篆书典雅','篆书笔意标题字，线条圆融均匀，结体修长对称'],
 ['隶书古拙','隶书古拙','隶书笔意标题字，蚕头燕尾，横画舒展，结体扁方'],
 ['楷书端方','楷书端方','楷书笔意标题字，横平竖直，起收分明，结构匀称'],
@@ -4923,7 +4959,7 @@ typography:[
 ['圆润卡通','圆润卡通','圆润卡通标题字，笔画圆鼓矮胖，转角圆融无锐角'],
 ]},
 // ── 字效材质：立体体积 → 金属光泽 → 发光 → 肌理 → 潮流（多选，可与书体叠加）──
-{icon:'效',color:'#2E8B8B',title:'字效材质',gradient:'linear-gradient(135deg,#D9F0EE 0%,#8FD3CE 100%)',tcolor:'#1B6B6B',tags:[
+{icon:'效',color:'#4D9FDA',title:'字效材质',gradient:'linear-gradient(135deg,#DFF0FA 0%,#A8D3EE 100%)',tcolor:'#1F6396',tags:[
 ['立体浮雕','立体浮雕','立体浮雕标题字，笔画有厚度与侧面，带落地投影'],
 ['3D充气立体','3D充气立体','3D充气立体标题字，圆鼓饱满体积，高光反射，糖果色'],
 ['奶油挤花','奶油挤花','奶油挤花标题字，饱满挤出体积，圆润隆起，柔和光泽'],
@@ -4941,7 +4977,7 @@ typography:[
 ['喷漆涂鸦','喷漆涂鸦','喷漆涂鸦标题字，雾化边缘，漆点飞溅，街头模板感'],
 ]},
 // ── 文字排向：可与上两组叠加（多选）──
-{icon:'排',color:'#4A7FB5',title:'文字排向',gradient:'linear-gradient(135deg,#D9E7F4 0%,#93BCDF 100%)',tcolor:'#1F4E79',tags:[
+{icon:'排',color:'#4D9FDA',title:'文字排向',gradient:'linear-gradient(135deg,#DFF0FA 0%,#A8D3EE 100%)',tcolor:'#256C99',tags:[
 ['横向排列','横向排列','标题字横向排列，单行通栏排布，字距匀称，阅读顺序自然'],
 ['竖向排列','竖向排列','标题字竖向排列，自上而下，行气贯通'],
 ['右端齐平','右端齐平','标题字右端齐平，末端收齐，左端自然错落'],
@@ -4955,7 +4991,7 @@ typography:[
 // 【产品·材质】
 product:[
 // ── 产品类型 ──
-{icon:'品',color:'#5A8C5C',title:'产品类型',gradient:'linear-gradient(135deg,#F5FAF5 0%,#E0EFE3 100%)',capGrad:'linear-gradient(135deg,#EAF3EC 0%,#BDD7C0 100%)',tcolor:'#2F5A36',tags:[
+{icon:'品',color:'#5E9E62',title:'产品类型',gradient:'linear-gradient(135deg,#E9F5E9 0%,#C4E2C6 100%)',capGrad:'linear-gradient(135deg,#EDF6ED 0%,#C9E3CB 100%)',tcolor:'#2F6B3C',tags:[
 // ── 纸品文具 ──
 ['书签','书签','书签，纤薄金属或木质，边缘切割干净，纹样清晰，搭配书页陈列'],
 ['笔记本','笔记本','笔记本，封面图案完整，书脊与圆角可见，内页微展'],
@@ -4994,7 +5030,7 @@ product:[
 ['包装礼盒','包装礼盒','包装礼盒，盒盖盒身结构清晰，烫金局部，开盒露内衬']
 ]},
 // ── 产品材质 ──
-{icon:'材',color:'#8C7A5A',title:'产品材质',gradient:'linear-gradient(135deg,#FCF8EE 0%,#F0E5C8 100%)',capGrad:'linear-gradient(135deg,#F5EFE3 0%,#DDC9A0 100%)',tcolor:'#5E4423',tags:[
+{icon:'材',color:'#A5854E',title:'产品材质',gradient:'linear-gradient(135deg,#F8F2E2 0%,#E7D6AC 100%)',capGrad:'linear-gradient(135deg,#F6F0E0 0%,#E2D0A8 100%)',tcolor:'#6E5527',tags:[
 // ── 纸质 ──
 ['纸质卡片','纸质卡片','纸质卡片，哑光纸面，厚度与切边清晰，细微纸纤维'],
 ['铜版纸','铜版纸','铜版纸，平滑细腻，印刷鲜亮，轻微半光泽'],
@@ -5025,7 +5061,7 @@ product:[
 ['橡胶软垫','橡胶软垫','橡胶软垫，柔韧防滑，底部纹理清晰，哑光']
 ]},
 // ── 表面工艺 ──
-{icon:'工',color:'#8C5A6A',title:'表面工艺',gradient:'linear-gradient(135deg,#FCF5F7 0%,#F0DDE2 100%)',capGrad:'linear-gradient(135deg,#F5E8EC 0%,#D8B7C0 100%)',tcolor:'#5C2E3C',tags:[
+{icon:'工',color:'#C4764A',title:'表面工艺',gradient:'linear-gradient(135deg,#FAEBE0 0%,#EBC8AC 100%)',capGrad:'linear-gradient(135deg,#F7EEE5 0%,#E5C6AC 100%)',tcolor:'#8A4A24',tags:[
 // ── 印刷 ──
 ['数码直喷','数码直喷','数码直喷，图案直接印于表面，色彩层次细腻'],
 ['热转印','热转印','热转印，图案贴合曲面，色彩鲜艳牢固'],
@@ -5048,7 +5084,7 @@ product:[
 ['拔染工艺','拔染工艺','拔染，布料局部褪色成图案，色彩复古自然']
 ]},
 // ── 视觉质感 ──
-{icon:'质',color:'#9370DB',title:'视觉质感',gradient:'linear-gradient(135deg,#F5F3FA 0%,#E2DCF0 100%)',capGrad:'linear-gradient(135deg,#EBDEF3 0%,#C0A5DC 100%)',tcolor:'#553787',tags:[
+{icon:'质',color:'#8E74CE',title:'视觉质感',gradient:'linear-gradient(135deg,#EFEAF9 0%,#CFC0EC 100%)',capGrad:'linear-gradient(135deg,#EEE8F8 0%,#C8B6E8 100%)',tcolor:'#5B3FA0',tags:[
 // ── 拍摄方式 ──
 ['微距特写','微距特写','微距特写，贴近材质表面，纹理工艺极清晰，背景虚化'],
 ['俯视平铺','俯视平铺','90度俯拍平铺，产品完整展开，边缘平行画面'],
@@ -5203,14 +5239,16 @@ if(prodData){
       +'[data-gtitle="'+c.title+'"]{color:'+tc+' !important}'
       +'body.dark '+sub+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%);border:1px solid rgba(255,255,255,.09)}'
       +g+':hover{background:'+hovBg+' !important;border-color:'+hovBd+' !important}'
-      +g+'.faved{border-color:'+u+' !important;color:'+u+' !important;background:transparent !important}'
-      +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:'+u+' !important;color:'+u+' !important;box-shadow:0 1px 3px '+u+'33 !important}'
+      +g+'.faved{border-color:transparent !important;color:'+u+' !important;background:'+u+'1a !important}'
+      +g+'.faved::before{content:"★ ";font-size:9px;line-height:1}'
+      +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:'+u+' !important;color:'+u+' !important;box-shadow:0 2px 6px '+u+'40,inset 0 0 0 1px rgba(255,255,255,.55) !important}'
       +'body.dark '+gb+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%) !important;border:1px solid rgba(255,255,255,.09)}'
       +'body.dark '+gt+'{color:'+dT+' !important}'
       +'body.dark '+g+'{color:var(--prompt-text-secondary) !important}'
       +'body.dark '+g+':hover{background:rgba(255,255,255,.08) !important;border-color:'+promptTint(u,45,58)+' !important;color:var(--prompt-text-primary) !important}'
-      +'body.dark '+g+'.faved{background:transparent !important;border-color:'+dB+' !important;color:'+dT+' !important}'
-      +'body.dark '+g+'.selected,'+'body.dark '+g+'.faved.selected{background:linear-gradient(135deg,'+dSel+' 0%,'+dSel2+' 100%) !important;color:'+promptTint(u,62,80)+' !important;border-color:'+promptTint(u,46,56)+' !important;box-shadow:0 1px 4px rgba(0,0,0,.35) !important}';
+      +'body.dark '+g+'.faved{background:'+promptTint(u,55,62,.16)+' !important;border-color:transparent !important;color:'+dT+' !important}'
+      +'body.dark '+g+'.faved::before{content:"★ ";font-size:9px;line-height:1}'
+      +'body.dark '+g+'.selected,'+'body.dark '+g+'.faved.selected{background:linear-gradient(135deg,'+dSel+' 0%,'+dSel2+' 100%) !important;color:'+promptTint(u,62,80)+' !important;border-color:'+promptTint(u,46,56)+' !important;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08) !important}';
   }).join('');
   var st=document.createElement('style');st.id='promptGroupColorCss';st.textContent=css;document.head.appendChild(st);
 })();
@@ -5296,7 +5334,7 @@ var promptHeader=document.createElement('div');
 promptHeader.className='prompt-mini-nav';
 // v4.8.12 导航行滚动冻结：sticky 吸顶，padding-bottom 替代 margin（避免滚动时内容从缝隙穿出），底色用页面同款 --bg 遮挡
 promptHeader.style.cssText='display:flex;gap:6px;align-items:center;position:sticky;top:0;z-index:30;background:var(--bg);padding:8px 0 10px;margin-top:-8px;';
-promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button">背景</button><button class="pls-btn" data-pane="element" type="button">元素</button><button class="pls-btn" data-pane="font" type="button">文字</button><button class="pls-btn" data-pane="product" type="button">产品</button><button class="pls-btn" data-pane="style" type="button">风格转换</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
+promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button">背景氛围</button><button class="pls-btn" data-pane="element" type="button">主体元素</button><button class="pls-btn" data-pane="font" type="button">文字排版</button><button class="pls-btn" data-pane="product" type="button">产品设计</button><button class="pls-btn" data-pane="style" type="button">风格转换</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
 PS('#promptBody').insertBefore(promptHeader,PS('#promptBody').firstChild);
 
 // 生成结果列左右拖动调整宽度（拖动后保存到 localStorage，下次打开恢复）
@@ -7732,6 +7770,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(!bgModeBtn) return;
     bgModeBtn.dataset.mode = mode;
     bgModeBtn.textContent = (mode === 'solid') ? '纯色底' : '白底';
+    bgModeBtn.classList.toggle('mp-solid', mode === 'solid');  // v4.8.41 纯色底激活走橙色渐变
   }
   function toggleBgMode(){
     const next = (mattingMode === 'solid') ? 'white' : 'solid';
@@ -7850,7 +7889,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   var root=document.documentElement;
   var shell=document.getElementById('pageScaleShell');
   var container=shell&&shell.querySelector('.container');
-  var _psQueued=false,_psScale=-1,_psH=-1;
+  var _psQueued=false,_psScale=-1,_psH=-1,_psNeeds={};
   function updatePageScale(){
     if(_psQueued)return;
     _psQueued=true;
@@ -7868,6 +7907,29 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
         if(h!==_psH){
           shell.style.setProperty('--scaled-container-height',h+'px');
           _psH=h;
+        }
+      }
+      // v4.8.40 全板块最小宽度：任一可见板块溢出时整页等比缩小（按实际溢出量算 zoom）
+      var TAB_IDS=['tabPrompt','tabColor','tabMatting','tabLayout'];
+      var app=null,need=0,cw=0;
+      for(var i=0;i<TAB_IDS.length;i++){
+        var el=document.getElementById(TAB_IDS[i]);
+        if(!el||!el.offsetParent)continue;        // 隐藏板块不测量
+        var c=el.clientWidth;
+        if(c<=0)continue;
+        if(el.scrollWidth>c+2){_psNeeds[TAB_IDS[i]]=el.scrollWidth;}  // 仅真溢出时记录需求宽
+        var n=_psNeeds[TAB_IDS[i]]||0;
+        if(n>need){need=n;app=el;cw=c;}
+      }
+      if(app&&need>0){
+        var zoomCur=parseFloat(getComputedStyle(root).getPropertyValue('--app-zoom'))||1;
+        var chrome=vw/zoomCur-cw;               // 侧栏+页边距（坐标 px，定值）
+        var z=Math.min(1,Math.max(0.35,vw/(need+chrome)));
+        if(z>=1){
+          if(zoomCur<1){root.style.setProperty('--app-zoom','1');}
+          _psNeeds={};
+        }else if(Math.abs(z-zoomCur)>0.002){
+          root.style.setProperty('--app-zoom',z.toFixed(6));
         }
       }
     });
@@ -8000,11 +8062,11 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
 
   // ---- 顶部齿轮按钮（v4.8.7 移至顶栏「备份」左侧，样式与顶栏按钮统一） ----
   var gear = document.createElement('button');
-  gear.className = 'tab-btn default';
+  gear.className = 'tab-btn icon-only';
   gear.id = 'aiSettingsGear';
   gear.type = 'button';
-  gear.title = 'AI 扩写设置';
-  gear.textContent = 'AI设置';
+  gear.setAttribute('data-tip','AI 扩写设置');
+  gear.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
   var bakBtn = document.getElementById('actPromptBak');
   if (bakBtn && bakBtn.parentNode) bakBtn.parentNode.insertBefore(gear, bakBtn);
   else { var tb = document.getElementById('topbarBtns'); if (tb) tb.appendChild(gear); }
