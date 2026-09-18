@@ -479,7 +479,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
   background: rgba(0,0,0,0.5); color: #fff; font-size: 14px;
   cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
-.color-app .paste-zone.has-image .paste-clear { display: flex; }
+/* v4.8.16 粘贴区 × 改 hover 浮现：默认隐藏不可点，移入粘贴区才显示 */
+.color-app .paste-zone.has-image .paste-clear { display: flex; opacity: 0; transform: translateY(-2px); pointer-events: none; transition: all .18s ease; }
+.color-app .paste-zone.has-image:hover .paste-clear { opacity: 1; transform: none; pointer-events: auto; }
 .color-app #fileInput { display: none; }
 .color-app .extracted-bar { display: none; gap: 5px; margin-top: 8px; overflow: hidden; max-height: 140px; }
 .color-app .extracted-bar.show { display: grid; grid-template-columns: repeat(3, 1fr); }
@@ -734,9 +736,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-col{min-width:0;width:100%;display:flex;flex-direction:column;gap:10px;height:100%;min-height:0}
 .prompt-col-bg,.prompt-col-element,.prompt-col-font{min-width:0}
 /* v4.3.5 三列各自动底色：列头胶囊色调延伸到整列 */
-.prompt-col-bg{background:linear-gradient(180deg,rgba(252,248,238,.5) 0%,rgba(240,229,200,.5) 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,165,116,0.28);box-shadow:0 2px 10px -2px rgba(180,120,40,0.08)}
-.prompt-col-element{background:linear-gradient(180deg,rgba(252,245,247,.5) 0%,rgba(240,221,226,.5) 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(212,116,116,0.28);box-shadow:0 2px 10px -2px rgba(180,70,70,0.08)}
-.prompt-col-font{background:linear-gradient(180deg,rgba(242,244,250,.5) 0%,rgba(216,224,240,.5) 100%);padding:0 8px 8px 8px;border-radius:14px;border:1px solid rgba(116,148,180,0.28);box-shadow:0 2px 10px -2px rgba(70,100,150,0.08)}
+.prompt-col-bg{background:transparent;padding:0 8px 8px 8px;border-radius:14px;border:none;box-shadow:none}
+.prompt-col-element{background:transparent;padding:0 8px 8px 8px;border-radius:14px;border:none;box-shadow:none}
+.prompt-col-font{background:transparent;padding:0 8px 8px 8px;border-radius:14px;border:none;box-shadow:none}
 /* ===== 新布局：上半部分两列（转换风格+常用提示词 | 生成结果+预设方案）+ 下半部分整宽 ===== */
 .prompt-top-grid{--col-left:300px;display:grid;grid-template-columns:var(--col-left) 4px minmax(0,1fr);gap:4px;align-items:stretch;width:100%;min-width:0;flex:0 0 auto;max-height:42vh}
 .prompt-col-resizer{grid-column:2;align-self:stretch;width:4px;cursor:col-resize;position:relative;touch-action:none}
@@ -765,7 +767,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
   .prompt-col-scroll{overflow:visible;flex:0 0 auto}
 }
 /* v4.4.5 自定义描述输入框移入分组标题行（背景风格/元素风格/文字风格 右侧） */
-.prompt-flat-title .prompt-col-custom-wrap{flex:0 1 auto;min-width:0;max-width:220px;position:relative;padding:0;margin-left:auto}
+.prompt-flat-title .prompt-col-custom-wrap{flex:0 1 280px;min-width:0;max-width:280px;position:relative;padding:0;margin-left:auto}
 .prompt-flat-title .prompt-col-custom-input{width:100%;padding:5px 10px;font-size:12px;border:1px solid transparent;border-radius:6px;color:var(--prompt-text-primary);background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;outline:none;font-family:inherit;transition:var(--prompt-transition);box-sizing:border-box}
 .prompt-flat-title .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(255,122,89,.1);background:var(--prompt-bg-card)}
 .prompt-flat-title .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
@@ -791,7 +793,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-group:last-child{margin-bottom:0}
 .prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap}
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:1;padding:0;letter-spacing:.4px}
-.prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px;padding-top:2px}
+.prompt-tag-group{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 .prompt-tag.faved{border-color:var(--tag-fav,var(--prompt-accent));color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:transparent}
 .prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#FF7A59,#FFA15C));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -808,12 +810,11 @@ body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(2
 #promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,0.28)}
 #promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,0.28)}
 #promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(0,0,0,.16)}
-.prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.30)}
 body.dark #promptColBgScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,.22)}
 body.dark #promptColElementScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,116,116,.22)}
 body.dark #promptColFontScroll .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(116,148,180,.24)}
 body.dark #promptProductLayout .prompt-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(255,255,255,.09)}
-body.dark .prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(214,138,66,.26)}
+body.dark .prompt-style-tag:not(.faved):not(.selected):not(:hover){border-color:rgba(212,165,116,.22)}
 
 .prompt-subgroup-title:first-child{padding-top:0}
 .prompt-subgroup{margin-bottom:4px}
@@ -822,10 +823,10 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 /* 收藏标签不再显示装饰星号（已移除） */
 .prompt-param-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
-/* v4.4.8 转换风格卡片：暖橙底色 + 标题同系深色（与三列卡片的「底色+深标题」保持一致） */
-#promptStyleCol .prompt-param-card{background:linear-gradient(180deg,rgba(255,247,240,.5) 0%,rgba(255,233,214,.5) 100%);border-color:rgba(214,138,66,.30)}
-#promptStyleCol .prompt-param-card-title{padding-left:0;margin-left:-4px} /* 与「背景风格」标题文本左对齐（拖拽把手已删除，旧 18px 偏移作废；-4px 抵消卡片 14px 与列 10px 的 padding 差） */
-#promptStyleCol .prompt-param-card-title{color:#B4621F}
+/* v4.8.2 风格转换改为平铺分组（同背景页 flat-group），旧嵌套卡片规则作废；暗黑标题同背景页提亮 */
+body.dark [data-gtitle="风格转换"]{color:#F2B98C !important}
+/* v4.8.3 位置对齐：背景页标题行因「自定义输入框」高 39px，风格转换标题行补同高，标签起始位置一致 */
+.prompt-pane-style .prompt-flat-title{min-height:39px}
 .prompt-param-options{display:flex;gap:4px;flex-wrap:wrap;flex:1}
 .prompt-param-btn{padding:4px 9px;border:1px solid var(--prompt-border);border-radius:8px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-param-btn.selected{border-color:transparent;background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff}
@@ -868,9 +869,10 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-ratio-btn .prompt-star.faved{color:var(--prompt-accent)}
 .prompt-ratio-btn.selected .prompt-star,.prompt-ratio-btn.selected .prompt-star.faved{color:var(--prompt-accent)}
 .prompt-style-add-btn{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
-.prompt-style-tags-grid{display:flex;flex-wrap:wrap;gap:6px}
-/* v4.7.1 转换风格标签：默认描边中性灰，hover/收藏/选中描边随板块橙系（与其他标签按色系变化一致） */
-.prompt-style-tag{padding:3px 8px;border:1px solid rgba(0,0,0,.1);border-radius:9px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
+/* v4.8.1 风格转换对齐全局规范：5 列等宽网格，与 .prompt-tag-group 一致 */
+.prompt-style-tags-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding-top:2px}
+/* v4.8.3 风格转换标签与背景页 .prompt-tag 完全同规格：白底胶囊 + 30px 高（对齐 10.3 芯片规范） */
+.prompt-style-tag{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;height:30px;line-height:1;padding:0 13px;border:1px solid rgba(212,165,116,0.28);border-radius:var(--r-pill,999px);font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--surface,#fff);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
 .prompt-style-tag.faved{border-color:#C2561F;color:#B04A16;background:transparent;font-weight:700;letter-spacing:.2px}
 .prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 1px 3px rgba(194,86,31,.18)}
@@ -892,8 +894,14 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-result-header-btn{padding:5px 14px;border:none;border-radius:var(--prompt-radius-pill);font-size:12px;font-weight:600;cursor:pointer;transition:var(--prompt-transition);font-family:inherit}
 .prompt-result-header-btn.copy{background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff;display:inline-flex;align-items:center;gap:4px}
 .prompt-result-header-btn.close{background:var(--prompt-bg-section);color:var(--prompt-text-muted);font-size:18px;padding:4px 10px}
-.prompt-result-body{padding:10px 14px;min-height:100px;background:var(--prompt-bg);border-radius:8px;margin:0 10px 8px}
-.prompt-result-textarea{width:100%;min-height:80px;font-size:13px;line-height:1.6;color:var(--prompt-text-primary);background:transparent;border:none;outline:none;resize:vertical;font-family:inherit;word-break:break-all;white-space:pre-wrap}
+/* v4.8.6 结果输入框优化：去灰色内衬底，文本域直接贴卡片；禁用拖拽缩放手柄（防拖破布局） */
+/* v4.8.11 输入区与下方预设记录行同底色（--prompt-bg-section），圆角内衬式 */
+.prompt-result-body{padding:10px 14px;background:var(--prompt-bg-section);border-radius:8px;margin:0 10px 10px;min-height:100px}
+.prompt-result-textarea{width:100%;min-height:80px;font-size:13px;line-height:1.6;color:var(--prompt-text-primary);background:transparent;border:none;outline:none;resize:none;font-family:inherit;word-break:break-all;white-space:pre-wrap}
+/* #tabPrompt textarea 全局底色优先级更高，结果文本域单独还原为无底无边 */
+#tabPrompt .prompt-result-textarea{background:transparent;border:none;border-radius:0;line-height:1.6}
+/* v4.8.8 聚焦态豁免：#tabPrompt textarea:focus 的橙色 3px 扩散圈对结果输入框不生效，聚焦保持干净（仅保留橙色光标） */
+#tabPrompt .prompt-result-textarea:focus{background:transparent;border:none;box-shadow:none;outline:none;caret-color:var(--prompt-accent)}
 .prompt-result-textarea::placeholder{color:var(--prompt-text-muted);font-style:italic}
 .prompt-result-header-left{display:flex;align-items:baseline;gap:8px}
 .prompt-result-header .prompt-char-count{font-size:11px;color:var(--prompt-text-muted);font-weight:400}
@@ -937,57 +945,22 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 #promptColFontScroll .prompt-tag,
 #promptProductLayout .prompt-tag,
 
-.prompt-style-tag{font-size:12px;padding:4px 9px;}
+.prompt-style-tag{font-size:12px;}
 /* 文字风格列居中对齐 */
 #promptColFontScroll .prompt-collapsible-header{justify-content:center;}
 /* v4.4.8 文字列改用 grid：按归类顺序从左到右逐行排列（原 column-count 为竖向填充，横读顺序错乱） */
-#promptColFontScroll .prompt-tag-group{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;text-align:center;}
-#promptColFontScroll .prompt-tag-group .prompt-tag{justify-content:center;}
-#promptColFontScroll .prompt-tag-group .prompt-tag{display:inline-flex;width:100%;justify-content:center;padding:4px 4px;}
+/* v4.8 网格已由 .prompt-tag-group 全局定义 */
+/* v4.8 全部组标签统一为文字风格规格：占满网格列、居中、4px 内边距 */
+.prompt-tag-group .prompt-tag{display:inline-flex;width:100%;justify-content:center;padding:4px 4px;}
 
-/* 产品描述输入行：标题+输入框横向一行、无底色（其他标签保持原样） */
-#promptProductInputCard{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:transparent;
-  border:1px solid var(--prompt-border);
-  border-radius:8px;
-  padding:6px 10px;
-  margin-bottom:8px;
-  overflow:visible;
-}
-#promptProductInputCard .prompt-collapsible-header{
-  flex:0 0 auto;
-  width:auto;
-  padding:0;
-  cursor:default;
-  gap:6px;
-  background:transparent;
-}
-#promptProductInputCard .prompt-arrow{display:none;}
-#promptProductInputCard .prompt-collapsible-header .prompt-title{
-  flex:0 0 auto;
-  white-space:nowrap;
-}
-#promptProductInputCard .prompt-collapsible-body{
-  flex:1 1 auto;
-  min-width:0;
-  padding:0;
-  display:block;
-}
-#promptProductInputCard .prompt-product-back{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);color:#2F5A36;cursor:pointer;transition:var(--prompt-transition);flex-shrink:0}
-#promptProductInputCard .prompt-product-back:hover{background:linear-gradient(135deg,#C8E6C9,#A5D6A7)}
-#promptProductInputCard .prompt-product-back svg{display:block;width:14px;height:14px}
-body.dark #promptProductInputCard .prompt-product-back{background:linear-gradient(135deg,#2F5A36,#3D7A4A);color:#fff}
-body.dark #promptProductInputCard .prompt-product-back:hover{background:linear-gradient(135deg,#3D7A4A,#4C9A63)}
+/* v4.8.4 产品描述卡已删除（关键词框移至「产品类型」行右侧），旧 #promptProductInputCard 规则作废 */
 /* 产品模式：产品类型/材质/造型/工艺/质感 三列自适应（左1/中2/右2） */
 #promptProductLayout{display:none;width:100%;min-width:0;flex:1 1 auto;min-height:0}
 .prompt-product-col-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;min-width:0;align-items:start;margin-top:10px}
 .prompt-product-column{display:flex;flex-direction:column;gap:12px}
 .prompt-product-column .prompt-collapsible{margin-bottom:0;display:flex;flex-direction:column;overflow:hidden}
 .prompt-product-column .prompt-collapsible-body.open{max-height:none;overflow-y:visible;padding-bottom:12px}
-.prompt-product-column .prompt-tag-group{display:flex;flex-wrap:wrap;gap:4px}
+/* v4.8 产品页组容器继承全局 5 列网格 */
 
 /* ===== v4.6 暗色模式重做：深空蓝基调，层次靠明度递进、状态色按板块色相重建 ===== */
 body.dark .prompt-app{
@@ -1001,9 +974,9 @@ body.dark .prompt-app{
   --prompt-shadow-lg:0 4px 20px rgba(0,0,0,.45);
 }
 /* 三列容器：深色同色系微渐变（顶部带一点本列色调，落回深空蓝底），替代亮色的浅色渐变 */
-body.dark .prompt-col-bg{background:linear-gradient(180deg,rgba(44,36,24,.5) 0%,rgba(26,35,50,.5) 100%);border-color:rgba(212,165,116,.22);box-shadow:none}
-body.dark .prompt-col-element{background:linear-gradient(180deg,rgba(46,31,38,.5) 0%,rgba(26,35,50,.5) 100%);border-color:rgba(212,116,116,.22);box-shadow:none}
-body.dark .prompt-col-font{background:linear-gradient(180deg,rgba(29,37,55,.5) 0%,rgba(26,35,50,.5) 100%);border-color:rgba(116,148,180,.24);box-shadow:none}
+body.dark .prompt-col-bg{background:transparent;border:none;box-shadow:none}
+body.dark .prompt-col-element{background:transparent;border:none;box-shadow:none}
+body.dark .prompt-col-font{background:transparent;border:none;box-shadow:none}
 body.dark .prompt-quick-prompt-card,
 body.dark .prompt-param-card,
 body.dark .prompt-collapsible{background:#1b2434;border-color:rgba(255,255,255,.10);box-shadow:0 2px 10px rgba(0,0,0,.30)}
@@ -1020,7 +993,7 @@ body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
 body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
 body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff}
-body.dark .prompt-result-body{background:#141d2b}
+body.dark .prompt-result-body{background:transparent}
 body.dark .prompt-result-textarea{color:var(--text)}
 body.dark .prompt-preset-item .prompt-preset-name{color:var(--text)}
 body.dark .prompt-tag-add{color:#F0955C}
@@ -1048,7 +1021,8 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .prompt-col-layout{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .prompt-col{width:100%}
 .prompt-col-font{grid-column:auto}
-.prompt-flat-title .prompt-col-custom-wrap{max-width:160px;min-width:0}
+/* v4.8.10 自定义描述输入框加长：基准 280px，窄布局同步放宽（原 160/220px） */
+.prompt-flat-title .prompt-col-custom-wrap{max-width:280px;min-width:0;flex-basis:280px}
 #promptColFontScroll .prompt-tag-group{grid-template-columns:repeat(3,minmax(0,1fr))}
 .prompt-product-col-layout{grid-template-columns:1fr;gap:10px}
 .prompt-product-column{gap:10px}
@@ -1109,6 +1083,14 @@ body.dark .matting-progress-fill { background: linear-gradient(90deg, var(--prim
 }
 .matting-stop:active { transform: translateY(1px); }
 .matting-footer { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+/* v4.8.17 抠图工具条按钮统一：30px 高 + 胶囊圆角 + 600 字重，主次分明（主=绿实底，次=描边） */
+.matting-brushbar .brush-dir-label{height:30px;display:inline-flex;align-items:center;border-radius:var(--r-pill,999px);padding:0 14px;font-weight:600;}
+.matting-brushbar .btn{border-radius:var(--r-pill,999px);}
+.matting-footer .btn.btn-sm{border-radius:var(--r-pill,999px);}
+.matting-footer .btn-gray.btn-sm{background:var(--surface,#fff);border:1px solid var(--border,#d8dce8);color:var(--text-secondary,#565c70);}
+.matting-footer .btn-gray.btn-sm:hover{border-color:var(--accent-matting,#16a574);color:var(--accent-matting,#16a574);}
+.matting-footer .btn-success.btn-sm{border:none;}
+.matting-footer #autoDownloadToggle{height:30px;display:inline-flex;align-items:center;padding:0 12px;font-weight:600;}
 .matting-hint { font-size: 12px; color: var(--text-muted); }
 .matting-sab { display: none; }
 .matting-modebar {
@@ -1121,16 +1103,7 @@ body.dark .matting-progress-fill { background: linear-gradient(90deg, var(--prim
 .matting-pickwrap {
   position: relative;
 }
-.matting-modepick { display: inline-flex; padding: 3px; background: var(--border); border-radius: 10px; }
-.mp-btn { border: none; background: transparent; color: var(--text-secondary); font-size: 12px; font-weight: 600; height: 28px; line-height: 1; padding: 0 14px; border-radius: 7px; cursor: pointer; transition: all 0.15s; }
-.mp-btn.active { background: var(--dopa-blue); color: #fff; }
-body.dark .mp-btn.active { background: var(--dopa-blue); color: #fff; }
-.mp-btn.mp-bg.active { background: #10b981; color: #fff; }
-.mp-btn.mp-wm.active { background: #3b82f6; color: #fff; }
-.mp-btn.mp-ai.active { background: var(--primary); color: #fff; }
-body.dark .mp-btn.mp-bg.active { background: #10b981; color: #fff; }
-body.dark .mp-btn.mp-wm.active { background: #3b82f6; color: #fff; }
-body.dark .mp-btn.mp-ai.active { background: var(--primary); color: #fff; }
+/* v4.8.29 精简：modepick/mp-btn 样式统一由 10.3 芯片规范 + #tabMatting 覆盖规则提供 */
 /* 批量结果网格 */
 .matting-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
 .mq-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; transition: border-color .15s; }
@@ -1298,8 +1271,7 @@ body.dark .zoom-bar { background: rgba(20,22,27,0.5); border-color: rgba(255,255
 .prompt-result-header-btn.ai.loading .ai-spin { display:inline-block; }
 .prompt-result-header-btn.ai.loading .ai-label { display:none; }
 @keyframes ai-spin { to { transform: rotate(360deg); } }
-.ai-gear-btn { display:inline-flex; align-items:center; justify-content:center; gap:4px; height:30px; padding:0 10px; border:1px solid var(--prompt-border,#e3e3e8); border-radius:7px; background:var(--prompt-bg-section,#fff); color:var(--prompt-text-secondary,#555); cursor:pointer; transition:all .2s ease; font-size:13px; font-weight:600; line-height:1; white-space:nowrap; }
-.ai-gear-btn:hover { color:var(--purple,#7c5cff); border-color:var(--purple,#7c5cff); }
+/* v4.8.7 AI设置按钮移入顶栏（.tab-btn.default），旧 .ai-gear-btn 样式作废 */
 /* 设置弹窗 */
 .ai-settings-overlay { position:fixed; inset:0; background:rgba(15,23,42,.45); display:none; align-items:center; justify-content:center; z-index:9999; }
 .ai-settings-overlay.open { display:flex; }
@@ -1353,9 +1325,17 @@ body.dark{
 
 /* —— 左侧图标侧栏 —— */
 .tab-bar{
-  width:232px; flex-shrink:0; align-items:stretch; padding:14px 12px;
+  width:208px; flex-shrink:0; align-items:stretch; padding:14px 10px;
   background:var(--surface-2); border-right:1px solid var(--border); gap:6px;
 }
+/* v4.8.15 侧栏宽度优化 + 内容居中 */
+.tab-bar .brand{justify-content:center;text-align:center;}
+.tab-bar .brand-text b,.tab-bar .brand-text span{width:100%;}
+.tab-bar .tab-item{justify-content:flex-start;}
+.tab-bar .sidebar-foot{display:flex;justify-content:flex-start;}
+.tab-bar .sidebar-collapse-btn{justify-content:center;}
+/* v4.8.20 激活/悬停底色宽度缩短：tab 项按内容自适应，不再撑满整行 */
+.tab-bar .tab-item{width:fit-content;align-self:flex-start;padding:0 18px;}
 .brand{display:flex; align-items:center; gap:12px; padding:6px 10px 14px; margin-bottom:6px; border-bottom:1px solid var(--border);}
 .brand-logo{width:38px; height:38px; border-radius:11px; flex-shrink:0; background:linear-gradient(135deg,#FF7A59 0%,#9B6CF0 50%,#16C98A 100%); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:20px; box-shadow:0 6px 18px rgba(77,141,255,.25);}
 .brand-text b{font-size:16px; letter-spacing:.3px; display:block; line-height:1.2; color:var(--text);}
@@ -1406,10 +1386,10 @@ body.dark{
 .tab-theme-toggle:hover{border-color:var(--text-muted);}
 
 /* —— 顶栏 —— */
-.topbar{height:64px; flex-shrink:0; display:flex; align-items:center; gap:16px; padding:0 24px; background:var(--surface); border-bottom:1px solid var(--border);}
-.topbar .crumb{display:flex; align-items:baseline; gap:12px;}
-.topbar .crumb h1{font-size:20px; font-weight:700; letter-spacing:.2px; color:var(--text);}
-.topbar .crumb .sub{font-size:13px; color:var(--text-muted);}
+.topbar{height:52px; flex-shrink:0; display:flex; align-items:center; gap:16px; padding:0 24px; background:var(--surface); border-bottom:1px solid var(--border);}
+.topbar .crumb{display:flex; align-items:baseline; gap:10px;}
+.topbar .crumb h1{font-size:16px; font-weight:700; letter-spacing:.2px; color:var(--text);}
+.topbar .crumb .sub{font-size:12px; color:var(--text-muted);}
 .topbar-actions{margin-left:auto; display:flex; align-items:center; gap:10px;}
 .topbar-hint{font-size:12px; color:var(--text-muted); padding:6px 12px; border:1px solid var(--border); border-radius:999px; background:var(--surface-2);}
 
@@ -1543,20 +1523,7 @@ body.dark{
 .matting-drop-icon { color: var(--accent-matting); }
 .matting-drop-title { color: var(--text); }
 
-/* 模式选择 pill */
-.matting-modepick {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 4px;
-  box-shadow: 0 1px 2px rgba(20,23,40,.04);
-}
-.mp-btn { border-radius: 9px; }
-.mp-btn:hover:not(.active) { background: var(--surface); color: var(--text); }
-.mp-btn.active { box-shadow: 0 2px 8px -2px rgba(0,0,0,.25); }
-.mp-btn.mp-bg.active { background: var(--accent-matting); }
-.mp-btn.mp-wm.active { background: var(--primary); }
-.mp-btn.mp-ai.active { background: var(--accent-prompt); }
+/* 模式选择 pill（样式统一由 1816 行规则提供，见 10.3 芯片规范 + #tabMatting 覆盖） */
 
 /* 批量结果卡片 */
 .mq-card {
@@ -1635,6 +1602,9 @@ body.dark{
 }
 .sidebar-collapse-btn:hover{border-color:var(--text-muted); color:var(--text); background:var(--surface-2);}
 .sidebar-collapse-btn svg{display:block; transition:transform .2s ease;}
+/* 收起按钮：置于「AI提示词」图标上方（品牌区与首个 tab 之间，右对齐） */
+.tab-bar > .sidebar-collapse-btn{align-self:flex-end;margin:0 4px 10px;}
+.tab-bar.collapsed > .sidebar-collapse-btn{align-self:center;margin:0 0 10px;}
 
 /* 收起状态 */
 .tab-bar.collapsed{width:76px; padding:14px 10px;}
@@ -1642,7 +1612,7 @@ body.dark{
 .tab-bar.collapsed .brand-logo{margin:0 auto;}
 .tab-bar.collapsed .brand-text,
 .tab-bar.collapsed .tab-text{display:none;}
-.tab-bar.collapsed .tab-item{justify-content:center; padding:0; gap:0;}
+.tab-bar.collapsed .tab-item{justify-content:flex-start; padding:0 0 0 18px; gap:0; width:auto; align-self:stretch;}
 .tab-bar.collapsed .sidebar-collapse-btn svg{transform:rotate(180deg);}
 .tab-bar.collapsed .sidebar-toolbar .tab-actions{display:none;}
 .tab-bar.collapsed .tab-theme-toggle{font-size:16px;}
@@ -1758,7 +1728,8 @@ body.dark{
   border-radius:var(--r-lg); padding:16px 18px; gap:14px;
   background:var(--surface); border:1px solid var(--border); box-shadow:var(--sh-sm);
 }
-.layout-body .fn-row .toggle-btn{ border-radius:var(--r-pill); }
+/* v4.8.9 功能开关按钮紧凑化：字号收敛 12px（内边距由全局芯片统一规则接管：高 30px、0 13px） */
+.layout-body .fn-row .toggle-btn{ border-radius:var(--r-pill); font-size:12px; }
 .layout-body .fn-row .toggle-btn.active{
   background:var(--g-layout); border-color:transparent; color:#fff;
   box-shadow:0 4px 14px -4px color-mix(in srgb,var(--c-layout) 55%,transparent);
@@ -1835,13 +1806,8 @@ body.dark{
 .matting-drop-icon{ color:var(--c-matting); }
 .matting-drop-title{ color:var(--text); }
 /* 模式选择：语义色 + 圆角卡片容器 */
-.matting-modepick{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-md); padding:4px; box-shadow:var(--sh-sm); }
-.mp-btn{ border-radius:var(--r-sm); }
-.mp-btn:hover:not(.active){ background:var(--surface); color:var(--text); }
-.mp-btn.active{ box-shadow:0 2px 8px -2px rgba(0,0,0,.25); }
-.mp-btn.mp-bg.active{ background:var(--g-matting); }
-.mp-btn.mp-wm.active{ background:var(--g-layout); }
-.mp-btn.mp-ai.active{ background:var(--g-prompt); }
+.matting-modepick{ display:inline-flex; background:transparent; border:none; border-radius:var(--r-md); padding:0; box-shadow:none; }
+/* v4.8.29 精简：以下 mp-btn 旧配色/阴影规则已全部由 10.3 芯片规范 + #tabMatting 覆盖规则取代 */
 /* 结果对比区：原型 .cmp-box 观感 */
 .matting-sidebyside{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-lg); }
 .cmp-thumb{ border-radius:var(--r-md); box-shadow:var(--sh-sm); }
@@ -1935,7 +1901,7 @@ body.dark .topbar-actions .tab-btn.default{background:var(--surface-3,var(--surf
 /* ===== /RESKIN PART 6 ===== */
 
 /* ===== RESKIN PART 7 : 顶栏夜间模式按钮 + 调色盘卡头兜底 ===== */
-.topbar-theme-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:16px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;transition:all .15s ease;font-family:inherit;}
+.topbar-theme-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:13px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;transition:all .15s ease;font-family:inherit;}
 .topbar-theme-btn:hover{border-color:var(--text-muted);color:var(--text);transform:translateY(-1px);}
 body.dark .topbar-theme-btn{background:var(--surface-3,var(--surface-2));border-color:var(--border);color:var(--text-secondary);}
 .color-app .color-mid .card-title{flex-wrap:wrap;row-gap:6px;}
@@ -2072,6 +2038,11 @@ body.dark .color-app{
 .color-app .grad-color-badge{width:22px;height:22px;border-radius:var(--r-sm);border:2px solid var(--border-2)}
 .color-app .grad-sel-box{width:22px!important;height:22px!important;border-radius:var(--r-sm)!important}
 .color-app .grad-dl-top{border-radius:var(--r-sm);background:rgba(0,0,0,.42);width:26px;height:26px}
+/* v4.8.9 渐变卡操作按钮（反转/下载）：默认隐藏，鼠标移入卡片才浮现，避免常驻遮挡渐变 */
+.color-app .palette-grad-top-bar .grad-dl-top,
+.color-app .grad-top-bar .grad-dl-top{opacity:0;transform:translateY(-3px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+.color-app .palette-grad-preview:hover .grad-dl-top,
+.color-app .gradient-item:hover .grad-dl-top{opacity:1;transform:none;pointer-events:auto}
 .color-app .grad-top-bar .badge{border-radius:var(--r-pill);padding:3px 7px;font-size:10px}
 .color-app .grad-picker{border-radius:var(--r-lg);border:1px solid var(--border);box-shadow:var(--sh-lg);padding:10px;background:var(--surface)}
 .color-app .grad-picker-item{width:34px;height:34px;border-radius:var(--r-sm)}
@@ -2101,10 +2072,11 @@ body.dark .color-app{
 /* 取色器横排: 头行跨全宽 | 色块 | 滑轨区 | 数值列 */
 .color-app .color-left{display:grid;grid-template-columns:220px minmax(0,1fr) 250px;gap:14px 18px;align-items:stretch;}
 .color-app .color-left .card-head-row{grid-column:1 / -1;margin-bottom:0;}
-.color-app .color-left .preview-swatch{height:170px;}
+.color-app .color-left .preview-swatch{height:auto;min-height:140px;}
 .color-app .color-left .picker-stack{flex:1;gap:10px;}
 .color-app .color-left .sl-picker-wrap{height:auto;flex:1;min-height:110px;}
-.color-app .color-left .color-values{display:flex;flex-direction:column;justify-content:center;gap:8px;}
+.color-app .color-left .color-values{display:flex;flex-direction:column;justify-content:stretch;gap:8px;}
+.color-app .color-left .color-value-row{flex:1;min-height:0;align-items:center;}
 /* 和谐配色预览一行 6 张 */
 .color-app .palette-grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(96px,1fr);}
 @media(max-width:1400px){
@@ -2114,6 +2086,318 @@ body.dark .color-app{
 }
 /* ===== /RESKIN PART 9 ===== */
 
+
+/* ===== RESKIN PART 10: 设计规范《精致版多巴胺》落地 — 4 模块组件与布局统一 ===== */
+/* ---- 10.1 设计 token（补全规范全量）---- */
+:root{
+  --surface-3:#E9ECF4; --border-2:#D8DCE8;
+  --c-prompt:#FF7A59; --c-prompt-2:#FFA15C; --g-prompt:linear-gradient(135deg,#FF7A59 0%,#FFA15C 100%);
+  --c-layout:#4D8DFF; --c-layout-2:#6C7BFF; --g-layout:linear-gradient(135deg,#4D8DFF 0%,#6C7BFF 100%);
+  --c-color:#9B6CF0;  --c-color-2:#B98BF5;  --g-color:linear-gradient(135deg,#9B6CF0 0%,#B98BF5 100%);
+  --c-matting:#16C98A;--c-matting-2:#13B5C2;--g-matting:linear-gradient(135deg,#16C98A 0%,#13B5C2 100%);
+  --ok:#16C98A; --warn:#FFB020; --err:#FF5C7A; --info:#4D8DFF;
+  --r-xs:6px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-pill:999px;
+  --sh-sm:0 1px 2px rgba(20,23,40,.04);
+  --sh-md:0 4px 16px rgba(20,23,40,.06);
+  --sh-lg:0 14px 36px rgba(20,23,40,.10);
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px; --s-8:32px;
+  --mod-accent:var(--c-layout); --mod-grad:var(--g-layout);
+}
+body.dark{
+  --surface-3:#262C39; --border-2:#323A4A;
+  --sh-sm:0 1px 2px rgba(0,0,0,.3); --sh-md:0 6px 18px rgba(0,0,0,.4); --sh-lg:0 16px 40px rgba(0,0,0,.55);
+}
+/* ---- 10.2 模块强调色作用域 ---- */
+#tabPrompt{--mod-accent:var(--c-prompt);--mod-grad:var(--g-prompt);--accent:var(--c-prompt);--accent-color:var(--c-prompt);}
+#tabLayout{--mod-accent:var(--c-layout);--mod-grad:var(--g-layout);--accent:var(--c-layout);--accent-color:var(--c-layout);}
+#tabColor{--mod-accent:var(--c-color);--mod-grad:var(--g-color);--accent:var(--c-color);--accent-color:var(--c-color);}
+#tabMatting{--mod-accent:var(--c-matting);--mod-grad:var(--g-matting);--accent:var(--c-matting);--accent-color:var(--c-matting);}
+
+/* ---- 10.3 芯片/切换（spec .chip）---- */
+#tabPrompt .prompt-ratio-btn,#tabPrompt .prompt-param-btn,#tabPrompt .prompt-tag,
+#tabLayout .toggle-btn,
+#tabColor .harmony-btn,#tabColor .palette-mode-btn,#tabColor .ratio-btn,#tabColor .palette-proportion-btn,
+#tabMatting .mp-btn,#tabMatting .mq-btn{
+  height:30px; padding:0 13px; border-radius:var(--r-pill); border:1px solid var(--border-2);
+  background:var(--surface); color:var(--text-secondary); font-size:12px; font-weight:500;
+  display:inline-flex; align-items:center; justify-content:center; gap:4px;
+  cursor:pointer; user-select:none; transition:background .15s,border-color .15s,color .15s,box-shadow .15s,transform .15s;
+  font-family:inherit; white-space:nowrap; line-height:1;
+}
+#tabPrompt .prompt-ratio-btn:hover,#tabPrompt .prompt-param-btn:hover,
+#tabLayout .toggle-btn:hover,
+#tabColor .harmony-btn:hover:not(.active),#tabColor .palette-mode-btn:hover:not(.active),#tabColor .ratio-btn:hover:not(.active),
+#tabMatting .mp-btn:hover,#tabMatting .mq-btn:hover{
+  border-color:var(--text-muted); color:var(--text);
+}
+#tabPrompt .prompt-ratio-btn.selected,#tabPrompt .prompt-param-btn.active,
+#tabLayout .toggle-btn.active,
+#tabColor .harmony-btn.active,#tabColor .palette-mode-btn.active,#tabColor .ratio-btn.active,
+#tabMatting .mp-btn.active,#tabMatting .mq-btn.active{
+  background:var(--mod-grad); color:#fff; border-color:transparent; font-weight:600;
+  box-shadow:0 6px 16px color-mix(in srgb,var(--mod-accent) 28%,transparent);
+}
+/* v4.8.29 抠图模式切换对齐「背景/元素…」容器切换：同尺寸(32px/13px) + hover 不覆盖激活渐变 */
+#tabMatting .mp-btn{background:transparent;border:none;border-radius:8px;font-size:13px;font-weight:500;height:32px;padding:0 14px;color:var(--prompt-text-secondary);}
+#tabMatting .mp-btn:hover:not(.active){background:var(--surface);color:var(--prompt-text);}
+#tabMatting .mp-btn.active{color:#fff;font-weight:600;}
+#tabPrompt .prompt-ratio-btn .prompt-star{color:var(--text-muted);}
+#tabPrompt .prompt-ratio-btn.selected .prompt-star{color:rgba(255,255,255,.85);}
+
+/* ---- 10.4 按钮（spec .btn / .btn.sm / .btn.ghost）---- */
+.btn{height:34px; padding:0 14px; border-radius:var(--r-md); border:1px solid transparent; font-size:13px; font-weight:600;
+  display:inline-flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; transition:all .15s; font-family:inherit;}
+.btn:active{transform:translateY(1px);}
+.btn-sm{height:30px; padding:0 12px; font-size:12px; border-radius:var(--r-sm);}
+.btn-gray,.btn-purple,.btn-symbol{background:var(--surface); border-color:var(--border-2); color:var(--text-secondary);}
+.btn-gray:hover,.btn-purple:hover,.btn-symbol:hover{border-color:var(--text-muted); color:var(--text);}
+.btn-success,.btn-primary,.btn-blue,.btn-green,.btn-info{
+  background:var(--mod-grad,var(--g-layout)); color:#fff; border-color:transparent;
+  box-shadow:0 6px 16px color-mix(in srgb,var(--mod-accent,var(--info)) 26%,transparent);}
+.btn-success:hover,.btn-primary:hover,.btn-blue:hover,.btn-green:hover{filter:brightness(1.05);}
+.btn-danger{background:color-mix(in srgb,var(--err) 10%,transparent); color:var(--err); border-color:color-mix(in srgb,var(--err) 28%,transparent);}
+.btn-danger:hover{background:color-mix(in srgb,var(--err) 16%,transparent);}
+.btn-icon{width:32px; height:32px; padding:0; border-radius:var(--r-sm); background:var(--surface); border:1px solid var(--border-2); color:var(--text-secondary);}
+.btn-icon:hover{border-color:var(--text-muted); color:var(--text);}
+
+/* ---- 10.5 输入框（spec .input）---- */
+#tabLayout .param-item select,#tabLayout .param-item input[type="number"],#tabLayout .param-item input[type="text"],
+#tabLayout .input-wrap input,.prompt-modal-field input,.prompt-modal-field textarea,.prompt-modal-textarea,
+#tabMatting .matting-pickwrap input{
+  height:32px; padding:0 10px; border-radius:var(--r-sm); border:1px solid var(--border-2);
+  background:var(--surface); color:var(--text); font-size:13px; font-family:inherit; transition:border-color .15s,box-shadow .15s;}
+#tabLayout .param-item select:focus,#tabLayout .param-item input:focus,#tabLayout .input-wrap input:focus{
+  outline:none; border-color:var(--mod-accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--mod-accent) 16%,transparent);}
+
+/* ---- 10.6 卡片 / 面板 ---- */
+#tabLayout .tool-bar{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg);
+  box-shadow:var(--sh-sm); padding:var(--s-4); gap:var(--s-3); align-items:center;}
+#tabLayout .tool-bar .sep{background:var(--border); height:22px;}
+#tabLayout .box,#tabLayout .split-panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--sh-sm); overflow:hidden;}
+#tabLayout .box-header{background:var(--surface-2); border-bottom:1px solid var(--border); padding:10px 14px; min-height:44px; border-radius:var(--r-md);}
+#tabLayout .box-header .badge,#tabMatting .brush-size-label{background:var(--surface-3,var(--surface-2)); color:var(--text-secondary); border-radius:var(--r-pill); font-size:12px; font-weight:600; padding:3px 9px;}
+#tabMatting .matting-sidebyside{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--sh-sm);}
+#tabMatting .matting-pickwrap{border:none; border-radius:var(--r-xl); background:transparent; transition:all .2s;}
+#tabMatting .zoom-bar,#tabMatting .wand-tools,#tabMatting .mq-popup{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); box-shadow:var(--sh-md);}
+#tabMatting .matting-progress-bar{border-radius:var(--r-pill); background:var(--surface-3,var(--surface-2)); overflow:hidden;}
+#tabMatting .matting-progress-fill{background:var(--g-matting); border-radius:var(--r-pill);}
+#tabMatting .matting-stop{border-radius:var(--r-md); background:var(--err);}
+#tabMatting .matting-stop:hover{filter:brightness(1.06);}
+#tabMatting .matting-sab{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); box-shadow:var(--sh-md);}
+
+/* ---- 10.7 提示词模块 ---- */
+#tabPrompt .prompt-top-grid{gap:var(--s-4);}
+#tabPrompt .prompt-top-col{gap:var(--s-4);}
+#tabPrompt .prompt-col-scroll{padding-right:6px; scrollbar-width:thin;}
+#tabPrompt .prompt-ratio-row{gap:var(--s-2);}
+#tabPrompt .prompt-ratio-name{color:var(--text-muted); font-size:12px; font-weight:600;}
+#tabPrompt .prompt-ratio-btns{gap:6px;}
+#tabPrompt .prompt-ratio-group,#tabPrompt .prompt-ratio-panel,#tabPrompt .prompt-ratio-faved-bar{
+  background:transparent; border:none;}
+#tabPrompt textarea{border-radius:var(--r-md); border:1px solid var(--border-2); background:var(--surface-2); color:var(--text); font-family:inherit; line-height:1.7;}
+#tabPrompt textarea:focus{border-color:var(--c-prompt); background:var(--surface);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--c-prompt) 14%,transparent); outline:none;}
+#tabPrompt .prompt-modal{background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--sh-lg);}
+#tabPrompt .prompt-modal-header{border-bottom:1px solid var(--border); padding:var(--s-4) var(--s-5);}
+#tabPrompt .prompt-modal-title{font-size:16px; font-weight:600;}
+#tabPrompt .prompt-modal-close{border-radius:var(--r-sm); border:1px solid var(--border-2); background:var(--surface); color:var(--text-secondary);}
+#tabPrompt .prompt-modal-overlay{background:rgba(16,19,28,.45);}
+#tabPrompt .toast{border-radius:var(--r-md); box-shadow:var(--sh-lg);}
+
+.prompt-app ::-webkit-scrollbar-thumb:hover{background:var(--text-muted); background-clip:content-box;}
+
+/* ---- 10.9 提示词比例芯片（覆盖旧 !important 规则）---- */
+#tabPrompt .prompt-ratio-btn{
+  height:28px!important; padding:0 11px!important; border-radius:var(--r-pill)!important;
+  border:1px solid var(--border-2)!important; background:var(--surface)!important;
+  color:var(--text-secondary)!important; font-size:12px!important; font-weight:500!important;}
+#tabPrompt .prompt-ratio-btn:hover{border-color:var(--text-muted)!important; color:var(--text)!important;}
+#tabPrompt .prompt-ratio-btn.selected{
+  background:var(--g-prompt)!important; color:#fff!important; border-color:transparent!important; font-weight:600!important;
+  box-shadow:0 6px 16px color-mix(in srgb,var(--c-prompt) 28%,transparent)!important;}
+/* ===== /RESKIN PART 10 ===== */
+
+/* ===== RESKIN PART 11: 多彩配色按用户截图完全重设计（三栏: 取色器 | 和谐配色+调色盘 | 吸色+渐变组合） ===== */
+.color-app .color-grid{grid-template-columns:290px minmax(0,1fr) 320px !important;grid-template-rows:auto !important;gap:16px;}
+.color-app .color-left{grid-column:auto;grid-row:auto;display:flex !important;flex-direction:column;gap:14px;}
+.color-app .color-mid{grid-column:auto;grid-row:auto;display:flex;flex-direction:column;gap:12px;min-height:0;}
+/* —— 取色器 —— */
+.color-app .color-left .picker-stack{display:none !important;}
+.color-app .color-left .preview-swatch{flex:1;min-height:150px;height:auto;border-radius:var(--r-lg);border:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);}
+.color-app .color-left .sv-pad{flex:1;min-height:150px;height:auto;border-radius:var(--r-lg);position:relative;cursor:crosshair;touch-action:none;border:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);overflow:hidden;background:linear-gradient(to top,#000,rgba(0,0,0,0)),linear-gradient(to right,#fff,hsl(239,100%,50%));}
+.sv-thumb{position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.5),inset 0 0 4px rgba(0,0,0,.3);transform:translate(-50%,-50%);pointer-events:none;box-sizing:border-box;}
+.color-app .color-left .card-head-row{grid-column:auto;margin-bottom:0;}
+.hsl-rows{display:flex;flex-direction:column;gap:14px;flex-shrink:0;}
+.hsl-row{display:flex;align-items:center;gap:12px;}
+.hsl-label{font-size:13px;font-weight:600;color:var(--text);width:14px;text-align:center;flex-shrink:0;}
+.hsl-track{position:relative;flex:1;height:10px;border-radius:999px;cursor:pointer;touch-action:none;}
+.hsl-thumb{position:absolute;top:50%;left:0;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.35);transform:translate(-50%,-50%);pointer-events:none;}
+#hslTrackH{background:linear-gradient(90deg,#ff0000 0%,#ffff00 17%,#00ff00 33%,#00ffff 50%,#0000ff 67%,#ff00ff 83%,#ff0000 100%);}
+.color-app .color-left .color-values{gap:8px;flex-shrink:0;}
+.color-app .color-left .color-value-row{flex:none;height:40px;background:var(--surface-2,var(--surface));border:none;border-radius:10px;padding:0 12px;display:flex;align-items:center;}
+body.dark .color-app .color-left .color-value-row{background:var(--surface-3,var(--surface-2));}
+.color-app .color-left .color-value-row .label{display:none;}
+.color-app .color-left .value-input{background:transparent;border:none;height:100%;width:100%;font-family:var(--font-mono,monospace);font-size:13px;color:var(--text);outline:none;padding:0;}
+/* —— 和谐配色 —— */
+.copy-all-btn{height:30px;padding:0 14px;border-radius:var(--r-pill);border:1px solid var(--border-2);background:var(--surface);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;}
+.copy-all-btn:hover{border-color:var(--text-muted);color:var(--text);transform:translateY(-1px);}
+/* —— 调色盘 / 渐变预览（并入中栏） —— */
+.palette-section{display:flex;flex-direction:column;gap:10px;margin-top:6px;flex:1;min-height:0;}
+.palette-sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;}
+.palette-sec-title{font-size:13px;font-weight:600;color:var(--text);letter-spacing:.3px;}
+.palette-sec-head .head-acts{display:flex;gap:6px;align-items:center;}
+.palette-sec-head .btn{height:26px;padding:0 10px;font-size:11px;border-radius:8px;}
+.color-app .palette-color-bar{display:flex !important;gap:6px;min-height:0 !important;max-height:none !important;flex-wrap:wrap;align-items:center;}
+.color-app .palette-color-bar .empty-state{display:none !important;}
+.color-app .palette-color-bar .palette-swatch-item{width:22px !important;height:22px !important;aspect-ratio:unset !important;margin:0 !important;border-radius:50%;border:2px solid var(--bg-card,var(--surface));box-shadow:0 0 0 1px var(--border);}
+.color-app .palette-grad-preview{border-radius:var(--r-lg) !important;border:1px solid var(--border);box-shadow:var(--sh-sm);}
+/* —— 屏幕吸色列 —— */
+.color-app .color-right{display:flex;flex-direction:column;gap:12px;min-height:0;}
+.color-app .color-right .paste-zone{width:100%;height:120px;flex-shrink:0;border:2px dashed var(--border-2) !important;border-radius:var(--r-lg) !important;background:var(--surface);padding:14px 12px;}
+.color-app .color-right .paste-zone:hover{border-color:var(--c-color) !important;}
+.color-app .color-right .paste-hint{color:var(--text-muted);font-size:12px;gap:6px;}
+.color-app .color-right .paste-hint .key-icon{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface-2,var(--surface));font-size:10px;font-weight:600;color:var(--text-secondary);font-family:var(--font-mono,monospace);}
+.color-app .color-right .paste-hint-sub{font-size:10px;}
+body.dark .color-app .color-right .paste-zone{background:var(--surface-3,var(--surface-2));}
+body.dark .color-app .color-right .paste-preview{background:repeating-conic-gradient(#1a2332 0% 25%,#141e2d 0% 50%) 0 0/16px 16px;}
+.pick-screen-btn{height:28px;padding:0 14px;border-radius:var(--r-pill);border:none;background:var(--g-color);color:#fff;font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-family:inherit;box-shadow:0 6px 16px color-mix(in srgb,var(--c-color) 28%,transparent);transition:filter .15s,transform .15s;white-space:nowrap;}
+.pick-screen-btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
+.pick-screen-btn .pick-key{font-size:10px;opacity:.8;font-weight:500;}
+/* 吸色重设计：粘贴图放大镜取色 */
+.color-app .paste-zone.has-image{cursor:crosshair;}
+.paste-loupe{position:fixed;left:0;top:0;z-index:9960;display:none;width:132px;height:132px;border-radius:50%;border:3px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.12);background-repeat:no-repeat;pointer-events:none;}
+.paste-loupe .pl-mark{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-9px 0 0 -9px;border:2px solid rgba(255,255,255,.95);border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.6);}
+.paste-loupe .pl-hex{position:absolute;left:50%;bottom:-32px;transform:translateX(-50%);padding:3px 10px;border-radius:999px;background:rgba(22,26,36,.94);color:#fff;font-size:11px;font-weight:600;font-family:var(--font-mono,monospace);white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.35);}
+@keyframes pickPulse{0%,100%{box-shadow:0 0 0 0 rgba(155,114,240,0);}50%{box-shadow:0 0 0 6px rgba(155,114,240,.35);}}
+.color-app .paste-zone.pick-attention{animation:pickPulse 1.1s ease-in-out 3;border-color:var(--c-color);}
+/* 吸色浮层：按 E / 点吸色必定可见的入口 */
+#pickGuide{position:fixed;inset:0;z-index:9992;background:rgba(9,12,19,.72);display:flex;align-items:center;justify-content:center;font-family:inherit;}
+#pickGuide.drag{background:rgba(9,12,19,.86);}
+#pickGuide .pg-card{width:410px;max-width:calc(100vw - 48px);padding:22px 22px 18px;border-radius:var(--r-xl,18px);background:var(--bg-card,#fff);box-shadow:0 30px 80px rgba(0,0,0,.42);border:1px solid var(--border);}
+#pickGuide .pg-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;}
+#pickGuide .pg-reason{font-size:11px;color:var(--c-color);background:color-mix(in srgb,var(--c-color) 10%,transparent);border-radius:8px;padding:6px 9px;margin-bottom:12px;line-height:1.5;word-break:break-word;}
+#pickGuide .pg-steps{display:flex;flex-direction:column;gap:10px;}
+#pickGuide .pg-step{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--text-secondary);line-height:1.6;}
+#pickGuide .pg-step b{color:var(--text);font-family:var(--font-mono,monospace);font-size:12px;background:var(--surface-2,var(--surface));border:1px solid var(--border);border-radius:6px;padding:1px 6px;}
+#pickGuide .pg-num{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--g-color);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+#pickGuide .pg-acts{display:flex;gap:8px;margin-top:18px;}
+#pickGuide .pg-btn{flex:1;height:34px;border-radius:10px;border:1px solid var(--border-2,var(--border));background:var(--surface);color:var(--text-secondary);font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+#pickGuide .pg-btn:hover{border-color:var(--text-muted);color:var(--text);}
+#pickGuide .pg-btn.primary{background:var(--g-color);color:#fff;border:none;box-shadow:0 8px 20px color-mix(in srgb,var(--c-color) 30%,transparent);}
+#pickGuide .pg-hint{margin-top:10px;text-align:center;font-size:11px;color:var(--text-muted);}
+body.dark #pickGuide .pg-card{background:var(--surface-2);}
+.color-app .color-right .extracted-bar{display:none;gap:10px;margin-top:0;max-height:none;overflow:hidden;flex-wrap:wrap;}
+.color-app .color-right .extracted-bar.show{display:flex;}
+.color-app .color-right .extracted-chip{display:flex;align-items:center;cursor:pointer;min-width:0;}
+.color-app .color-right .extracted-swatch{width:40px;height:40px;max-width:none;aspect-ratio:auto;border-radius:12px;border:2px solid var(--bg-card,var(--surface));box-shadow:0 0 0 1px var(--border);box-sizing:border-box;transition:transform .15s;}
+.color-app .color-right .extracted-chip:hover .extracted-swatch{transform:translateY(-2px);}
+.color-app .color-right .extracted-chip .hex{display:none;}
+/* —— 渐变组合 —— */
+.grad-sec-head{margin-top:4px;}
+.color-app .color-right .gradient-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;flex:1;min-height:0;align-content:start;}
+.color-app .color-right .gradient-item{flex:none;min-width:0;border-radius:var(--r-md);border:none;overflow:hidden;box-shadow:var(--sh-sm);transition:box-shadow .2s,transform .2s;}
+.color-app .color-right .gradient-item:hover{box-shadow:var(--sh-md);transform:translateY(-2px);}
+.color-app .color-right .gradient-preview{aspect-ratio:4/3;}
+.color-app .color-right .gradient-info{display:none;}
+/* —— 响应式 —— */
+@media(max-width:1500px){
+  .color-app .color-grid{grid-template-columns:260px minmax(0,1fr) 290px !important;}
+}
+@media(max-width:1280px){
+  .color-app .color-grid{grid-template-columns:240px minmax(0,1fr) 270px !important;gap:12px;}
+}
+/* v4.8.14 色卡按比例缩小：去掉 92px 最小宽（多色时撑爆容器、末尾色卡被挤出），等分缩放；hex 文字由容器查询自适应 */
+.color-app .palette-grid{flex:0 0 auto !important;width:100% !important;grid-auto-rows:110px !important;grid-template-columns:repeat(6,minmax(0,1fr)) !important;}
+/* v4.8.10 色卡容器查询：hex 色号随卡片宽度自适应缩小，不溢出裁切 */
+.color-app .palette-item{container-type:inline-size;}
+.color-app .palette-hex{font-size:clamp(9px,10.5cqw,13px);max-width:calc(100% - 22px);white-space:nowrap;overflow:hidden;}
+.color-app .palette-grad-preview{flex:1 1 auto !important;min-height:200px;max-height:400px;}
+@media(max-width:1280px){.color-app .palette-grid{grid-auto-rows:90px !important;}}
+.color-app .harmony-rules{flex:0 0 auto !important;}
+.color-app .palette-mode-bar{gap:10px;}
+.color-app .palette-mode-btn{flex:0 0 auto !important;padding:0 20px;}
+/* ===== /RESKIN PART 11 ===== */
+
+
+/* ===== RESKIN PART 12: 吸色状态行 + 截屏取色浮层 ===== */
+.color-app .color-right .pick-status{display:none;font-size:11.5px;line-height:1.55;color:var(--text-muted);margin:0;padding:0 2px;word-break:break-all;}
+.color-app .color-right .pick-status.ok{color:#0f9d63;}
+.color-app .color-right .pick-status.warn{color:#c97a17;}
+.color-app .color-right .pick-status.err{color:#e0435f;}
+body.dark .color-app .color-right .pick-status.ok{color:#3ddc9a;}
+body.dark .color-app .color-right .pick-status.warn{color:#f0b357;}
+body.dark .color-app .color-right .pick-status.err{color:#ff8098;}
+#shotPicker{position:fixed;inset:0;z-index:9990;background:rgba(9,12,19,.82);display:flex;align-items:center;justify-content:center;cursor:crosshair;font-family:inherit;}
+#shotPicker .sp-img{display:block;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.55);background:#fff;cursor:crosshair;}
+#shotPicker .sp-bar{position:fixed;top:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:7px 8px 7px 14px;border-radius:999px;background:rgba(22,26,36,.94);border:1px solid rgba(255,255,255,.14);box-shadow:0 12px 34px rgba(0,0,0,.45);color:#fff;font-size:12px;cursor:default;}
+#shotPicker .sp-title{font-weight:600;}
+#shotPicker .sp-hint{color:rgba(255,255,255,.55);}
+#shotPicker .sp-swatch{width:20px;height:20px;border-radius:6px;border:1px solid rgba(255,255,255,.4);background:transparent;}
+#shotPicker .sp-hex{font-family:var(--font-mono,ui-monospace,SFMono-Regular,Menlo,monospace);font-size:12px;font-weight:600;min-width:74px;letter-spacing:.3px;}
+#shotPicker .sp-cancel{height:26px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+#shotPicker .sp-cancel:hover{background:rgba(255,255,255,.12);}
+#shotPicker .sp-loupe{position:fixed;display:none;width:128px;height:128px;transform:translate(-50%,-50%);border-radius:50%;border:3px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,.5);background-repeat:no-repeat;pointer-events:none;}
+#shotPicker .sp-loupe-mark{position:absolute;left:50%;top:50%;width:15px;height:15px;margin:-8px 0 0 -8px;border:2px solid rgba(255,255,255,.95);border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.55);}
+/* ===== /RESKIN PART 12 ===== */
+
+</style>
+<style>
+/* ===== RESKIN PART 13: 提示词页左右列重设计 + 侧栏底部收起按钮 ===== */
+/* —— 提示词页自适应高度：内容撑开，由 tab-content 整体滚动 —— */
+.prompt-body{height:auto;min-height:100%;}
+.prompt-app{height:auto;overflow:visible;}
+/* —— 侧栏收起按钮：无底色，最后一个 tab 下方，分隔线隔开；展开态显示文字 —— */
+.sidebar-foot{margin-top:8px;padding-top:10px;border-top:1px solid var(--border);flex-shrink:0;}
+.sidebar-foot .sidebar-collapse-btn{width:auto;margin:0;align-self:flex-start;height:32px;justify-content:center;gap:8px;padding:0 18px;font-size:12.5px;font-weight:500;border-radius:9px;box-sizing:border-box;background:transparent;border-color:transparent;}
+.sidebar-foot .sidebar-collapse-btn:hover{background:var(--surface-2);border-color:transparent;}
+.sidebar-foot .sidebar-collapse-btn svg{flex-shrink:0;}
+.sidebar-foot .scb-text{white-space:nowrap;overflow:hidden;}
+.tab-bar.collapsed .sidebar-foot .sidebar-collapse-btn{justify-content:center;padding:0 7px;margin-left:13px;}
+.tab-bar.collapsed .scb-text{display:none;}
+/* —— AI提示词页：左右两列（3/5 | 2/5），容器高度自适应 —— */
+.prompt-duo-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:14px;width:100%;min-width:0;flex:0 0 auto;align-items:start;}
+.prompt-left-col{display:flex;flex-direction:column;min-width:0;}
+.prompt-left-view{position:relative;min-width:0;}
+.prompt-left-pane{display:none;flex-direction:column;min-width:0;border-radius:14px;overflow:hidden;box-sizing:border-box;}
+.prompt-left-pane.active{display:flex;}
+.prompt-left-pane .prompt-col-scroll{overflow:visible;padding-top:14px;}
+.prompt-left-pane.prompt-col-bg,.prompt-left-pane.prompt-col-element,.prompt-left-pane.prompt-col-font{padding:0 8px 8px;}
+/* v4.8.5 产品页去外框白底：面板透明无边框，分组直接落在页面底色上 */
+.prompt-pane-product{background:transparent;border:none;padding:0 8px 8px;}
+body.dark .prompt-pane-product{background:transparent;border:none;box-shadow:none;}
+/* v4.8.2 风格转换面板底色与背景页 .prompt-col-bg 完全一致（奶油渐变 + 暖色描边） */
+.prompt-pane-style{background:transparent;border:none;padding:0 8px 8px;box-shadow:none;}
+body.dark .prompt-pane-style{background:transparent;border:none;box-shadow:none;}
+/* 产品容器：左列内单列纵向排布 */
+#promptLeftView #promptProductLayout{display:block !important;}
+.prompt-left-pane .prompt-product-col-layout{grid-template-columns:minmax(0,1fr);gap:10px;margin-top:12px;}
+.prompt-left-pane .prompt-product-column{gap:10px;}
+/* 容器切换按钮（位于顶部参数行，样式对齐 prompt-nav-btn 设计规范） */
+.pls-btn{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:500;color:var(--prompt-text-secondary);cursor:pointer;transition:all .15s ease;font-family:inherit;padding:0 14px;white-space:nowrap;}
+.pls-btn:hover{background:var(--surface);}
+.pls-btn.active{background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff;}
+body.dark .pls-btn{background:transparent;border:none;color:var(--prompt-text-secondary);}
+body.dark .pls-btn:hover{background:#1d2940;}
+body.dark .pls-btn.active{background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff;}
+/* —— 右列：上=生成结果（原高度 238px） 下=常用提示词 —— */
+.prompt-right-col{display:flex;flex-direction:column;min-width:0;gap:14px;}
+/* v4.8.13 右列（画质/比例行+生成结果卡）滚动冻结：sticky 吸在冻结导航行（高 50px）下方 */
+.prompt-right-col{position:sticky;top:50px;align-self:start;}
+.prompt-right-top{display:flex;flex-direction:column;gap:12px;}
+.prompt-right-top .prompt-result-card{display:flex;flex-direction:column;width:100%;height:238px;flex:0 0 auto;}
+.prompt-right-top .prompt-result-header{padding:10px 12px;}
+.prompt-right-top .prompt-result-header-left{flex:0 0 auto;white-space:nowrap;}
+/* v4.8.6 标题行与操作按钮同一行水平对齐（原按钮强制换行到第二行） */
+.prompt-right-top .prompt-result-header-actions{flex:0 0 auto;justify-content:flex-end;}
+.prompt-right-top .prompt-result-header-btn{padding:5px 10px;font-size:11px;}
+.prompt-right-top .prompt-result-body{flex:1 1 auto;display:flex;min-height:0;}
+.prompt-right-top .prompt-result-textarea{flex:1 1 auto;min-height:0;}
+.prompt-right-top .prompt-preset-list-card{flex:0 0 auto;}
+.prompt-right-bottom{flex:0 0 auto;}
+.prompt-right-bottom .prompt-quick-prompt-card{width:100%;box-sizing:border-box;}
+/* ===== /RESKIN PART 13 ===== */
 </style>
 </head>
 <body>
@@ -2128,11 +2412,9 @@ body.dark .color-app{
     <div class="tab-item" data-tab="layout"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span><span class="tab-text">智能排版</span></div>
     <div class="tab-item" data-tab="color"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18c1.5 0 2-1 2-2 0-1.5 1-2 2-2h1a3 3 0 0 0 3-3 9 9 0 0 0-9-9z"/></svg></span><span class="tab-text">多彩配色</span></div>
     <div class="tab-item" data-tab="matting"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 8-6 1.5L11 19 5 3z"/></svg></span><span class="tab-text">极速抠图</span></div>
+    <div class="sidebar-foot"><button class="sidebar-collapse-btn" id="sidebarCollapseBtn" type="button" title="收起 / 展开侧栏" aria-label="收起侧栏"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><span class="scb-text">收起侧栏</span></button></div>
 
-    <!-- 底部工具区 -->
-    <div class="sidebar-toolbar">
-      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" type="button" title="收起 / 展开侧栏" aria-label="收起侧栏"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-    </div>
+
   </div>
 
   <!-- ====== 主内容区 ====== -->
@@ -2145,20 +2427,7 @@ body.dark .color-app{
         <button class="tab-btn default" id="actLayoutDefault" onclick="layoutRestoreConfig()" title="恢复默认配置">默认</button>
         <button class="tab-btn save" id="actPromptBak" style="display:none" onclick="promptAddBackup()">备份</button>
         <button class="tab-btn default" id="actPromptRestore" style="display:none" onclick="promptShowRestoreMenu()">恢复</button>
-      </div><div class="topbar-picker" id="topbarPicker" style="display:none;">
-              <span class="topbar-picker-label">取色</span>
-              <button class="topbar-picker-btn" onclick="colorPickScreen()" title="从屏幕取色 (快捷键 E)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22L10 14"/><path d="M11 6L18 13"/><path d="M6.5 8.5L15.5 17.5"/><path d="M14 4l6 6-4 4-6-6 4-4z"/></svg>吸色 <span style="font-size:9px;opacity:0.75;font-weight:400;">E</span></button>
-              <div class="paste-zone" id="pasteZone">
-                <div class="paste-hint">
-                  <span>粘贴截图 <span class="key-icon">Ctrl+V</span></span>
-                  <span class="paste-hint-sub">或拖入图片</span>
-                </div>
-                <img class="paste-preview" id="pastePreview" alt="">
-                <button class="paste-clear" id="pasteClear" onclick="colorClearPaste()">x</button>
-                <input type="file" id="fileInput" accept="image/*">
-              </div>
-              <div class="extracted-bar" id="extractedBar"></div>
-            </div><button class="topbar-theme-btn" id="mergedThemeToggle" title="切换夜间/日间模式" aria-label="切换夜间/日间模式">&#127769;</button></div>
+      </div><button class="topbar-theme-btn" id="mergedThemeToggle" title="切换夜间/日间模式" aria-label="切换夜间/日间模式">&#127769;</button></div>
   </div>
 
   <!-- ====== TAB: LAYOUT TOOL ====== -->
@@ -2274,7 +2543,12 @@ body.dark .color-app{
         <div class="color-grid">
           <div class="card color-left">
             <div class="card-head-row"><span class="card-title">取色器</span></div>
-            <div class="preview-swatch" id="mainSwatch" style="background:#6366F1;"></div>
+            <div class="sv-pad" id="svPad"><div class="sv-thumb" id="svThumbPad" style="left:58.5%;top:5.3%;"></div></div>
+            <div class="hsl-rows" id="hslRows">
+              <div class="hsl-row"><span class="hsl-label">H</span><div class="hsl-track" id="hslTrackH"><div class="hsl-thumb" id="hslThumbH"></div></div></div>
+              <div class="hsl-row"><span class="hsl-label">S</span><div class="hsl-track" id="hslTrackS"><div class="hsl-thumb" id="hslThumbS"></div></div></div>
+              <div class="hsl-row"><span class="hsl-label">L</span><div class="hsl-track" id="hslTrackL"><div class="hsl-thumb" id="hslThumbL"></div></div></div>
+            </div>
             <div class="picker-stack">
               <div class="picker-row">
                 <div class="hue-slider-wrap" id="hueSlider">
@@ -2305,7 +2579,7 @@ body.dark .color-app{
           </div>
 
           <div class="card color-mid">
-            <div class="card-head-row"><span class="card-title">和谐配色</span></div>
+            <div class="card-head-row"><span class="card-title">和谐配色</span><div class="head-acts"><button class="copy-all-btn" onclick="paletteCopyAllSvg()" title="复制整组6色和谐配色SVG">复制 6 色</button></div></div>
             <div class="harmony-rules" id="harmonyRules">
                 <button class="harmony-btn active" data-rule="analogous">类似</button>
                 <button class="harmony-btn" data-rule="complementary">互补</button>
@@ -2313,82 +2587,70 @@ body.dark .color-app{
                 <button class="harmony-btn" data-rule="triadic">三角</button>
                 <button class="harmony-btn" data-rule="tetradic">四角</button>
                 <button class="harmony-btn" data-rule="monochromatic">单色</button>
-                <button class="harmony-btn harmony-copy" onclick="paletteCopyAllSvg()" title="复制整组6色和谐配色SVG" aria-label="复制"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                
               </div>
             <div class="palette-grid" id="paletteGrid"></div>
 
+            <div class="palette-section">
+              <div class="palette-sec-head">
+                <span class="palette-sec-title">调色盘 / 渐变预览</span>
+                <div class="head-acts">
+                  <button class="btn btn-sm palette-copy-icon" onclick="paletteCopyPaletteSvg()" title="复制调色盘SVG（粘贴到Illustrator）" aria-label="复制"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                  <button class="btn btn-sm btn-info" onclick="paletteAddColor()">添加</button>
+                  <button class="btn btn-sm btn-danger" onclick="paletteClear()">清空</button>
+                </div>
+              </div>
+              <div class="palette-color-bar" id="paletteColorBar" style="display:flex;gap:6px;flex-wrap:wrap;min-height:0;padding:0;">
+                <div class="empty-state" style="display:none;">点击上方添加颜色</div>
+              </div>
+              <div class="palette-grad-preview" id="paletteGradPreview" style="width:100%;cursor:pointer;overflow:hidden;position:relative;"><div class="palette-grad-top-bar"><span class="palette-grad-badge" id="paletteAngleBadge" onclick="event.stopPropagation();paletteCycleAngle()" title="点击切换角度" style="display:none;">180°</span><div style="display:flex;gap:3px;align-items:center;"><button class="grad-dl-top" id="paletteGradReverse" onclick="event.stopPropagation();paletteReverseGrad()" title="反转颜色顺序" style="border:none;background:transparent;color:rgba(255,255,255,0.85);padding:0;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button><button class="grad-dl-top" id="paletteGradDownload" onclick="event.stopPropagation();paletteDownloadGrad()" title="下载300ppi PNG">&#8595;</button></div></div></div>
+              <div class="palette-mode-bar" id="paletteModeBar" style="display:flex;gap:8px;">
+                <button class="palette-mode-btn active" data-mode="linear">线性</button>
+                <button class="palette-mode-btn" data-mode="radial">径向</button>
+                <button class="palette-mode-btn" data-mode="conic">锥形</button>
+              </div>
+              <div class="palette-controls" style="display:none;">
+                <div class="palette-control-row" id="palettePropRow">
+                  <span class="palette-control-label">比例</span>
+                  <div class="prop-slider-wrap" style="flex:1;position:relative;display:flex;align-items:center;">
+                    <input type="range" class="palette-slider" id="palettePropSlider" min="0" max="100" value="50" style="width:100%;">
+                    <div class="prop-slider-marks" id="propSliderMarks" style="position:absolute;left:7px;right:7px;top:50%;height:0;pointer-events:none;transform:translateY(-50%);"></div>
+                  </div>
+                  <button class="palette-proportion-btn" id="palettePropReset" title="恢复默认等分">默认</button>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <div class="card color-palettes" id="colorPalettesCard">
+          <div class="card color-right" id="colorRightCard">
             <div class="card-head-row">
-              <span class="card-title">调色盘</span>
-              <div class="head-acts">
-                <button class="btn btn-sm palette-copy-icon" onclick="paletteCopyPaletteSvg()" title="复制调色盘SVG（粘贴到Illustrator）" aria-label="复制"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-                <button class="btn btn-sm btn-info" onclick="paletteAddColor()">添加</button>
-                <button class="btn btn-sm btn-danger" onclick="paletteClear()">清空</button>
-              </div>
+              <span class="card-title">屏幕吸色</span>
+              <div class="head-acts"><button class="pick-screen-btn" onclick="colorPickScreen()" title="全屏吸管放大镜取色 (快捷键 E)">吸色 <span class="pick-key">E</span></button></div>
             </div>
-            <div style="display:flex;gap:8px;flex:1;min-height:0;">
-              <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
-                <div class="palette-color-bar" id="paletteColorBar" style="display:grid;grid-template-columns:1fr;gap:8px;flex:1;align-content:start;padding:0;">
-                  <div class="empty-state" style="font-size:11px;padding:8px 0;text-align:center;grid-column:1/-1;">点击上方添加颜色</div>
-                </div>
+            <div class="pick-status" id="pickStatus"></div>
+            <div class="paste-zone" id="pasteZone">
+              <div class="paste-hint">
+                <span id="pasteHintMain">Ctrl+V 粘贴截图</span>
+                <span class="paste-hint-sub">或拖入图片</span>
               </div>
-              <div class="palette-grad-preview" id="paletteGradPreview" style="width:calc(50% + 20px);aspect-ratio:6/9;cursor:pointer;flex-shrink:0;overflow:hidden;">
-                <div class="palette-grad-top-bar"><span class="palette-grad-badge" id="paletteAngleBadge" onclick="event.stopPropagation();paletteCycleAngle()" title="点击切换角度" style="display:none;">180°</span><div style="display:flex;gap:3px;align-items:center;"><button class="grad-dl-top" id="paletteGradReverse" onclick="event.stopPropagation();paletteReverseGrad()" title="反转颜色顺序" style="border:none;background:transparent;color:rgba(255,255,255,0.85);padding:0;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button><button class="grad-dl-top" id="paletteGradDownload" onclick="event.stopPropagation();paletteDownloadGrad()" title="下载300ppi PNG">&#8595;</button></div></div>
-              </div>
+              <img class="paste-preview" id="pastePreview" alt="">
+              <button class="paste-clear" id="pasteClear" onclick="colorClearPaste()">x</button>
+              <input type="file" id="fileInput" accept="image/*">
             </div>
-            <div class="palette-mode-bar" id="paletteModeBar">
-              <button class="palette-mode-btn active" data-mode="linear" style="flex:1;">线性</button>
-              <button class="palette-mode-btn" data-mode="radial" style="flex:1;">径向</button>
-              <button class="palette-mode-btn" data-mode="conic" style="flex:1;">锥形</button>
-            </div>
-            <div class="palette-controls">
-              <div class="palette-control-row" id="palettePropRow">
-                <span class="palette-control-label">比例</span>
-                <div class="prop-slider-wrap" style="flex:1;position:relative;display:flex;align-items:center;">
-                  <input type="range" class="palette-slider" id="palettePropSlider" min="0" max="100" value="50" style="width:100%;">
-                  <div class="prop-slider-marks" id="propSliderMarks" style="position:absolute;left:7px;right:7px;top:50%;height:0;pointer-events:none;transform:translateY(-50%);"></div>
-                </div>
-                <button class="palette-proportion-btn" id="palettePropReset" title="恢复默认等分">默认</button>
-              </div>
+            <div class="extracted-bar" id="extractedBar"></div>
+            <div class="palette-sec-head grad-sec-head"><span class="palette-sec-title">渐变组合</span></div>
+            <div class="gradient-row" id="gradientGrid"></div>
+            <div class="grad-picker" id="gradPicker">
+              <div class="grad-picker-grid" id="gradPickerGrid"></div>
             </div>
           </div>
-
-        </div>
-
-        <div class="middle-section card">
-          <div class="card-head-row">
-            <div class="grad-head-left">
-              <span class="card-title">渐变</span>
-              <span class="head-sub">比例</span>
-              <div class="ratio-group">
-                <button class="ratio-btn" data-ratio="60/90" onclick="colorSetGradRatio('60/90',this)">60:90</button>
-                <button class="ratio-btn" data-ratio="16/9" onclick="colorSetGradRatio('16/9',this)">16:9</button>
-                <button class="ratio-btn" data-ratio="9/16" onclick="colorSetGradRatio('9/16',this)">9:16</button>
-                <button class="ratio-btn active" data-ratio="1/1" onclick="colorSetGradRatio('1/1',this)">1:1</button>
-              </div>
-            </div>
-            <div class="head-acts">
-              <span class="grad-sel-wrap">
-                <span class="grad-sel-box" id="gradSelBox0" onmouseenter="gradShowPicker(0)" onclick="gradClearColor(0)" style="display:inline-block;width:20px;height:20px;border-radius:3px;border:2px dashed var(--border);cursor:pointer;vertical-align:middle;background:var(--bg-card);" title="悬停选色，点击取消"></span>
-                <span class="grad-sel-box" id="gradSelBox1" onmouseenter="gradShowPicker(1)" onclick="gradClearColor(1)" style="display:inline-block;width:20px;height:20px;border-radius:3px;border:2px dashed var(--border);cursor:pointer;vertical-align:middle;background:var(--bg-card);" title="悬停选色，点击取消"></span>
-                <span class="grad-sel-box" id="gradSelBox2" onmouseenter="gradShowPicker(2)" onclick="gradClearColor(2)" style="display:inline-block;width:20px;height:20px;border-radius:3px;border:2px dashed var(--border);cursor:pointer;vertical-align:middle;background:var(--bg-card);" title="悬停选色，点击取消"></span>
-                <button class="btn btn-sm" id="gradSelGenBtn" onclick="gradGenFromSelected()" style="opacity:.5;pointer-events:none;">自选</button>
-              </span>
-              <button class="btn btn-sm" onclick="gradRandomize()">随机</button>
-              <button class="btn btn-sm" onclick="colorResetGradients()" title="恢复默认组合">默认</button>
-            </div>
-          </div>
-          <div class="gradient-row" id="gradientGrid"></div>
-          <div class="grad-picker" id="gradPicker">
-            <div class="grad-picker-grid" id="gradPickerGrid"></div>
-          </div>
-        </div>
 
         <div class="copy-toast" id="colorCopyToast"></div>
       </div>
     </div>
+  </div>
+  <!-- FIX: 补回 #tabColor 的闭合标签（此前缺失，导致 AI提示词/极速抠图 被嵌套进配色面板而不可见） -->
   </div>
 
   <!-- ====== TAB: 极速抠图 (MATTING) ====== -->
@@ -2486,26 +2748,21 @@ body.dark .color-app{
   <div class="tab-content active" id="tabPrompt">
     <div class="tab-body prompt-body" id="promptBody">
       <div class="prompt-app">
-        <!-- 上半部分：两列（转换风格 + 常用提示词 | 生成结果 + 预设方案），中间可拖动调宽 -->
-        <div class="prompt-top-grid" id="promptTopGrid">
-          <div class="prompt-top-col prompt-top-col-style" id="promptStyleCol"></div>
-          <div class="prompt-col-resizer" id="promptColResizer" title="拖动调整左右列宽度"></div>
-          <div class="prompt-top-col prompt-top-col-result" id="promptResultCol"></div>
-        </div>
-        <!-- 下半部分：整体宽度（关键词三列） -->
-        <div class="prompt-bottom-area">
-          <div class="prompt-col-layout" id="promptImageLayout">
-            <div class="prompt-col prompt-col-bg">
-              <div class="prompt-col-scroll" id="promptColBgScroll"></div>
-            </div>
-            <div class="prompt-col prompt-col-element">
-              <div class="prompt-col-scroll" id="promptColElementScroll"></div>
-            </div>
-            <div class="prompt-col prompt-col-font">
-              <div class="prompt-col-scroll" id="promptColFontScroll"></div>
+        <!-- 重设计：左右两列。左列五容器单显（按钮/滚轮切换），右列上=生成结果 下=常用提示词 -->
+        <div class="prompt-duo-grid" id="promptDuoGrid">
+          <div class="prompt-left-col">
+            <div class="prompt-left-view" id="promptLeftView">
+              <div class="prompt-left-pane prompt-col-bg active" data-pane="bg"><div class="prompt-col-scroll" id="promptColBgScroll"></div></div>
+              <div class="prompt-left-pane prompt-col-element" data-pane="element"><div class="prompt-col-scroll" id="promptColElementScroll"></div></div>
+              <div class="prompt-left-pane prompt-col-font" data-pane="font"><div class="prompt-col-scroll" id="promptColFontScroll"></div></div>
+              <div class="prompt-left-pane prompt-pane-style" data-pane="style"><div class="prompt-col-scroll" id="promptStylePane"></div></div>
+              <div class="prompt-left-pane prompt-pane-product" data-pane="product"><div class="prompt-col-scroll" id="promptProductScroll"><div id="promptProductLayout"></div></div></div>
             </div>
           </div>
-          <div id="promptProductLayout" style="display:none"></div>
+          <div class="prompt-right-col">
+            <div class="prompt-right-top" id="promptResultCol"></div>
+            <div class="prompt-right-bottom" id="promptQuickCol"></div>
+          </div>
         </div>
         <!-- 弹窗 -->
         <div class="prompt-modal-overlay" id="promptModalOverlay">
@@ -2535,6 +2792,7 @@ body.dark .color-app{
 </div><!-- /container -->
 </div><!-- /scale-shell -->
 
+<div class="paste-loupe" id="pasteLoupe"><span class="pl-mark"></span><span class="pl-hex" id="pasteLoupeHex">#——</span></div>
 <div class="prompt-tag-tooltip" id="promptTagTooltip"></div>
 <div class="toast" id="layoutToast" data-default="#34d399"></div>
 
@@ -2565,6 +2823,7 @@ body.dark .color-app{
     var actBak=document.getElementById('actPromptBak'),actRes=document.getElementById('actPromptRestore');
     if(actBak)actBak.style.display=name==='prompt'?'':'none';
     if(actRes)actRes.style.display=name==='prompt'?'':'none';
+    var aiGear=document.getElementById('aiSettingsGear');if(aiGear)aiGear.style.display=name==='prompt'?'':'none';
     // color tab actions removed
 
     // 同步顶栏标题（reskin 增强，不影响原逻辑）
@@ -3044,6 +3303,15 @@ function highlight() {
       h/=6;}
     return{h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)};
   }
+  // 精确版：不取整，供吸色/输入色号使用，避免 #12AB34 被回写成 #12ab33
+  function rgbToHslExact(r,g,b){
+    r/=255;g/=255;b/=255;
+    var max=Math.max(r,g,b),min=Math.min(r,g,b),h,s,l=(max+min)/2;
+    if(max===min){h=s=0;}else{var d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
+      switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}
+      h/=6;}
+    return{h:h*360,s:s*100,l:l*100};
+  }
   function rgbToHex(r,g,b){return '#'+[r,g,b].map(function(v){return Math.round(v).toString(16).padStart(2,'0');}).join('');}
 
   var labelMap = {
@@ -3336,14 +3604,17 @@ function updateAll(){
     updateAllRAF=0;
     var h=hslToHex(state.h,state.s,state.l);
     var r=hslToRgb(state.h,state.s,state.l);
-    swatch.style.background=h;
+    var svPadEl=document.getElementById('svPad');if(svPadEl)svPadEl.style.background='linear-gradient(to top,#000,rgba(0,0,0,0)),linear-gradient(to right,#fff,hsl('+state.h+',100%,50%))';
     hexVal.value=h;
     rgbVal.value=r[0]+','+r[1]+','+r[2];
     hslVal.value=Math.round(state.h)+','+Math.round(state.s)+'%,'+Math.round(state.l)+'%';
+    if(window._syncHslSliders)window._syncHslSliders();
     drawSL(state.h);
     state.colors=genHarmony(state.h,state.s,state.l,state.rule);
     renderPalette(state.colors);
     renderGradients(state.colors);
+    window._lastHarmony=state.colors;
+    if(!paletteColors.length)paletteRenderGrad();
   });
 }
 
@@ -3388,6 +3659,8 @@ hueSlider.addEventListener('pointerdown',function(e){
     var l=state.l/100,sl=state.s/100;
     var hsv=hslToHsv(sl,l);
     slThumb.style.left=(hsv.sv*100)+'%';slThumb.style.top=((1-hsv.v)*100)+'%';
+    var padTh=document.getElementById('svThumbPad');
+    if(padTh){padTh.style.left=(hsv.sv*100)+'%';padTh.style.top=((1-hsv.v)*100)+'%';}
   }
   function setSL(cx,cy){
     var r=slWrap.getBoundingClientRect();
@@ -3419,6 +3692,8 @@ slWrap.addEventListener('pointerdown',function(e){
     fileInput.click();
   });
   fileInput.addEventListener('change',function(){if(this.files&&this.files[0])processFile(this.files[0]);});
+  window._processPickFile=processFile;
+  function closePickGuideIfOpen(){var g=document.getElementById('pickGuide');if(g&&g.parentNode)g.parentNode.removeChild(g);}
   pasteZone.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('dragover');});
   pasteZone.addEventListener('dragleave',function(e){e.preventDefault();this.classList.remove('dragover');});
   pasteZone.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('dragover');if(e.dataTransfer.files&&e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);});
@@ -3438,6 +3713,15 @@ function processFile(file){
     setCompressedPreview(img);
     pasteZone.classList.add('has-image');
     extractColors(img);
+    try{
+      var MW=1600,msc=Math.min(MW/img.width,MW/img.height,1);
+      var mw=Math.max(1,Math.round(img.width*msc)),mh=Math.max(1,Math.round(img.height*msc));
+      var mcv=document.createElement('canvas');mcv.width=mw;mcv.height=mh;
+      mcv.getContext('2d',{willReadFrequently:true}).drawImage(img,0,0,mw,mh);
+      window._pickSrcCanvas=mcv;
+      window._pickSrcUrl=mcv.toDataURL('image/png');
+      if(document.getElementById('pickGuide')&&window._openShotPicker){closePickGuideIfOpen();window._openShotPicker(mcv);}
+    }catch(e){window._pickSrcCanvas=null;}
   };
   img.onerror=function(){URL.revokeObjectURL(url);showToast('图片读取失败','error');};
   img.src=url;
@@ -3461,14 +3745,15 @@ function setCompressedPreview(img){
     pastePreview.src='';pasteZone.classList.remove('has-image');
     document.getElementById('extractedBar').classList.remove('show');
     document.getElementById('extractedBar').innerHTML='';
+    window._pickSrcCanvas=null;window._pickSrcUrl='';
     fileInput.value='';
   };
 
   function applyExtractedColor(idx){
     if(!state.extracted||!state.extracted[idx])return;
     var c=state.extracted[idx];
-    var h=rgbToHsl(c.r,c.g,c.b);
-    state.h=h.h;state.s=Math.max(30,Math.min(95,h.s));state.l=Math.max(15,Math.min(85,h.l));
+    var h=rgbToHslExact(c.r,c.g,c.b);
+    state.h=h.h;state.s=h.s;state.l=h.l;
     hueThumb.style.left=(state.h/360*100)+'%';updateThumbPos();
     updateAll();showToast('已应用: '+rgbToHex(c.r,c.g,c.b));
   }
@@ -3492,7 +3777,7 @@ function setCompressedPreview(img){
     if(_exLast.i===i&&now-_exLast.t<350)return; // 双击时忽略第二次单击，避免重复加入调色盘
     _exLast={i:i,t:now};
     var c=state.extracted&&state.extracted[i];if(!c)return;
-    var hh=rgbToHsl(c.r,c.g,c.b);
+    var hh=rgbToHslExact(c.r,c.g,c.b);
     paletteAddColorFromHSL(Math.round(hh.h),Math.round(hh.s),Math.round(hh.l));
     applyExtractedColor(i);
   };
@@ -3548,7 +3833,7 @@ function setCompressedPreview(img){
     }
     state.extracted=result;
     renderExtractedBar();
-    var d2=result[0],hsl2=rgbToHsl(d2.r,d2.g,d2.b);
+    var d2=result[0],hsl2=rgbToHslExact(d2.r,d2.g,d2.b);
     state.h=hsl2.h;state.s=Math.max(30,Math.min(95,hsl2.s));state.l=Math.max(15,Math.min(85,hsl2.l));
     hueThumb.style.left=(state.h/360*100)+'%';updateThumbPos();
     updateAll();showToast('已提取 '+result.length+' 种颜色');
@@ -3623,6 +3908,7 @@ function setCompressedPreview(img){
     var colors;
     if(selCount>=2){colors=[];for(var k in paletteSelected){if(paletteSelected[k])colors.push(paletteColors[parseInt(k)]);}}
     else colors=paletteColors;
+    if(!colors.length&&state.colors&&state.colors.length>=2){colors=state.colors.slice();}
     if(!colors.length)return null;
     var hexes=colors.map(function(c){return hslToHex(c.h,c.s,c.l);});
     var n=hexes.length;
@@ -3654,11 +3940,14 @@ function setCompressedPreview(img){
     if(!preview)return;
     var selIndices=[];for(var k in paletteSelected){if(paletteSelected[k])selIndices.push(parseInt(k));}
     var colors=selIndices.length?selIndices.map(function(i){return paletteColors[i];}):paletteColors;
+    // v4.8.9 无调色盘颜色（默认/清空后）显示纯色：当前取色器颜色，不再回退和谐配色渐变
     if(!colors.length){
+      var curHex=hslToHex(state.h,state.s,state.l);
+      preview.style.background=curHex;
+      preview.dataset.css=curHex;
       if(badge)badge.style.display='none';
       if(dlBtn)dlBtn.style.display='none';
       if(reverseBtn)reverseBtn.style.display='none';
-      preview.style.background='';
       var me=document.getElementById('propSliderMarks');if(me)me.innerHTML='';
       return;
     }
@@ -3966,36 +4255,266 @@ function setCompressedPreview(img){
 
 
   var eyeDropperAbort = null;
-  window.colorPickScreen = function(){
-    if(!window.EyeDropper){showToast('当前浏览器不支持屏幕取色，请使用 Chrome 95+');return;}
-    // If already open, cancel it
-    if (eyeDropperAbort) {
-      eyeDropperAbort.abort();
-      eyeDropperAbort = null;
-      showToast('已取消取色');
+  var IS_MAC=/Mac|iPod|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
+  var PASTE_KEY=IS_MAC?'\u2318V':'Ctrl+V';
+  var SHOT_KEY=IS_MAC?'\u2318\u21E7\u23034':'Win+Shift+S';
+
+  function setPickStatus(msg,kind){
+    var el=document.getElementById('pickStatus');
+    if(!el)return;
+    el.textContent=msg||'';
+    el.className='pick-status'+(kind?' '+kind:'');
+    el.style.display=msg?'block':'none';
+  }
+  window.setPickStatus=setPickStatus;
+  window._applyPickedRgb=applyPickedRgb;
+
+  // ---- 吸色重设计：无系统吸色能力时，走「截图 → 粘贴 → 图上点选」引导（全浏览器可靠）----
+  function startPastePickGuide(reason){
+    var msg=(reason?reason+'。':'')+'两步取色：'+SHOT_KEY+' 截图 → '+PASTE_KEY+' 粘贴到右下取色区，然后在图上点击取色';
+    setPickStatus(msg,'warn');
+    try{showToast('截图后 '+PASTE_KEY+' 粘贴，在图上点击取色');}catch(e){}
+    var z=document.getElementById('pasteZone');
+    if(z){z.classList.remove('pick-attention');void z.offsetWidth;z.classList.add('pick-attention');setTimeout(function(){z.classList.remove('pick-attention');},3600);}
+  }
+  window._startPastePickGuide=startPastePickGuide;
+
+  // ---- 取色浮层入口：按 E / 点「吸色」必定有可见反馈 ----
+  function closePickGuide(){
+    var g=document.getElementById('pickGuide');
+    if(g&&g.parentNode)g.parentNode.removeChild(g);
+    if(window._pgKey){document.removeEventListener('keydown',window._pgKey,true);window._pgKey=null;}
+  }
+  window._closePickGuide=closePickGuide;
+
+  function openPickOverlay(reason){
+    var cv=window._pickSrcCanvas;
+    if(cv){ closePickGuide(); openShotPicker(cv); if(reason)setPickStatus(reason,'warn'); return; }
+    openPickGuideOverlay(reason);
+  }
+  window._openPickOverlay=openPickOverlay;
+
+  function openPickGuideOverlay(reason){
+    closePickGuide();
+    var ov=document.createElement('div');
+    ov.id='pickGuide';
+    ov.innerHTML='<div class="pg-card">'
+      +'<div class="pg-title">吸色 \u00b7 三步完成</div>'
+      +(reason?'<div class="pg-reason">'+reason+'</div>':'')
+      +'<div class="pg-steps">'
+      +'<div class="pg-step"><span class="pg-num">1</span><div>按 <b>'+(IS_MAC?'\u21e7\u2318\u23034':'Win+Shift+S')+'</b> 截图（截图自动进剪贴板）</div></div>'
+      +'<div class="pg-step"><span class="pg-num">2</span><div>保持此浮层打开，按 <b>'+PASTE_KEY+'</b> 粘贴截图（或拖入图片 / 点下方选图）</div></div>'
+      +'<div class="pg-step"><span class="pg-num">3</span><div>图片出现后移动光标看放大镜，<b>点击即取色</b></div></div>'
+      +'</div>'
+      +'<div class="pg-acts">'
+      +'<button class="pg-btn" id="pgChoose">选择图片文件</button>'
+      +(window.EyeDropper?'<button class="pg-btn" id="pgSystem">系统吸管取色</button>':'')
+      +'<button class="pg-btn" id="pgCancel">取消</button>'
+      +'</div>'
+      +'<div class="pg-hint">支持拖入图片 \u00b7 Esc 关闭</div>'
+      +'</div>';
+    document.body.appendChild(ov);
+    ov.querySelector('#pgChoose').addEventListener('click',function(e){
+      e.stopPropagation();var fi=document.getElementById('fileInput');if(fi)fi.click();
+    });
+    var sysBtn=ov.querySelector('#pgSystem');
+    if(sysBtn)sysBtn.addEventListener('click',function(e){e.stopPropagation();closePickGuide();pickWithEyeDropper();});
+    ov.querySelector('#pgCancel').addEventListener('click',function(e){e.stopPropagation();closePickGuide();setPickStatus('已取消取色','warn');});
+    ov.addEventListener('click',function(e){if(e.target===ov){closePickGuide();}});
+    ov.addEventListener('dragover',function(e){e.preventDefault();ov.classList.add('drag');});
+    ov.addEventListener('dragleave',function(){ov.classList.remove('drag');});
+    ov.addEventListener('drop',function(e){
+      e.preventDefault();ov.classList.remove('drag');
+      var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+      if(f&&window._processPickFile)window._processPickFile(f);
+    });
+    window._pgKey=function(e){
+      if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closePickGuide();setPickStatus('已取消取色','warn');}
+    };
+    document.addEventListener('keydown',window._pgKey,true);
+    setPickStatus('等待图片：'+(IS_MAC?'\u21e7\u2318\u23034':'Win+Shift+S')+' 截图 → '+PASTE_KEY+' 粘贴','warn');
+  }
+
+  // 把取到的 RGB 应用到取色器：保留精确值（不做色阶夹取、不把 HSL 取整）
+  function applyPickedRgb(r,g,b,note){
+    r=Math.max(0,Math.min(255,Math.round(r)));
+    g=Math.max(0,Math.min(255,Math.round(g)));
+    b=Math.max(0,Math.min(255,Math.round(b)));
+    var hsl=rgbToHslExact(r,g,b);
+    state.h=hsl.h;state.s=hsl.s;state.l=hsl.l;
+    hueThumb.style.left=(state.h/360*100)+'%';
+    updateThumbPos();
+    updateAll();
+    var hex=rgbToHex(r,g,b);
+    setPickStatus('已取色 '+hex+(note?' \u00b7 '+note:''),'ok');
+    showToast('已取色: '+hex);
+  }
+
+  // ---- 方式 1：EyeDropper（Chrome / Edge / Brave / Opera 95+）----
+  function pickWithEyeDropper(){
+    if(eyeDropperAbort){
+      eyeDropperAbort.abort();eyeDropperAbort=null;
+      setPickStatus('已取消取色','warn');showToast('已取消取色');return;
+    }
+    var controller=new AbortController();
+    eyeDropperAbort=controller;
+    // 兜底：万一系统取色器没有回调，60s 后自动解锁，避免之后点击一直被当成“取消”
+    var guard=setTimeout(function(){if(eyeDropperAbort===controller)eyeDropperAbort=null;},60000);
+    setPickStatus('在屏幕上点击要吸取的颜色 \u00b7 Esc 取消');
+    var ed;
+    try{ ed=new EyeDropper(); }catch(e){ clearTimeout(guard);eyeDropperAbort=null;pickWithScreenshot();return; }
+    ed.open({signal:controller.signal}).then(function(r){
+      clearTimeout(guard);eyeDropperAbort=null;
+      var hex=r.sRGBHex;
+      applyPickedRgb(parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16));
+    }).catch(function(err){
+      clearTimeout(guard);eyeDropperAbort=null;
+      if(err&&err.name==='AbortError'){setPickStatus('已取消取色','warn');return;}
+      startPastePickGuide('系统吸色失败：'+((err&&err.message)||err));
+    });
+  }
+
+  // ---- 方式 2：截屏取色（Safari / Firefox 等无 EyeDropper 的浏览器自动兜底）----
+  function pickWithScreenshot(){
+    var md=navigator.mediaDevices;
+    if(!(md&&md.getDisplayMedia)){
+      pickFallbackAfterScreenFail('此浏览器不支持屏幕截屏取色');
       return;
     }
-    var controller = new AbortController();
-    eyeDropperAbort = controller;
-    var ed=new EyeDropper();
-    ed.open({ signal: controller.signal }).then(function(r){
-      eyeDropperAbort = null;
-      var hex=r.sRGBHex;
-      var rv=parseInt(hex.slice(1,3),16),gv=parseInt(hex.slice(3,5),16),bv=parseInt(hex.slice(5,7),16);
-      var hsl=rgbToHsl(rv,gv,bv);
-      state.h=hsl.h;state.s=Math.max(30,Math.min(95,hsl.s));state.l=Math.max(15,Math.min(85,hsl.l));
-      hueThumb.style.left=(state.h/360*100)+'%';updateThumbPos();
-      updateAll();showToast('已取色: '+hex);
-    }).catch(function(){
-      eyeDropperAbort = null;
+    setPickStatus('正在截取屏幕\u2026（弹窗中选择「屏幕」或「窗口」）');
+    md.getDisplayMedia({video:true,audio:false}).then(function(stream){
+      var video=document.createElement('video');
+      video.muted=true;video.playsInline=true;video.srcObject=stream;
+      video.setAttribute('playsinline','');
+      // 必须挂到 DOM，否则部分环境 play() 不 resolve / 不出帧
+      video.style.cssText='position:fixed;right:0;bottom:0;width:2px;height:2px;opacity:0.01;pointer-events:none;z-index:-1;';
+      document.body.appendChild(video);
+      function release(){
+        try{stream.getTracks().forEach(function(t){t.stop();});}catch(e){}
+        try{if(video.parentNode)video.parentNode.removeChild(video);}catch(e){}
+      }
+      var settled=false;
+      function finishGrab(){
+        if(settled)return;settled=true;
+        var w=video.videoWidth||0,h=video.videoHeight||0;
+        if(!w||!h){release();setPickStatus('截屏失败：未获取到画面','err');return;}
+        var cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        cv.getContext('2d',{willReadFrequently:true}).drawImage(video,0,0,w,h);
+        release();
+        openShotPicker(cv);
+      }
+      // 轮询等待画面尺寸就绪（最多约 3s），避免依赖 play() 的时序
+      var tries=0;
+      var poll=setInterval(function(){
+        tries++;
+        if(video.videoWidth>0&&video.videoHeight>0){clearInterval(poll);setTimeout(finishGrab,220);}
+        else if(tries>25){clearInterval(poll);finishGrab();}
+      },120);
+      var p=video.play();
+      if(p&&p.catch)p.catch(function(err){clearInterval(poll);if(settled)return;settled=true;release();setPickStatus('截屏失败：'+((err&&err.message)||err),'err');});
+    }).catch(function(err){
+      var nm=err&&err.name;
+      if(nm==='NotAllowedError'||nm==='AbortError'){setPickStatus('已取消截屏授权 \u00b7 可按 '+PASTE_KEY+' 粘贴截图取色','warn');return;}
+      pickFallbackAfterScreenFail('无法截屏：'+((err&&err.message)||err));
     });
+  }
+
+  // ---- 截屏取色浮层：放大镜 + 点击取样 ----
+  var shotKeyHandler=null;
+  function closeShotPicker(){
+    var ov=document.getElementById('shotPicker');
+    if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);
+    if(shotKeyHandler)document.removeEventListener('keydown',shotKeyHandler,true);
+    shotKeyHandler=null;
+  }
+  window._closeShotPicker=closeShotPicker;
+  window._openShotPicker=openShotPicker;
+
+  function openShotPicker(cv){
+    closeShotPicker();
+    var W=cv.width,H=cv.height;
+    var c2=cv.getContext('2d',{willReadFrequently:true});
+    var url=cv.toDataURL('image/png');
+    var ov=document.createElement('div');
+    ov.id='shotPicker';
+    ov.innerHTML='<div class="sp-bar"><span class="sp-title">点击取色</span><span class="sp-swatch" id="spSwatch"></span><span class="sp-hex" id="spHex">\u2014</span><span class="sp-hint">放大镜跟随光标 \u00b7 点击取色 \u00b7 Esc 取消</span><button class="sp-cancel" id="spCancel">取消</button></div>'
+      +'<img class="sp-img" id="spImg" alt="\u5c4f\u5e55\u622a\u56fe">'
+      +'<div class="sp-loupe" id="spLoupe"><span class="sp-loupe-mark"></span></div>';
+    document.body.appendChild(ov);
+    var img=ov.querySelector('#spImg');
+    img.src=url;
+    // 精确内联尺寸：让显示盒与画面比例一致，坐标换算才准确
+    var vw=window.innerWidth,vh=window.innerHeight;
+    var sc=Math.min((vw-120)/W,(vh-170)/H,1);
+    img.style.width=Math.round(W*sc)+'px';
+    img.style.height=Math.round(H*sc)+'px';
+    var loupe=ov.querySelector('#spLoupe'),sw=ov.querySelector('#spSwatch'),hexOut=ov.querySelector('#spHex');
+    var Z=9,LZ=128;
+    function toPixel(ev){
+      var r=img.getBoundingClientRect();
+      if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom)return null;
+      var px=Math.floor((ev.clientX-r.left)/r.width*W),py=Math.floor((ev.clientY-r.top)/r.height*H);
+      return {px:Math.max(0,Math.min(W-1,px)),py:Math.max(0,Math.min(H-1,py)),cx:ev.clientX,cy:ev.clientY};
+    }
+    function move(ev){
+      var p=toPixel(ev);
+      if(!p){loupe.style.display='none';hexOut.textContent='\u2014';sw.style.background='transparent';return;}
+      var d=c2.getImageData(p.px,p.py,1,1).data;
+      var hex=rgbToHex(d[0],d[1],d[2]);
+      loupe.style.display='block';
+      loupe.style.left=p.cx+'px';
+      loupe.style.top=(p.cy-88)+'px';
+      loupe.style.backgroundImage='url('+url+')';
+      loupe.style.backgroundSize=(W*Z)+'px '+(H*Z)+'px';
+      loupe.style.backgroundPosition=(-(p.px*Z-LZ/2))+'px '+(-(p.py*Z-LZ/2))+'px';
+      sw.style.background=hex;
+      hexOut.textContent=hex;
+    }
+    ov.addEventListener('mousemove',move);
+    ov.addEventListener('mouseleave',function(){loupe.style.display='none';});
+    ov.addEventListener('click',function(ev){
+      if(ev.target&&ev.target.closest&&ev.target.closest('.sp-bar'))return;
+      var p=toPixel(ev);
+      if(!p)return;
+      var d=c2.getImageData(p.px,p.py,1,1).data;
+      closeShotPicker();
+      applyPickedRgb(d[0],d[1],d[2],'截屏');
+    });
+    ov.querySelector('#spCancel').addEventListener('click',function(e){
+      e.stopPropagation();closeShotPicker();setPickStatus('已取消取色','warn');
+    });
+    shotKeyHandler=function(e){
+      if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeShotPicker();setPickStatus('已取消取色','warn');}
+    };
+    document.addEventListener('keydown',shotKeyHandler,true);
+    setPickStatus('在截图上点击取色 \u00b7 放大镜实时预览 \u00b7 Esc 取消');
+  }
+
+  window.colorPickScreen=function(){
+    if(window.EyeDropper){pickWithEyeDropper();return;}
+    pickWithScreenshot();
   };
+  // 截屏取色失败/不支持时的兜底：有粘贴图→图上放大镜；无图→引导浮层
+  function pickFallbackAfterScreenFail(msg){
+    if(window._pickSrcCanvas){openShotPicker(window._pickSrcCanvas);setPickStatus(msg+'，已改为在粘贴图上取色','warn');return;}
+    openPickGuideOverlay(msg);
+  }
+
+  // 初始化：粘贴快捷键提示按平台显示；无系统吸色能力时说明将走截屏取色
+  (function(){
+    var hint=document.getElementById('pasteHintMain');
+    if(hint)hint.textContent=PASTE_KEY+' 粘贴截图，然后点击取色';
+    if(!window.EyeDropper){
+      var btn=document.querySelector('.pick-screen-btn');
+      setPickStatus('按 E 直接全屏吸管取色：本浏览器无系统吸管，将截取屏幕后用放大镜取色；也可 '+PASTE_KEY+' 粘贴截图取色','warn');
+    }
+  })();
 
   window.colorApplyHex = function(v){
     v=v.trim();if(v[0]!=='#')v='#'+v;
     if(!/^#[0-9a-fA-F]{6}$/.test(v))return;
     var rv=parseInt(v.slice(1,3),16),gv=parseInt(v.slice(3,5),16),bv=parseInt(v.slice(5,7),16);
-    var hsl=rgbToHsl(rv,gv,bv);
+    var hsl=rgbToHslExact(rv,gv,bv);
     state.h=hsl.h;state.s=hsl.s;state.l=hsl.l;
     hueThumb.style.left=(state.h/360*100)+'%';updateThumbPos();updateAll();
   };
@@ -4003,7 +4522,7 @@ function setCompressedPreview(img){
     v=v.trim().replace(/^rgb\(/i,'').replace(/\)$/,'');
     var parts=v.split(',').map(function(x){return parseInt(x.trim());});
     if(parts.length!==3||isNaN(parts[0])||isNaN(parts[1])||isNaN(parts[2]))return;
-    var hsl=rgbToHsl(Math.max(0,Math.min(255,parts[0])),Math.max(0,Math.min(255,parts[1])),Math.max(0,Math.min(255,parts[2])));
+    var hsl=rgbToHslExact(Math.max(0,Math.min(255,parts[0])),Math.max(0,Math.min(255,parts[1])),Math.max(0,Math.min(255,parts[2])));
     state.h=hsl.h;state.s=hsl.s;state.l=hsl.l;
     hueThumb.style.left=(state.h/360*100)+'%';updateThumbPos();updateAll();
   };
@@ -4036,10 +4555,141 @@ function setCompressedPreview(img){
   }
 })();
 
+/* ===== 取色器 H/S/L 三滑轨（v4.8 重设计） ===== */
+(function(){
+  var hslInput=document.getElementById('hslValue');
+  var tH=document.getElementById('hslTrackH'),tS=document.getElementById('hslTrackS'),tL=document.getElementById('hslTrackL');
+  if(!tH||!tS||!tL||!hslInput)return;
+  var thH=tH.querySelector('.hsl-thumb'),thS=tS.querySelector('.hsl-thumb'),thL=tL.querySelector('.hsl-thumb');
+  function curHSL(){
+    var p=(hslInput.value||'0,0%,0%').split(',');
+    return [parseFloat(p[0])||0,parseInt(p[1])||0,parseInt(p[2])||0];
+  }
+  window._syncHslSliders=function(){
+    var c=curHSL(),h=c[0],s=c[1],l=c[2];
+    thH.style.left=(h/360*100)+'%';
+    thS.style.left=s+'%';
+    thL.style.left=l+'%';
+    tS.style.background='linear-gradient(90deg,hsl('+h+',0%,'+l+'%),hsl('+h+',100%,'+l+'%))';
+    tL.style.background='linear-gradient(90deg,#000000,hsl('+h+','+s+'%,50%),#ffffff)';
+  };
+  function setHSL(h,s,l){
+    var c=curHSL();
+    h=(h==null?c[0]:h);s=(s==null?c[1]:s);l=(l==null?c[2]:l);
+    window.colorApplyHsl(Math.round(h)+','+Math.round(s)+'%,'+Math.round(l)+'%');
+  }
+  function bind(track,apply){
+    var drag=false;
+    function set(e){
+      var r=track.getBoundingClientRect();
+      var p=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
+      apply(Math.round(p*(track===tH?360:100)));
+    }
+    track.addEventListener('pointerdown',function(e){
+      e.preventDefault();drag=true;set(e);
+      function mv(ev){if(drag)set(ev);}
+      function up(){drag=false;document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);}
+      document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up);
+    });
+  }
+  bind(tH,function(v){setHSL(v,null,null);});
+  bind(tS,function(v){setHSL(null,v,null);});
+  bind(tL,function(v){setHSL(null,null,v);});
+  window._syncHslSliders();
+})();
+
+/* ===== 取色盘（SV 面板）交互 ===== */
+(function(){
+  var pad=document.getElementById('svPad');
+  var thumb=document.getElementById('svThumbPad');
+  if(!pad||!thumb)return;
+  function apply(cx,cy){
+    var r=pad.getBoundingClientRect();
+    if(!r.width||!r.height)return;
+    var sx=Math.max(0,Math.min(1,(cx-r.left)/r.width));
+    var sy=Math.max(0,Math.min(1,(cy-r.top)/r.height));
+    thumb.style.left=(sx*100)+'%';thumb.style.top=(sy*100)+'%';
+    var v=1-sy,l=v*(1-sx/2),s=(l>0.001&&l<0.999)?(v-l)/Math.min(l,1-l):0;
+    var hv=(document.getElementById('hslValue').value||'239,84%,67%').split(',');
+    var h=parseFloat(hv[0])||0;
+    window.colorApplyHsl(Math.round(h)+','+Math.round(s*100)+'%,'+Math.round(l*100)+'%');
+  }
+  pad.addEventListener('pointerdown',function(e){
+    e.preventDefault();apply(e.clientX,e.clientY);
+    function mv(ev){apply(ev.clientX,ev.clientY);}
+    function up(){document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);}
+    document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up);
+  });
+})();
+
+/* ===== 吸色重设计：粘贴图上的放大镜精确取色 ===== */
+(function(){
+  var zone=document.getElementById('pasteZone');
+  var prev=document.getElementById('pastePreview');
+  var loupe=document.getElementById('pasteLoupe');
+  var hexOut=document.getElementById('pasteLoupeHex');
+  if(!zone||!prev||!loupe||!hexOut)return;
+  var LZ=132,Z=9;
+  function toHex(r,g,b){return '#'+[r,g,b].map(function(v){return Math.round(v).toString(16).padStart(2,'0');}).join('');}
+  function map(ev){
+    var cv=window._pickSrcCanvas;
+    if(!cv)return null;
+    var r=prev.getBoundingClientRect();
+    var nw=cv.width,nh=cv.height;
+    if(!r.width||!r.height||!nw||!nh)return null;
+    var sc=Math.min(r.width/nw,r.height/nh);
+    var dw=nw*sc,dh=nh*sc;
+    var ox=r.left+(r.width-dw)/2,oy=r.top+(r.height-dh)/2;
+    if(ev.clientX<ox||ev.clientX>ox+dw||ev.clientY<oy||ev.clientY>oy+dh)return null;
+    return {x:Math.min(nw-1,Math.max(0,Math.floor((ev.clientX-ox)/sc))),y:Math.min(nh-1,Math.max(0,Math.floor((ev.clientY-oy)/sc))),cx:ev.clientX,cy:ev.clientY};
+  }
+  function hide(){loupe.style.display='none';hexOut.textContent='#\u2014\u2014';}
+  function move(ev){
+    if(!zone.classList.contains('has-image')){hide();return;}
+    var cv=window._pickSrcCanvas;
+    if(!cv){hide();return;}
+    var p=map(ev);
+    if(!p){hide();return;}
+    var d;
+    try{d=cv.getContext('2d',{willReadFrequently:true}).getImageData(p.x,p.y,1,1).data;}catch(e){hide();return;}
+    var hex=toHex(d[0],d[1],d[2]);
+    var url=window._pickSrcUrl;
+    if(url){
+      loupe.style.backgroundImage='url('+url+')';
+      loupe.style.backgroundSize=(cv.width*Z)+'px '+(cv.height*Z)+'px';
+      loupe.style.backgroundPosition=(-(p.x*Z-LZ/2))+'px '+(-(p.y*Z-LZ/2))+'px';
+    }
+    var above=ev.clientY>190;
+    loupe.style.display='block';
+    loupe.style.left=ev.clientX+'px';
+    loupe.style.top=ev.clientY+'px';
+    loupe.style.transform='translate(-50%,'+(above?'calc(-100% - 44px)':'44px')+')';
+    hexOut.textContent=hex;
+  }
+  zone.addEventListener('mousemove',move);
+  zone.addEventListener('mouseleave',hide);
+  zone.addEventListener('click',function(ev){
+    if(!zone.classList.contains('has-image'))return;
+    if(ev.target&&ev.target.closest&&ev.target.closest('.paste-clear'))return;
+    var cv=window._pickSrcCanvas;
+    if(!cv)return;
+    var p=map(ev);
+    if(!p)return;
+    var d;
+    try{d=cv.getContext('2d',{willReadFrequently:true}).getImageData(p.x,p.y,1,1).data;}catch(e){return;}
+    if(window._applyPickedRgb)window._applyPickedRgb(d[0],d[1],d[2],'粘贴图取色');
+  });
+})();
+
+/* 粘贴快捷键提示已由配色模块按平台自动设置 */
+
 /* ======================== KEYBOARD SHORTCUTS ======================== */
 document.addEventListener('keydown', function(e) {
   // E key: toggle color picker (open/cancel)
   if (e.key === 'e' || e.key === 'E') {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+    if (document.getElementById('shotPicker')) return;
+    if (document.getElementById('pickGuide')) { if (window._closePickGuide) window._closePickGuide(); return; }
     var colorTab = document.getElementById('tabColor');
     if (colorTab && colorTab.classList.contains('active') && typeof window.colorPickScreen === 'function') {
       e.preventDefault();
@@ -4367,25 +5017,6 @@ product:[
 ['软木材质','软木材质','软木，天然颗粒密集，哑光温暖，边缘厚度清晰'],
 ['橡胶软垫','橡胶软垫','橡胶软垫，柔韧防滑，底部纹理清晰，哑光']
 ]},
-// ── 产品造型 ──
-{icon:'型',color:'#5A6A8C',title:'产品造型',gradient:'linear-gradient(135deg,#F2F4FA 0%,#D8E0F0 100%)',capGrad:'linear-gradient(135deg,#E8ECF5 0%,#B7C2DA 100%)',tcolor:'#2C3858',tags:[
-// ── 基础几何 ──
-['圆形','圆形','圆形轮廓，完整圆润无棱角，边缘光滑'],
-['方形','方形','方形轮廓，四边平直，边角清晰'],
-['圆角矩形','圆角矩形','圆角矩形轮廓，转角柔和顺滑'],
-['椭圆形','椭圆形','椭圆形轮廓，两端收窄，曲线流畅'],
-['六边形','六边形','六边形轮廓，六边等距，边线稳定'],
-// ── 异形定制 ──
-['异形','异形','异形轮廓，贴合图案边缘切割'],
-['定制轮廓','定制轮廓','定制轮廓，按图案主体外形精确切割'],
-['流线型','流线型','流线型外观，曲线连续顺滑，有速度感'],
-// ── 图形轮廓 ──
-['心形','心形','心形轮廓，顶部双弧对称，底部收尖'],
-['星形','星形','星形轮廓，多角星芒外辐射，切割清晰'],
-['盾牌形','盾牌形','盾牌形轮廓，上宽下尖，左右对称'],
-// ── 立体结构 ──
-['多层叠压','多层叠压','多层叠压结构，片材错位叠合，层间有厚度与投影']
-]},
 // ── 表面工艺 ──
 {icon:'工',color:'#8C5A6A',title:'表面工艺',gradient:'linear-gradient(135deg,#FCF5F7 0%,#F0DDE2 100%)',capGrad:'linear-gradient(135deg,#F5E8EC 0%,#D8B7C0 100%)',tcolor:'#5C2E3C',tags:[
 // ── 印刷 ──
@@ -4438,7 +5069,7 @@ product:[
 };
 
 // ====== Data version migration (clears stale backups from prior structures) ======
-var PROMPT_DATA_VERSION='v4.8-texture-style';
+var PROMPT_DATA_VERSION='v4.8.9-remove-shape';
 // v4.4.8 文字列重构：废弃的旧标签（精简删减 + 拆组后改名），不参与自定义标签恢复
 var PROMPT_LEGACY_NAMES=["云雾留白", "大理石纹", "磨砂金属", "宣纸纤维", "柔光散景", "沙画质感", "湿画法水彩", "版画拓印", "丝网印刷", "极简细线", "萌系Q版", "印章篆意", "横排居中", "竖排居中", "顶部横排", "底部横排", "留白布局", "草书狂放", "魏碑雄健", "瘦金清瘦", "随笔手写", "钢笔细线", "朱砂批注", "藏书朱印", "石刻碑文", "凹凸压字", "圆体软萌", "横向排列", "左端齐平", "居中对齐", "牛皮", "卡纸", "硫酸纸", "宣纸", "和纸", "水彩纸", "网格纸", "珠光纸", "金箔", "做旧纸"];
 // v4.4.8 文字列新增「字效材质」插在第 2 位，原第 1 组（文字排向）后移到第 2 位：下标=旧组序，值=新组序
@@ -4529,15 +5160,14 @@ colKeys.forEach(function(key,ci){
 // Build product section
 var prodData=collapsibleData.product;
 if(prodData){
-  var prodItems=prodData.map(function(c){
+  // v4.8.5 产品页：去容器头部与外框白底，5 组平铺直接落在页面底色上（同背景页）
+  var prodGroups=prodData.map(function(c){
     var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelectedBg('product',c,true),tcol:promptGroupColor(c),hov:c.gradient,fav:promptGroupColor(c)});}).join('');
-    return collapsibleHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>');
-  });
-  var prodCol1=prodItems[0]||'',prodCol2=(prodItems[1]||'')+(prodItems[2]||''),prodCol3=(prodItems[3]||'')+(prodItems[4]||'');
-  var prodHtml='<div class="prompt-product-col-layout"><div class="prompt-product-column">'+prodCol1+'</div><div class="prompt-product-column">'+prodCol2+'</div><div class="prompt-product-column">'+prodCol3+'</div></div>';
-  PS('#promptProductLayout').innerHTML='<div class="prompt-collapsible" id="promptProductInputCard"><div class="prompt-collapsible-header"><span class="prompt-product-back" data-psection="image" title="返回生图提示词"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></span><span class="prompt-title" data-gtitle="产品描述" style="color:#2F5A36;font-size:13px;font-weight:700;letter-spacing:.4px">产品描述</span><span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="prompt-collapsible-body open"><div style="position:relative"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="输入产品描述关键词..." autocomplete="off" style="width:100%;padding:6px 10px;font-size:13px;border:1px solid var(--prompt-border);border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;box-sizing:border-box"><button class="prompt-col-custom-clear" id="promptClearProduct" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:18px;line-height:1;background:none;border:none;font-family:inherit;padding:0">&times;</button></div></div></div>'+prodHtml;
-  var pb=PS('#promptProductInputCard').querySelector('.prompt-product-back');
-  if(pb)pb.addEventListener('click',function(e){e.stopPropagation();switchPSection('image');});
+    var body='<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>';
+    var extra=(c.title==='产品类型')?'<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="自定义产品关键词..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearProduct">&times;</button></div>':'';
+    return flatGroupHTML(c,body,extra,'product');
+  }).join('');
+  PS('#promptProductLayout').innerHTML=prodGroups;
 }
 
 // v4.4.3: 按分组生成 hover/选中/收藏 专属 CSS（data-group 选择器 + !important，不依赖 inline 变量）
@@ -4558,7 +5188,14 @@ if(prodData){
     var dT=promptTint(u,58,72),dB=promptTint(u,52,52),dSel=promptTint(u,42,26),dSel2=promptTint(u,38,19);
     var g='.prompt-tag[data-group="'+c.title+'"]';
     var gt='[data-gtitle="'+c.title+'"]',gb='[data-gbox="'+c.title+'"]';
-    return g+':hover{background:'+hovBg+' !important;border-color:'+hovBd+' !important}'
+    // v4.8 多彩配色：分组容器 = 板块渐变淡底 + 板块色描边；标题统一板块色（亮/暗）
+    var sub='.prompt-subgroup:has(>.prompt-tag-group[data-group="'+c.title+'"])';
+    var tc=(c.tcolor||u);
+    return sub+'{background:'+promptFadeBg(c.gradient)+';border:1px solid '+u+'2e;border-radius:12px;padding:8px 10px 10px;margin-bottom:8px}'
+      +sub+' .prompt-subgroup-title{color:'+tc+' !important}'
+      +'[data-gtitle="'+c.title+'"]{color:'+tc+' !important}'
+      +'body.dark '+sub+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%);border:1px solid rgba(255,255,255,.09)}'
+      +g+':hover{background:'+hovBg+' !important;border-color:'+hovBd+' !important}'
       +g+'.faved{border-color:'+u+' !important;color:'+u+' !important;background:transparent !important}'
       +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:'+u+' !important;color:'+u+' !important;box-shadow:0 1px 3px '+u+'33 !important}'
       +'body.dark '+gb+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%) !important;border:1px solid rgba(255,255,255,.09)}'
@@ -4573,9 +5210,9 @@ if(prodData){
 
 // 上半部分两列：转换风格+常用提示词（左）| 生成结果+预设方案（右）
 var resultCardHTML='<div class="prompt-result-card"><div class="prompt-result-header"><div class="prompt-result-header-left"><span class="prompt-title">生成结果</span><span class="prompt-char-count" id="promptCharCount">0 字符</span></div><div class="prompt-result-header-actions"><button class="prompt-result-header-btn copy" id="promptCopyBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 复制</button><button class="prompt-result-header-btn preset" id="promptPresetBtn">存为预设</button><button class="prompt-result-header-btn close" id="promptClearBtn">&times;</button></div></div><div class="prompt-result-body"><textarea class="prompt-result-textarea" id="promptResultText" placeholder="点击左侧关键词，生成结果将显示在这里" rows="4"></textarea></div></div>';
-var styleCardHTML='<div class="prompt-param-card"><div class="prompt-param-card-title"><span>风格转换</span><button class="prompt-style-add-btn" id="promptStyleAddBtn">+</button></div><div class="prompt-style-tags-grid" id="promptStyleGrid"></div></div>'+
+var styleCardHTML='<div class="prompt-flat-group"><div class="prompt-flat-title"><span class="prompt-title" data-gtitle="风格转换" style="color:#B4621F;font-size:13px;font-weight:700;letter-spacing:.4px">风格转换</span><button class="prompt-tag-add prompt-style-add-btn" id="promptStyleAddBtn">+</button></div><div class="prompt-style-tags-grid" id="promptStyleGrid"></div></div>'+
   '<div class="prompt-quick-prompt-card" id="promptQuickPromptCard"><button class="prompt-quick-prompt-add" id="promptAddQuickPromptBtn">+</button><div class="prompt-quick-prompt-body" id="promptQuickPromptBody"><div class="prompt-quick-prompt-empty">暂无常用提示词</div></div></div>';
-PS('#promptStyleCol').innerHTML=styleCardHTML;
+PS('#promptStylePane').innerHTML=styleCardHTML;var qpc=PS('#promptQuickPromptCard');if(qpc)PS('#promptQuickCol').appendChild(qpc);
 var presetListHTML='<div class="prompt-preset-list-card" id="promptPresetListCard"><div class="prompt-preset-list-body" id="promptPresetListBody"><div class="prompt-preset-empty">暂无预设方案</div></div></div>';
 PS('#promptResultCol').innerHTML=resultCardHTML+presetListHTML;
 // 生成结果 / 转换风格 卡片已注入上方三列（见 promptStyleCol / promptResultCol）
@@ -4650,8 +5287,9 @@ var promptNavBtns=PSS('.prompt-tab-nav-btn');
 // Create mini nav for prompt tab
 var promptHeader=document.createElement('div');
 promptHeader.className='prompt-mini-nav';
-promptHeader.style.cssText='display:flex;gap:6px;margin-bottom:10px;align-items:center;';
-promptHeader.innerHTML='<button class="prompt-nav-btn active" data-psection="image"><span class="nav-icon">'+navIcons.image+'</span>生图</button><button class="prompt-nav-btn" data-psection="product"><span class="nav-icon">'+navIcons.product+'</span>产品</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
+// v4.8.12 导航行滚动冻结：sticky 吸顶，padding-bottom 替代 margin（避免滚动时内容从缝隙穿出），底色用页面同款 --bg 遮挡
+promptHeader.style.cssText='display:flex;gap:6px;align-items:center;position:sticky;top:0;z-index:30;background:var(--bg);padding:8px 0 10px;margin-top:-8px;';
+promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button">背景</button><button class="pls-btn" data-pane="element" type="button">元素</button><button class="pls-btn" data-pane="font" type="button">文字</button><button class="pls-btn" data-pane="product" type="button">产品</button><button class="pls-btn" data-pane="style" type="button">风格转换</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
 PS('#promptBody').insertBefore(promptHeader,PS('#promptBody').firstChild);
 
 // 生成结果列左右拖动调整宽度（拖动后保存到 localStorage，下次打开恢复）
@@ -4698,34 +5336,47 @@ document.head.appendChild(pStyle);
 
 function switchPSection(section){
   pState.currentSection=section;
-  PSS('.prompt-nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.psection===section);});
-  if(section==='image'){
-    PS('#promptImageLayout').style.display='grid';
-    PS('#promptProductLayout').style.display='none';
-    var pc=PS('#promptProductInputCard');if(pc)pc.style.display='none';
-  }else{
-    PS('#promptImageLayout').style.display='none';
-    PS('#promptProductLayout').style.display='block';
-    var pc=PS('#promptProductInputCard');if(pc)pc.style.display='flex';
-  }
   updatePromptResult();
 }
-PSS('.prompt-nav-btn').forEach(function(btn){btn.addEventListener('click',function(){switchPSection(btn.dataset.psection);});});
-
-// ====== Wheel switch between image/product on nav bar ======
-var lastWheelSwitch=0;
-var promptNavBar=PS('#promptBody').querySelector('.prompt-mini-nav');
-if(promptNavBar){
-  promptNavBar.addEventListener('wheel',function(e){
-    if(Date.now()-lastWheelSwitch<300||!e.deltaY)return;
-    var ci=sections.indexOf(pState.currentSection);
-    if(e.deltaY>0&&ci>=sections.length-1)return;
-    if(e.deltaY<0&&ci<=0)return;
-    lastWheelSwitch=Date.now();
-    if(e.deltaY>0)switchPSection(sections[ci+1]);
-    else switchPSection(sections[ci-1]);
-  },{passive:true});
+// ====== 左列五容器单显切换（背景/元素/文字/风格转换/产品） ======
+var PROMPT_PANES=['bg','element','font','product','style'];
+var currentPromptPane='bg';
+function switchPromptPane(key){
+  if(PROMPT_PANES.indexOf(key)<0)key='bg';
+  currentPromptPane=key;
+  PSS('.pls-btn').forEach(function(b){b.classList.toggle('active',b.dataset.pane===key);});
+  PSS('#promptLeftView .prompt-left-pane').forEach(function(p){p.classList.toggle('active',p.dataset.pane===key);});
+  switchPSection(key==='product'?'product':'image');
 }
+PSS('.pls-btn').forEach(function(btn){btn.addEventListener('click',function(){switchPromptPane(btn.dataset.pane);});});
+// ====== 鼠标滚轮切换容器（v4.8.28 循环切换：监听整个提示词区；右列不触发；真可滚动容器未到边界时优先内部滚动） ======
+(function(){
+  var pbody=PS('#promptBody');
+  if(!pbody)return;
+  var lastWheel=0;
+  pbody.addEventListener('wheel',function(e){
+    if(Date.now()-lastWheel<350||!e.deltaY)return;
+    var t=e.target, inRight=false, scrollable=null;
+    while(t&&t!==pbody){
+      if(t.classList){
+        if(t.classList.contains('prompt-right-col'))inRight=true;
+        if(!scrollable&&t.classList.contains('prompt-col-scroll')&&/(auto|scroll)/.test(getComputedStyle(t).overflowY)&&t.scrollHeight>t.clientHeight+4)scrollable=t;
+      }
+      t=t.parentNode;
+    }
+    if(inRight)return;
+    if(scrollable){
+      var atTop=scrollable.scrollTop<=1,atBottom=scrollable.scrollTop+scrollable.clientHeight>=scrollable.scrollHeight-2;
+      if(!((e.deltaY<0&&atTop)||(e.deltaY>0&&atBottom)))return;
+    }
+    var ci=PROMPT_PANES.indexOf(currentPromptPane);
+    var ni=ci+(e.deltaY>0?1:-1);
+    if(ni<0)ni=PROMPT_PANES.length-1;          // 循环：到头回绕
+    if(ni>PROMPT_PANES.length-1)ni=0;
+    lastWheel=Date.now();
+    switchPromptPane(PROMPT_PANES[ni]);
+  },{passive:true});
+})();
 
 // Collapse
 PSS('.prompt-collapsible-header').forEach(function(h){var body=h.nextElementSibling,arrow=h.querySelector('.prompt-arrow');if(body&&body.classList.contains('open')&&arrow)arrow.classList.add('open');h.addEventListener('click',function(){var b=this.nextElementSibling,a=this.querySelector('.prompt-arrow');if(b)b.classList.toggle('open');if(a)a.classList.toggle('open');});});
@@ -5157,8 +5808,8 @@ function updatePromptResult(){
     var customProd=getCustomInput('product');
     var contentParts=[];
     if(customProd)contentParts.push(customProd);
-    // 按语义分组顺序衔接：产品类型 → 产品材质 → 产品造型 → 表面工艺 → 视觉质感
-    var prodSecOrder=['产品类型','产品材质','产品造型','表面工艺','视觉质感'];
+    // 按语义分组顺序衔接：产品类型 → 产品材质 → 表面工艺 → 视觉质感
+    var prodSecOrder=['产品类型','产品材质','表面工艺','视觉质感'];
     var prodItems=sel.product||[];
     prodSecOrder.forEach(function(grp){
       prodItems.filter(function(s){return s.group===grp;}).forEach(function(s){contentParts.push(s.prompt);});
@@ -7340,19 +7991,17 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     aiBtn.addEventListener('click', aiExpand);
   }
 
-  // ---- 顶部齿轮按钮 ----
-  var nav = PS('.prompt-mini-nav');
-  if(nav){
-    var gear = document.createElement('button');
-    gear.className = 'ai-gear-btn';
-    gear.id = 'aiSettingsGear';
-    gear.type = 'button';
-    gear.title = 'AI 扩写设置';
-    gear.innerHTML = '&#9881; AI设置';
-    var toolbar = nav.querySelector('.prompt-param-toolbar');
-    if(toolbar) nav.insertBefore(gear, toolbar); else nav.appendChild(gear);
-    gear.addEventListener('click', openAISettings);
-  }
+  // ---- 顶部齿轮按钮（v4.8.7 移至顶栏「备份」左侧，样式与顶栏按钮统一） ----
+  var gear = document.createElement('button');
+  gear.className = 'tab-btn default';
+  gear.id = 'aiSettingsGear';
+  gear.type = 'button';
+  gear.title = 'AI 扩写设置';
+  gear.textContent = 'AI设置';
+  var bakBtn = document.getElementById('actPromptBak');
+  if (bakBtn && bakBtn.parentNode) bakBtn.parentNode.insertBefore(gear, bakBtn);
+  else { var tb = document.getElementById('topbarBtns'); if (tb) tb.appendChild(gear); }
+  gear.addEventListener('click', openAISettings);
 
   // ---- 扩写核心 ----
   function aiExpand(){
