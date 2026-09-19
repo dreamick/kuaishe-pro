@@ -1335,21 +1335,21 @@ body.dark{
 
 /* —— 左侧图标侧栏 —— */
 .tab-bar{
-  width:208px; flex-shrink:0; align-items:stretch; padding:14px 10px;
+  width:228px; flex-shrink:0; align-items:stretch; padding:14px 10px;
   background:var(--surface-2); border-right:1px solid var(--border); gap:6px;
 }
 /* v4.8.15 侧栏宽度优化 + 内容居中 */
 .tab-bar .brand{justify-content:center;text-align:center;}
-.tab-bar .brand-text b,.tab-bar .brand-text span{width:100%;}
+.tab-bar .brand-text{display:inline-flex;align-items:center;gap:5px;flex-wrap:nowrap;white-space:nowrap}
 .tab-bar .tab-item{justify-content:flex-start;}
 .tab-bar .sidebar-foot{display:flex;justify-content:flex-start;}
 .tab-bar .sidebar-collapse-btn{justify-content:center;}
 /* v4.8.20 激活/悬停底色宽度缩短：tab 项按内容自适应，不再撑满整行 */
 .tab-bar .tab-item{width:fit-content;align-self:flex-start;padding:0 18px;}
-.brand{display:flex; align-items:center; gap:12px; padding:6px 10px 14px; margin-bottom:6px; border-bottom:1px solid var(--border);}
+.brand{display:flex; align-items:center; gap:12px; padding:6px 10px 10px; margin-bottom:6px; border-bottom:1px solid var(--border);}
 .brand-logo{width:38px; height:38px; border-radius:11px; flex-shrink:0; background:linear-gradient(135deg,#FF7A59 0%,#9B6CF0 50%,#16C98A 100%); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:20px; box-shadow:0 6px 18px rgba(77,141,255,.25);}
-.brand-text b{font-size:16px; letter-spacing:.3px; display:block; line-height:1.2; color:var(--text);}
-.brand-text span{font-size:12px; color:var(--text-muted);}
+.brand-text b{font-size:15px; letter-spacing:.3px; display:inline-flex; align-items:center; line-height:1; color:var(--text);white-space:nowrap}
+.brand-text span{font-size:11px; color:var(--text-muted); display:inline-flex; align-items:center; line-height:1; white-space:nowrap}
 
 /* nav 项：横向 图标+文字 */
 .tab-item{
@@ -2384,12 +2384,12 @@ body.dark .color-app .color-right .pick-status.err{color:#ff8098;}
 .prompt-body{height:auto;min-height:100%;}
 .prompt-app{height:auto;overflow:visible;}
 /* —— 侧栏收起按钮：无底色，最后一个 tab 下方，分隔线隔开；展开态显示文字 —— */
-.sidebar-foot{margin-top:8px;padding-top:10px;border-top:1px solid var(--border);flex-shrink:0;}
-.sidebar-foot .sidebar-collapse-btn{width:auto;margin:0;align-self:flex-start;height:32px;justify-content:center;gap:8px;padding:0 18px;font-size:12.5px;font-weight:500;border-radius:9px;box-sizing:border-box;background:transparent;border-color:transparent;}
+.sidebar-foot{margin-top:8px;padding:10px 10px 0;border-top:1px solid var(--border);flex-shrink:0;}
+.sidebar-foot .sidebar-collapse-btn{width:auto;margin:0;align-self:flex-start;height:32px;justify-content:center;gap:8px;padding:0 14px;font-size:12.5px;font-weight:500;border-radius:9px;box-sizing:border-box;background:transparent;border-color:transparent;}
 .sidebar-foot .sidebar-collapse-btn:hover{background:var(--surface-2);border-color:transparent;}
 .sidebar-foot .sidebar-collapse-btn svg{flex-shrink:0;}
 .sidebar-foot .scb-text{white-space:nowrap;overflow:hidden;}
-.tab-bar.collapsed .sidebar-foot .sidebar-collapse-btn{justify-content:center;padding:0 7px;margin-left:13px;}
+.tab-bar.collapsed .sidebar-foot .sidebar-collapse-btn{justify-content:center;padding:0 7px;margin-left:2px;}
 .tab-bar.collapsed .scb-text{display:none;}
 /* —— AI提示词页：左右两列（3/5 | 2/5），容器高度自适应 —— */
 .prompt-duo-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:14px;width:100%;min-width:0;flex:0 0 auto;align-items:start;}
