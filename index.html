@@ -794,16 +794,16 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-group{margin-bottom:12px}
 .prompt-flat-group:last-child{margin-bottom:0}
 .prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap}
-.prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:22px;height:22px;padding:0;letter-spacing:.4px}
+.prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:22px;height:22px;padding:0;letter-spacing:.4px;transform:translateY(-1px)}
 .prompt-tag-group{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 /* v4.8.32 收藏/选中重设计：收藏=无描边浅底+★前缀；选中=渐变实底+白色内圈高光 */
 .prompt-tag.faved{border-color:transparent;color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:color-mix(in srgb,var(--tag-fav,var(--prompt-accent)) 10%,transparent)}
 .prompt-tag.faved::before{content:"★ ";font-size:9px;line-height:1}
 .prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#FF7A59,#FFA15C));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 2px 6px rgba(0,0,0,.12),inset 0 0 0 1px rgba(255,255,255,.55)}
-.prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0;transform:translateY(1px)}
-.prompt-tag-add:hover{transform:translateY(1px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
-.prompt-tag-add:active{transform:translateY(1px) scale(0.96)}
+.prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:1;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0;transform:translateY(2px)}
+.prompt-tag-add:hover{transform:translateY(2px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
+.prompt-tag-add:active{transform:translateY(2px) scale(0.96)}
 .prompt-tag:hover{border-color:rgba(0,0,0,.28);background:rgba(255,255,255,.62)}
 body.dark .prompt-tag:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08)}
 .prompt-tag.selected:hover{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#FF7A59,#FFA15C))}
@@ -872,9 +872,9 @@ body.dark [data-gtitle="风格转换"]{color:#F2B98C !important}
 .prompt-ratio-btn .prompt-star{font-size:12px;color:#ccc;cursor:pointer;transition:var(--prompt-transition);line-height:1}
 .prompt-ratio-btn .prompt-star.faved{color:var(--prompt-accent)}
 .prompt-ratio-btn.selected .prompt-star,.prompt-ratio-btn.selected .prompt-star.faved{color:var(--prompt-accent)}
-.prompt-style-add-btn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:1px dashed transparent;border-radius:8px;font-family:inherit;padding:0;transition:var(--prompt-transition);line-height:1;transform:translateY(1px)}
-.prompt-style-add-btn:hover{transform:translateY(1px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
-.prompt-style-add-btn:active{transform:translateY(1px) scale(0.96)}
+.prompt-style-add-btn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:1px dashed transparent;border-radius:8px;font-family:inherit;padding:0;transition:var(--prompt-transition);line-height:1;transform:translateY(2px)}
+.prompt-style-add-btn:hover{transform:translateY(2px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
+.prompt-style-add-btn:active{transform:translateY(2px) scale(0.96)}
 /* v4.8.1 风格转换对齐全局规范：5 列等宽网格，与 .prompt-tag-group 一致 */
 .prompt-style-tags-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding-top:2px}
 /* v4.8.3 风格转换标签与背景页 .prompt-tag 完全同规格：白底胶囊 + 30px 高（对齐 10.3 芯片规范） */
