@@ -2432,6 +2432,10 @@ body.dark .pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#
 .prompt-right-col{display:flex;flex-direction:column;min-width:0;gap:14px;}
 /* v4.8.13 右列（画质/比例行+生成结果卡）滚动冻结：sticky 吸在冻结导航行（高 50px）下方 */
 .prompt-right-col{position:sticky;top:50px;align-self:start;}
+/* v4.8.49 画质/比例（材质/尺寸）移回右列顶部原位：作为右列第一行，与生成结果卡同吸顶 */
+.prompt-right-top .prompt-param-toolbar{margin-bottom:12px;flex-wrap:wrap;gap:8px}
+body.dark .prompt-right-top .prompt-param-toolbar .prompt-param-box,
+body.dark .prompt-right-top .prompt-param-toolbar .prompt-ratio-box{background:#16202f!important;border-color:rgba(255,255,255,.12)!important}
 .prompt-right-top{display:flex;flex-direction:column;gap:12px;}
 .prompt-right-top .prompt-result-card{display:flex;flex-direction:column;width:100%;height:238px;flex:0 0 auto;}
 .prompt-right-top .prompt-result-header{padding:4px 12px;min-height:39px;box-sizing:border-box;}
@@ -5335,6 +5339,13 @@ promptHeader.className='prompt-mini-nav';
 promptHeader.style.cssText='display:flex;gap:6px;align-items:center;position:sticky;top:0;z-index:30;background:var(--bg);padding:8px 0 10px;margin-top:-8px;';
 promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button">背景</button><button class="pls-btn" data-pane="element" type="button">元素</button><button class="pls-btn" data-pane="font" type="button">文字</button><button class="pls-btn" data-pane="product" type="button">产品</button><button class="pls-btn" data-pane="style" type="button">风格</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div><div class="prompt-nav-custom-bar"><div class="prompt-col-custom-wrap active" data-pane="bg"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearBg">&times;</button></div><div class="prompt-col-custom-wrap" data-pane="element"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearElement">&times;</button></div><div class="prompt-col-custom-wrap" data-pane="font"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearFont">&times;</button></div><div class="prompt-col-custom-wrap" data-pane="product"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="自定义产品关键词..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearProduct">&times;</button></div></div>';
 PS('#promptBody').insertBefore(promptHeader,PS('#promptBody').firstChild);
+
+// v4.8.49 画质/比例（材质/尺寸）移回右列顶部原位（生成结果卡上方）；自定义输入框占据导航行右侧（原画质/比例位置）
+(function(){
+  var pToolbar=promptHeader.querySelector('.prompt-param-toolbar');
+  var pResultCol=PS('#promptResultCol');
+  if(pToolbar&&pResultCol)pResultCol.insertBefore(pToolbar,pResultCol.firstChild);
+})();
 
 // 生成结果列左右拖动调整宽度（拖动后保存到 localStorage，下次打开恢复）
 (function(){
