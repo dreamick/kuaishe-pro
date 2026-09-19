@@ -774,6 +774,14 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-title .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(255,122,89,.1);background:var(--prompt-bg-card)}
 .prompt-flat-title .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-flat-title .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
+/* v4.8.51 自定义描述输入框：导航行「风格」按钮右侧，按 pane 切换显示，无外框容器 */
+.prompt-nav-custom-bar{display:flex;align-items:center;gap:6px;min-width:0;flex:0 0 auto;margin-left:8px}
+.prompt-nav-custom-bar .prompt-col-custom-wrap{position:relative;display:none;flex:0 0 auto;width:200px;max-width:200px}
+.prompt-nav-custom-bar .prompt-col-custom-wrap.active{display:block}
+.prompt-nav-custom-bar .prompt-col-custom-input{width:100%;height:30px;padding:4px 22px 4px 10px;box-sizing:border-box;font-size:12px;border:1px solid transparent;border-radius:6px;color:var(--prompt-text-primary);background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;outline:none;font-family:inherit;transition:var(--prompt-transition)}
+.prompt-nav-custom-bar .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(255,122,89,.1);background:var(--prompt-bg-card)}
+.prompt-nav-custom-bar .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
+.prompt-nav-custom-bar .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
 .prompt-col-scroll{display:flex;flex-direction:column;min-height:0;overflow-y:auto;padding-right:4px;padding-top:18px;flex:1 1 auto}
 .prompt-col-scroll::-webkit-scrollbar{width:0;display:none}
 .prompt-col-scroll::-webkit-scrollbar-thumb{background:var(--prompt-border);border-radius:2px}
@@ -829,8 +837,6 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.8.2 风格转换改为平铺分组（同背景页 flat-group），旧嵌套卡片规则作废；暗黑标题同背景页提亮 */
 body.dark [data-gtitle="风格转换"]{color:#F2B98C !important}
-/* v4.8.3 位置对齐：背景页标题行因「自定义输入框」高 39px，风格转换标题行补同高，标签起始位置一致 */
-.prompt-pane-style .prompt-flat-title{min-height:39px}
 .prompt-param-options{display:flex;gap:4px;flex-wrap:wrap;flex:1}
 .prompt-param-btn{padding:4px 9px;border:1px solid var(--prompt-border);border-radius:8px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-param-btn.selected{border-color:transparent;background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff}
@@ -1009,6 +1015,8 @@ body.dark .prompt-tag-add:hover{background:rgba(255,255,255,.08);border-color:rg
 body.dark .prompt-param-box,body.dark .prompt-ratio-box{background:#16202f!important;border-color:rgba(255,255,255,.12)!important}
 body.dark .prompt-flat-title .prompt-col-custom-input{background:var(--bg-card);color:var(--text);border:1px solid rgba(255,255,255,.14)}
 body.dark .prompt-flat-title .prompt-col-custom-input:focus{background:var(--bg-card);border-color:rgba(240,149,92,.55)}
+body.dark .prompt-nav-custom-bar .prompt-col-custom-input{background:linear-gradient(#16202f,#16202f) padding-box,linear-gradient(135deg,#9b8fd6,#caa178) border-box;color:var(--text)}
+body.dark .prompt-nav-custom-bar .prompt-col-custom-input:focus{background:#16202f;border-color:rgba(240,149,92,.55)}
 body.dark .prompt-subgroup-title{color:var(--prompt-text-secondary)}
 body.dark .prompt-nav-btn{background:#16202f;border-color:rgba(255,255,255,.12);color:var(--prompt-text-secondary)}
 body.dark .prompt-nav-btn.active{background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff;border-color:transparent}
@@ -5180,12 +5188,7 @@ function flatGroupHTML(c,bodyHtml,extraTitleHtml,sec){
 // Build three columns
 var colIds=['promptColBgScroll','promptColElementScroll','promptColFontScroll'];
 var colKeys=['background','subject','typography'];
-// v4.4.5 三列的自定义描述输入框：注入到每组第一行（背景风格/元素风格/文字风格）标题右侧
-var colCustomHTML=[
-  '<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearBg">&times;</button></div>',
-  '<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearElement">&times;</button></div>',
-  '<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearFont">&times;</button></div>'
-];
+// v4.8.51 自定义描述输入框已移至提示词导航行（风格按钮右侧），见 promptHeader 构建处
 colKeys.forEach(function(key,ci){
   var data=collapsibleData[key];
   if(!data) return;
@@ -5195,10 +5198,10 @@ colKeys.forEach(function(key,ci){
         var tags=g.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],g.title,{grad:promptSelectedBg(key,c,false),tcol:promptTagColor(key,c),hov:promptTagGrad(key,c),fav:promptTagColor(key,c)});}).join('');
         return '<div class="prompt-subgroup"><div class="prompt-subgroup-title">'+promptEscapeHtml(g.title)+'<button class="prompt-tag-add">+</button></div><div class="prompt-tag-group" data-group="'+promptEscapeAttr(g.title)+'">'+tags+'</div></div>';
       }).join('');
-      return flatGroupHTML(c, groupsHtml, gi===0?colCustomHTML[ci]:'', key);
+      return flatGroupHTML(c, groupsHtml, '', key);
     }else{
       var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelectedBg(key,c,false),tcol:promptTagColor(key,c),hov:promptTagGrad(key,c),fav:promptTagColor(key,c)});}).join('');
-      return flatGroupHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>', gi===0?colCustomHTML[ci]:'', key);
+      return flatGroupHTML(c, '<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>', '', key);
     }
   }).join('');
   PS('#'+colIds[ci]).innerHTML=html;
@@ -5210,7 +5213,7 @@ if(prodData){
   var prodGroups=prodData.map(function(c){
     var tags=c.tags.map(function(t){return promptTagHTML(t[0],t[2]||t[1],c.title,{grad:promptSelectedBg('product',c,true),tcol:promptGroupColor(c),hov:c.gradient,fav:promptGroupColor(c)});}).join('');
     var body='<div class="prompt-tag-group" data-group="'+promptEscapeAttr(c.title)+'">'+tags+'</div>';
-    var extra=(c.title==='产品类型')?'<div class="prompt-col-custom-wrap"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="自定义产品关键词..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearProduct">&times;</button></div>':'';
+    var extra='';
     return flatGroupHTML(c,body,extra,'product');
   }).join('');
   PS('#promptProductLayout').innerHTML=prodGroups;
@@ -5337,7 +5340,9 @@ var promptHeader=document.createElement('div');
 promptHeader.className='prompt-mini-nav';
 // v4.8.12 导航行滚动冻结：sticky 吸顶，padding-bottom 替代 margin（避免滚动时内容从缝隙穿出），底色用页面同款 --bg 遮挡
 promptHeader.style.cssText='display:flex;gap:6px;align-items:center;position:sticky;top:0;z-index:30;background:var(--bg);padding:8px 0 10px;margin-top:-8px;';
-promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button">背景</button><button class="pls-btn" data-pane="element" type="button">元素</button><button class="pls-btn" data-pane="font" type="button">文字</button><button class="pls-btn" data-pane="product" type="button">产品</button><button class="pls-btn" data-pane="style" type="button">风格</button><div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
+// v4.8.51 自定义描述输入框：移入提示词导航行，紧贴「风格」按钮右侧；按当前 pane 显示对应输入框（风格 pane 无输入框）
+var promptsNavCustomHTML='<div class="prompt-nav-custom-bar"><div class="prompt-col-custom-wrap active" data-pane="bg"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearBg">&times;</button></div><div class="prompt-col-custom-wrap" data-pane="element"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearElement">&times;</button></div><div class="prompt-col-custom-wrap" data-pane="font"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearFont">&times;</button></div><div class="prompt-col-custom-wrap" data-pane="product"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="自定义产品关键词..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearProduct">&times;</button></div></div>';
+promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button">背景</button><button class="pls-btn" data-pane="element" type="button">元素</button><button class="pls-btn" data-pane="font" type="button">文字</button><button class="pls-btn" data-pane="product" type="button">产品</button><button class="pls-btn" data-pane="style" type="button">风格</button>'+promptsNavCustomHTML+'<div class="prompt-header-spacer"></div><div class="prompt-param-toolbar"><div class="prompt-param-options prompt-param-options-inline prompt-param-box" id="promptQualityOptions"><button class="prompt-param-btn" data-value="high quality">高清</button><button class="prompt-param-btn selected" data-value="8K, ultra high resolution">超高清</button><button class="prompt-param-btn" data-value="masterpiece, best quality">杰作级</button></div><div class="prompt-ratio-box"><div class="prompt-ratio-faved-bar" id="promptRatioToolbarFaved"></div><button class="prompt-ratio-toolbar-btn" id="promptRatioToolbarBtn" title="选择比例">+</button></div></div>';
 PS('#promptBody').insertBefore(promptHeader,PS('#promptBody').firstChild);
 
 // 生成结果列左右拖动调整宽度（拖动后保存到 localStorage，下次打开恢复）
@@ -5394,6 +5399,8 @@ function switchPromptPane(key){
   currentPromptPane=key;
   PSS('.pls-btn').forEach(function(b){b.classList.toggle('active',b.dataset.pane===key);});
   PSS('#promptLeftView .prompt-left-pane').forEach(function(p){p.classList.toggle('active',p.dataset.pane===key);});
+  // v4.8.51 自定义输入框随 pane 切换：仅显示当前 pane 对应的输入框（风格 pane 无输入框，整条隐藏）
+  PSS('.prompt-nav-custom-bar .prompt-col-custom-wrap').forEach(function(w){w.classList.toggle('active',w.dataset.pane===key);});
   switchPSection(key==='product'?'product':'image');
 }
 PSS('.pls-btn').forEach(function(btn){btn.addEventListener('click',function(){switchPromptPane(btn.dataset.pane);});});
