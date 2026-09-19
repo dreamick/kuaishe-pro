@@ -1001,8 +1001,9 @@ body.dark .prompt-preset-item .prompt-preset-name{color:var(--text)}
 body.dark .prompt-tag-add{color:#F0955C}
 body.dark .prompt-tag-add:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
 body.dark .prompt-param-box,body.dark .prompt-ratio-box{background:#16202f!important;border-color:rgba(255,255,255,.12)!important}
-body.dark .prompt-nav-custom-bar .prompt-col-custom-input{background:var(--bg-card);color:var(--text);border:1px solid rgba(255,255,255,.14)}
-body.dark .prompt-nav-custom-bar .prompt-col-custom-input:focus{background:var(--bg-card);border-color:rgba(240,149,92,.55)}
+body.dark .prompt-nav-custom-bar{background:#16202f;border-color:rgba(255,255,255,.12)}
+body.dark .prompt-nav-custom-bar .prompt-col-custom-input{background:var(--bg-card);color:var(--text);border:none}
+body.dark .prompt-nav-custom-bar .prompt-col-custom-input:focus{background:var(--bg-card);box-shadow:0 0 0 2px rgba(240,149,92,.35)}
 body.dark .prompt-subgroup-title{color:var(--prompt-text-secondary)}
 body.dark .prompt-nav-btn{background:#16202f;border-color:rgba(255,255,255,.12);color:var(--prompt-text-secondary)}
 body.dark .prompt-nav-btn.active{background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff;border-color:transparent}
@@ -2421,11 +2422,12 @@ body.dark .pls-btn[data-pane="font"].active{background:linear-gradient(135deg,#5
 body.dark .pls-btn[data-pane="product"].active{background:linear-gradient(135deg,#5E9E62,#3E7E4C);}
 body.dark .pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#FF7A59,#FFA15C);}
 /* v4.8.48 自定义描述输入框：随当前 prompt pane 切换显示，紧贴导航按钮右侧 */
-.prompt-nav-custom-bar{display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 auto;justify-content:flex-end}
+/* v4.8.50 自定义输入框移到「风格」按钮右侧，加外边框容器 */
+.prompt-nav-custom-bar{display:flex;align-items:center;gap:6px;min-width:0;flex:0 0 auto;padding:3px 5px;border:1px solid var(--prompt-border,#e3d9c9);border-radius:9px;background:var(--prompt-bg-section,#faf6ef)}
 .prompt-nav-custom-bar .prompt-col-custom-wrap{display:none;align-items:center;position:relative;flex:0 1 220px;min-width:120px;max-width:220px}
 .prompt-nav-custom-bar .prompt-col-custom-wrap.active{display:flex}
-.prompt-nav-custom-bar .prompt-col-custom-input{width:100%;height:30px;padding:4px 22px 4px 10px;box-sizing:border-box;font-size:12px;border:1px solid transparent;border-radius:6px;color:var(--prompt-text-primary);background:linear-gradient(var(--prompt-bg-card),var(--prompt-bg-card)) padding-box,linear-gradient(135deg,#C8B8E8,#F5DCC8) border-box;outline:none;font-family:inherit;transition:var(--prompt-transition)}
-.prompt-nav-custom-bar .prompt-col-custom-input:focus{border-color:var(--prompt-accent);box-shadow:0 0 0 2px rgba(255,122,89,.1);background:var(--prompt-bg-card)}
+.prompt-nav-custom-bar .prompt-col-custom-input{width:100%;height:28px;padding:4px 22px 4px 10px;box-sizing:border-box;font-size:12px;border:none;border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card,#fff);outline:none;font-family:inherit;transition:var(--prompt-transition)}
+.prompt-nav-custom-bar .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(255,122,89,.18);background:var(--prompt-bg-card,#fff)}
 .prompt-nav-custom-bar .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-nav-custom-bar .prompt-col-custom-clear{position:absolute;right:4px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0;width:18px;height:18px;align-items:center;justify-content:center}
 /* —— 右列：上=生成结果（原高度 238px） 下=常用提示词 —— */
@@ -5346,6 +5348,12 @@ PS('#promptBody').insertBefore(promptHeader,PS('#promptBody').firstChild);
   var pResultCol=PS('#promptResultCol');
   if(pToolbar&&pResultCol)pResultCol.insertBefore(pToolbar,pResultCol.firstChild);
 })();
+// v4.8.50 自定义输入框移到「风格」按钮右侧
+(function(){
+  var styleBtn=promptHeader.querySelector('.pls-btn[data-pane="style"]');
+  var customBar=promptHeader.querySelector('.prompt-nav-custom-bar');
+  if(styleBtn&&customBar) styleBtn.insertAdjacentElement('afterend',customBar);
+})();
 
 // 生成结果列左右拖动调整宽度（拖动后保存到 localStorage，下次打开恢复）
 (function(){
@@ -5402,6 +5410,9 @@ function switchPromptPane(key){
   PSS('.pls-btn').forEach(function(b){b.classList.toggle('active',b.dataset.pane===key);});
   PSS('#promptLeftView .prompt-left-pane').forEach(function(p){p.classList.toggle('active',p.dataset.pane===key);});
   PSS('.prompt-nav-custom-bar .prompt-col-custom-wrap').forEach(function(w){w.classList.toggle('active',w.dataset.pane===key);});
+  // v4.8.50 风格面板无自定义输入，隐藏空框
+  var cbar=document.querySelector('.prompt-nav-custom-bar');
+  if(cbar) cbar.style.display=(key==='style')?'none':'flex';
   switchPSection(key==='product'?'product':'image');
 }
 PSS('.pls-btn').forEach(function(btn){btn.addEventListener('click',function(){switchPromptPane(btn.dataset.pane);});});
