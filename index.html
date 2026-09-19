@@ -776,7 +776,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-title .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
 /* v4.8.52 自定义描述输入框：导航行「风格」按钮右侧，4 个板块常显，各随板块配色，无外框容器 */
 .prompt-nav-custom-bar{display:flex;align-items:center;gap:6px;min-width:0;flex:0 0 auto;margin-left:8px}
-.prompt-nav-custom-bar .prompt-col-custom-wrap{position:relative;display:none;flex:0 0 auto;width:220px;max-width:220px}
+.prompt-nav-custom-bar .prompt-col-custom-wrap{position:relative;display:none;flex:0 0 auto;width:280px;max-width:280px}
 .prompt-nav-custom-bar .prompt-col-custom-wrap.active{display:block}
 .prompt-nav-custom-bar .prompt-col-custom-input{width:100%;height:30px;padding:4px 22px 4px 10px;box-sizing:border-box;font-size:12px;border:1.5px solid transparent;border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;transition:var(--prompt-transition)}
 .prompt-nav-custom-bar .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
@@ -820,7 +820,7 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 /* v4.8.32 收藏/选中重设计：收藏=无描边浅底+★前缀；选中=渐变实底+白色内圈高光 */
 .prompt-tag.faved{border-color:transparent;color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:color-mix(in srgb,var(--tag-fav,var(--prompt-accent)) 10%,transparent)}
-.prompt-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}
+.prompt-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:-1px}
 .prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#FF7A59,#FFA15C));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 2px 6px rgba(0,0,0,.12),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:22px;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0;transform:translateY(-1px)}
 .prompt-tag-add:hover{transform:translateY(-1px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
@@ -902,7 +902,7 @@ body.dark [data-gtitle="风格转换"]{color:#F2B98C !important}
 .prompt-style-tag{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;height:30px;line-height:1;padding:0 7px;border:1px solid rgba(212,165,116,0.28);border-radius:var(--r-pill,999px);font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--surface,#fff);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
 .prompt-style-tag.faved{border-color:transparent;color:#B04A16;background:rgba(194,86,31,.10);font-weight:700;letter-spacing:.2px}
-.prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}
+.prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:-1px}
 .prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
@@ -1017,7 +1017,7 @@ body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.13);
 body.dark .prompt-style-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
 body.dark .prompt-style-tag.faved{border-color:transparent;color:#F5B183;background:rgba(240,149,92,.13)}
-body.dark .prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}
+body.dark .prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:-1px}
 body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
 body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
@@ -2207,7 +2207,7 @@ body.dark{
 #tabMatting .mp-btn.mp-solid.active{background:linear-gradient(135deg,#f6a35b,#ef7a2f);box-shadow:0 6px 16px rgba(239,122,47,.28);}
 /* v4.8.41 AI 抠图独立样式：紫色系 + 与左侧按钮拉开距离 */
 #tabMatting .mp-btn.mp-ai{margin-left:12px;color:#8b7bd8;}
-#tabMatting .mp-btn.mp-ai.active{background:linear-gradient(135deg,#a78bfa,#7c5ce0);box-shadow:0 6px 16px rgba(139,108,235,.28);}
+#tabMatting .mp-btn.mp-ai.active{background:linear-gradient(135deg,#a78bfa,#7c5ce0);box-shadow:0 6px 16px rgba(139,108,235,.28);color:#fff;}
 #tabPrompt .prompt-ratio-btn .prompt-star{color:var(--text-muted);}
 #tabPrompt .prompt-ratio-btn.selected .prompt-star{color:rgba(255,255,255,.85);}
 
@@ -5272,14 +5272,14 @@ if(prodData){
       +'body.dark '+sub+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%);border:1px solid rgba(255,255,255,.09)}'
       +g+':hover{background:'+hovBg+' !important;border-color:'+hovBd+' !important}'
       +g+'.faved{border-color:transparent !important;color:'+u+' !important;background:'+u+'1a !important}'
-      +g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}'
+      +g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:-1px}'
       +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:'+u+' !important;color:'+u+' !important;box-shadow:0 2px 6px '+u+'40,inset 0 0 0 1px rgba(255,255,255,.55) !important}'
       +'body.dark '+gb+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%) !important;border:1px solid rgba(255,255,255,.09)}'
       +'body.dark '+gt+'{color:'+dT+' !important}'
       +'body.dark '+g+'{color:var(--prompt-text-secondary) !important}'
       +'body.dark '+g+':hover{background:rgba(255,255,255,.08) !important;border-color:'+promptTint(u,45,58)+' !important;color:var(--prompt-text-primary) !important}'
       +'body.dark '+g+'.faved{background:'+promptTint(u,55,62,.16)+' !important;border-color:transparent !important;color:'+dT+' !important}'
-      +'body.dark '+g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}'
+      +'body.dark '+g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:-1px}'
       +'body.dark '+g+'.selected,'+'body.dark '+g+'.faved.selected{background:linear-gradient(135deg,'+dSel+' 0%,'+dSel2+' 100%) !important;color:'+promptTint(u,62,80)+' !important;border-color:'+promptTint(u,46,56)+' !important;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08) !important}';
   }).join('');
   var st=document.createElement('style');st.id='promptGroupColorCss';st.textContent=css;document.head.appendChild(st);
