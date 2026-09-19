@@ -813,11 +813,14 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-group:last-child{margin-bottom:0}
 .prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap}
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:22px;height:22px;padding:0;letter-spacing:.4px;transform:translateY(1px)}
+/* v4.8.61 标签网格：默认 6 列，随标签组容器宽度自适应升到 7/8 列（最少 6 最多 8） */
 .prompt-tag-group{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding-top:2px}
+@container (min-width:640px){.prompt-tag-group{grid-template-columns:repeat(7,minmax(0,1fr))}}
+@container (min-width:860px){.prompt-tag-group{grid-template-columns:repeat(8,minmax(0,1fr))}}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 /* v4.8.32 收藏/选中重设计：收藏=无描边浅底+★前缀；选中=渐变实底+白色内圈高光 */
 .prompt-tag.faved{border-color:transparent;color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:color-mix(in srgb,var(--tag-fav,var(--prompt-accent)) 10%,transparent)}
-.prompt-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:3px}
+.prompt-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}
 .prompt-tag.selected{border-color:var(--tag-fav,var(--prompt-accent));background:var(--tag-grad,linear-gradient(135deg,#FF7A59,#FFA15C));color:var(--tag-fav,var(--prompt-accent));box-shadow:0 2px 6px rgba(0,0,0,.12),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-tag-add{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;line-height:22px;color:var(--prompt-accent);background:none;border:1px dashed transparent;border-radius:8px;cursor:pointer;transition:var(--prompt-transition);font-family:inherit;flex-shrink:0;transform:translateY(-1px)}
 .prompt-tag-add:hover{transform:translateY(-1px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
@@ -891,13 +894,15 @@ body.dark [data-gtitle="风格转换"]{color:#F2B98C !important}
 .prompt-style-add-btn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:1px dashed transparent;border-radius:8px;font-family:inherit;padding:0;transition:var(--prompt-transition);line-height:22px;transform:translateY(-1px)}
 .prompt-style-add-btn:hover{transform:translateY(-1px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
 .prompt-style-add-btn:active{transform:translateY(-1px) scale(0.96)}
-/* v4.8.1 风格转换对齐全局规范：5 列等宽网格，与 .prompt-tag-group 一致 */
+/* v4.8.1 风格转换对齐全局规范：等宽网格，与 .prompt-tag-group 一致；v4.8.61 同步 6→7→8 自适应 */
 .prompt-style-tags-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding-top:2px}
+@container (min-width:640px){.prompt-style-tags-grid{grid-template-columns:repeat(7,minmax(0,1fr))}}
+@container (min-width:860px){.prompt-style-tags-grid{grid-template-columns:repeat(8,minmax(0,1fr))}}
 /* v4.8.3 风格转换标签与背景页 .prompt-tag 完全同规格：白底胶囊 + 30px 高（对齐 10.3 芯片规范） */
 .prompt-style-tag{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;height:30px;line-height:1;padding:0 7px;border:1px solid rgba(212,165,116,0.28);border-radius:var(--r-pill,999px);font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--surface,#fff);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
 .prompt-style-tag.faved{border-color:transparent;color:#B04A16;background:rgba(194,86,31,.10);font-weight:700;letter-spacing:.2px}
-.prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:3px}
+.prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}
 .prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
@@ -1012,7 +1017,7 @@ body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.13);
 body.dark .prompt-style-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
 body.dark .prompt-style-tag.faved{border-color:transparent;color:#F5B183;background:rgba(240,149,92,.13)}
-body.dark .prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:3px}
+body.dark .prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}
 body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
 body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
@@ -1059,7 +1064,7 @@ body.dark .prompt-bak-btn#promptRestoreBtn{background:#4b5563;color:#e8edf5}
 .prompt-col-font{grid-column:auto}
 /* v4.8.10 自定义描述输入框加长：基准 280px，窄布局同步放宽（原 160/220px） */
 .prompt-flat-title .prompt-col-custom-wrap{max-width:280px;min-width:0;flex-basis:280px}
-#promptColFontScroll .prompt-tag-group{grid-template-columns:repeat(3,minmax(0,1fr))}
+/* v4.8.61 字体面板标签组改为跟随全局响应式 6→7→8（移除原固定 3 列） */
 .prompt-product-col-layout{grid-template-columns:1fr;gap:10px}
 .prompt-product-column{gap:10px}
 .prompt-product-column .prompt-collapsible:nth-child(n){grid-column:auto;grid-row:auto}
@@ -2255,7 +2260,8 @@ body.dark{
 /* ---- 10.7 提示词模块 ---- */
 #tabPrompt .prompt-top-grid{gap:var(--s-4);}
 #tabPrompt .prompt-top-col{gap:var(--s-4);}
-#tabPrompt .prompt-col-scroll{padding-right:6px; scrollbar-width:thin;}
+/* v4.8.61 设为容器查询上下文，使标签组可据自身宽度自适应 6→7→8 列 */
+#tabPrompt .prompt-col-scroll{padding-right:6px; scrollbar-width:thin; container-type:inline-size;}
 #tabPrompt .prompt-ratio-row{gap:var(--s-2);}
 #tabPrompt .prompt-ratio-name{color:var(--text-muted); font-size:12px; font-weight:600;}
 #tabPrompt .prompt-ratio-btns{gap:6px;}
@@ -2733,8 +2739,8 @@ body.dark .pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#
       <div class="matting-modebar" id="mattingModeBar">
         <div class="matting-pickwrap" id="mattingPickWrap">
           <div class="matting-modepick" id="mattingModePick">
-            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 Z：在白底 / 纯色底之间切换">白底</button>
-            <button type="button" class="mp-btn mp-wm" data-mode="watermark" title="快捷键 Shift：进入去水印模式（按 Z 返回白底）">去水印</button>
+            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 Shift：在白底 / 纯色底之间切换">白底</button>
+            <button type="button" class="mp-btn mp-wm" data-mode="watermark" title="快捷键 Z：进入去水印模式（按 Shift 返回白底）">去水印</button>
             <button type="button" class="mp-btn mp-ai" data-mode="ai">AI 抠图</button>
           </div>
           <div class="mq-popup" id="mqPopup">
@@ -5266,14 +5272,14 @@ if(prodData){
       +'body.dark '+sub+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%);border:1px solid rgba(255,255,255,.09)}'
       +g+':hover{background:'+hovBg+' !important;border-color:'+hovBd+' !important}'
       +g+'.faved{border-color:transparent !important;color:'+u+' !important;background:'+u+'1a !important}'
-      +g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:3px}'
+      +g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}'
       +g+'.selected,'+g+'.selected:hover,'+g+'.faved.selected,'+g+'.faved.selected:hover{background:'+selBg+' !important;border-color:'+u+' !important;color:'+u+' !important;box-shadow:0 2px 6px '+u+'40,inset 0 0 0 1px rgba(255,255,255,.55) !important}'
       +'body.dark '+gb+'{background:linear-gradient(180deg,'+promptTint(u,26,17,.5)+' 0%,rgba(26,35,50,.5) 100%) !important;border:1px solid rgba(255,255,255,.09)}'
       +'body.dark '+gt+'{color:'+dT+' !important}'
       +'body.dark '+g+'{color:var(--prompt-text-secondary) !important}'
       +'body.dark '+g+':hover{background:rgba(255,255,255,.08) !important;border-color:'+promptTint(u,45,58)+' !important;color:var(--prompt-text-primary) !important}'
       +'body.dark '+g+'.faved{background:'+promptTint(u,55,62,.16)+' !important;border-color:transparent !important;color:'+dT+' !important}'
-      +'body.dark '+g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:3px}'
+      +'body.dark '+g+'.faved::before{content:"★";font-size:9px;line-height:1;margin-right:0}'
       +'body.dark '+g+'.selected,'+'body.dark '+g+'.faved.selected{background:linear-gradient(135deg,'+dSel+' 0%,'+dSel2+' 100%) !important;color:'+promptTint(u,62,80)+' !important;border-color:'+promptTint(u,46,56)+' !important;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08) !important}';
   }).join('');
   var st=document.createElement('style');st.id='promptGroupColorCss';st.textContent=css;document.head.appendChild(st);
@@ -7555,7 +7561,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(resultBlob) zoomCenter(zoom / 1.25);
     } else if(key === '0'){               // 0：完整复位（100% 且回归视口原点）
       if(resultBlob) resetTransform();
-    } else if(key === 'z'){               // Z：白底 / 纯色底切换；去水印模式下按 Z 回到白底
+    } else if(key === 'shift'){           // Shift：白底 / 纯色底切换；去水印模式下按 Shift 回到白底
       if(panMode) exitPanMode(false);
       if(mattingMode === 'watermark'){    // 去水印 → 白底
         if(stampActive) disableStamp();
@@ -7574,7 +7580,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(nextMode === 'solid'){ if(typeof showToast === 'function') showToast('正在按纯色底重新处理…','info'); }
       else { if(typeof showToast === 'function') showToast('正在快速去除白底…','info'); }
       processImage(currentSourceBlob);
-    } else if(key === 'shift'){           // Shift：切换到「去水印」模式（进入后用 Z 返回白底）
+    } else if(key === 'z'){               // Z：切换到「去水印」模式（进入后用 Shift 返回白底）
       if(panMode) exitPanMode(false);
       if(mattingMode !== 'watermark'){ selectWatermarkMode(); }
     }
