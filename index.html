@@ -2445,9 +2445,8 @@ body.dark .color-app .color-right .pick-status.err{color:#ff8098;}
 .sidebar-foot .scb-text{white-space:nowrap;overflow:hidden;}
 .tab-bar.collapsed .sidebar-foot .sidebar-collapse-btn{justify-content:center;padding:0 7px;margin-left:2px;}
 .tab-bar.collapsed .scb-text{display:none;}
-/* —— AI提示词页：左列自适应，右列固定贴合生成结果卡（550px+8margin），消除卡片左侧空档 —— */
-/* v4.8.84 右列改 fit-content(558px)：宽度由结果卡内容决定，不再按 2fr 拉出空白 */
-.prompt-duo-grid{display:grid;grid-template-columns:minmax(480px,1fr) fit-content(558px);gap:14px;width:100%;min-width:0;flex:0 0 auto;align-items:start;}
+/* —— AI提示词页：左列自适应，右列贴合生成结果卡（500px+8margin），消除卡片左侧空档 —— */
+.prompt-duo-grid{display:grid;grid-template-columns:minmax(480px,1fr) fit-content(508px);gap:14px;width:100%;min-width:0;flex:0 0 auto;align-items:start;}
 .prompt-left-col{display:flex;flex-direction:column;min-width:0;}
 .prompt-left-view{position:relative;min-width:0;}
 .prompt-left-pane{display:none;flex-direction:column;min-width:0;border-radius:14px;overflow:hidden;box-sizing:border-box;}
@@ -2501,13 +2500,13 @@ body.dark .app-confirm-card{background:#1c2432;box-shadow:0 18px 48px rgba(0,0,0
 body.dark .app-confirm-msg{color:#dfe6f0}
 body.dark .app-confirm-btn.cancel{border-color:rgba(255,255,255,.16);color:#aeb8c6;}
 body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
-/* —— 右列：上=生成结果（550×350） 下=常用提示词；整列 sticky 吸顶 —— */
+/* —— 右列：上=生成结果（500×320） 下=常用提示词；整列 sticky 吸顶 —— */
 .prompt-right-col{display:flex;flex-direction:column;min-width:0;gap:14px;margin-right:8px;position:sticky;top:0;align-self:start;}
 /* 导航行锁高，避免切换 pane 时右列相对位置抖动 */
 .prompt-mini-nav{height:50px;box-sizing:border-box;flex-wrap:nowrap;overflow:hidden;}
 .prompt-right-top{display:flex;flex-direction:column;gap:12px;}
-/* v4.8.80 生成结果固定尺寸 550×350、居右；右列不足 550 时按列宽收缩 */
-.prompt-right-top .prompt-result-card{display:flex;flex-direction:column;width:550px;max-width:100%;height:350px;margin-left:auto;flex:0 0 auto;}
+/* 生成结果固定尺寸 500×320、居右；右列不足 500 时按列宽收缩 */
+.prompt-right-top .prompt-result-card{display:flex;flex-direction:column;width:500px;max-width:100%;height:320px;margin-left:auto;flex:0 0 auto;}
 .prompt-right-top .prompt-result-header{padding:4px 12px;min-height:39px;box-sizing:border-box;}
 .prompt-right-top .prompt-result-header-left{flex:0 0 auto;white-space:nowrap;}
 /* v4.8.6 标题行与操作按钮同一行水平对齐（原按钮强制换行到第二行） */
@@ -2517,8 +2516,8 @@ body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
 .prompt-right-top .prompt-result-textarea{flex:1 1 auto;min-height:0;}
 .prompt-right-top .prompt-preset-list-card{flex:0 0 auto;}
 .prompt-right-bottom{flex:0 0 auto;}
-/* v4.8.80 常用提示词卡片锁定 550px 并右对齐（与生成结果卡同宽同右缘） */
-.prompt-right-bottom .prompt-quick-prompt-card{width:550px;max-width:100%;box-sizing:border-box;margin-left:auto;}
+/* 常用提示词卡片锁定 500px 并右对齐（与生成结果卡同宽同右缘） */
+.prompt-right-bottom .prompt-quick-prompt-card{width:500px;max-width:100%;box-sizing:border-box;margin-left:auto;}
 /* ===== /RESKIN PART 13 ===== */
 </style>
 </head>
