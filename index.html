@@ -782,21 +782,21 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-nav-custom-bar .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-nav-custom-bar .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
 /* 各板块配色（与 tag 板块色一致：背景棕/元素红/文字蓝/产品绿）；v4.8.66 输入文字/光标随板块色，占位符用板块色淡化 */
-.prompt-nav-custom-bar .c-bg .prompt-col-custom-input{border-color:#9B4513;color:#9B4513;caret-color:#9B4513}
+.prompt-nav-custom-bar .c-bg .prompt-col-custom-input{border-color:#98701F;color:#98701F;caret-color:#98701F}
 .prompt-nav-custom-bar .c-bg .prompt-col-custom-input::placeholder{color:rgba(155,69,19,.42)}
-.prompt-nav-custom-bar .c-bg .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(155,69,19,.16);border-color:#9B4513}
-.prompt-nav-custom-bar .c-element .prompt-col-custom-input{border-color:#A33646;color:#A33646;caret-color:#A33646}
+.prompt-nav-custom-bar .c-bg .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(152,112,31,.16);border-color:#98701F}
+.prompt-nav-custom-bar .c-element .prompt-col-custom-input{border-color:#981F37;color:#981F37;caret-color:#981F37}
 .prompt-nav-custom-bar .c-element .prompt-col-custom-input::placeholder{color:rgba(163,54,70,.42)}
-.prompt-nav-custom-bar .c-element .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(163,54,70,.16);border-color:#A33646}
-.prompt-nav-custom-bar .c-font .prompt-col-custom-input{border-color:#2C5286;color:#2C5286;caret-color:#2C5286}
+.prompt-nav-custom-bar .c-element .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(152,31,55,.16);border-color:#981F37}
+.prompt-nav-custom-bar .c-font .prompt-col-custom-input{border-color:#215897;color:#215897;caret-color:#215897}
 .prompt-nav-custom-bar .c-font .prompt-col-custom-input::placeholder{color:rgba(44,82,134,.42)}
-.prompt-nav-custom-bar .c-font .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(44,82,134,.16);border-color:#2C5286}
-.prompt-nav-custom-bar .c-product .prompt-col-custom-input{border-color:#3E7E4C;color:#3E7E4C;caret-color:#3E7E4C}
+.prompt-nav-custom-bar .c-font .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(33,88,151,.16);border-color:#215897}
+.prompt-nav-custom-bar .c-product .prompt-col-custom-input{border-color:#288F2F;color:#288F2F;caret-color:#288F2F}
 .prompt-nav-custom-bar .c-product .prompt-col-custom-input::placeholder{color:rgba(62,126,76,.42)}
-.prompt-nav-custom-bar .c-product .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(62,126,76,.16);border-color:#3E7E4C}
-.prompt-nav-custom-bar .c-style .prompt-col-custom-input{border-color:#7B4DBF;color:#7B4DBF;caret-color:#7B4DBF}
+.prompt-nav-custom-bar .c-product .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(40,143,47,.16);border-color:#288F2F}
+.prompt-nav-custom-bar .c-style .prompt-col-custom-input{border-color:#6C1F98;color:#6C1F98;caret-color:#6C1F98}
 .prompt-nav-custom-bar .c-style .prompt-col-custom-input::placeholder{color:rgba(123,77,191,.42)}
-.prompt-nav-custom-bar .c-style .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(123,77,191,.16);border-color:#7B4DBF}
+.prompt-nav-custom-bar .c-style .prompt-col-custom-input:focus{box-shadow:0 0 0 2px rgba(108,31,152,.16);border-color:#6C1F98}
 .prompt-col-scroll{display:flex;flex-direction:column;min-height:0;overflow-y:auto;padding-right:4px;padding-top:18px;flex:1 1 auto}
 .prompt-col-scroll::-webkit-scrollbar{width:0;display:none}
 .prompt-col-scroll::-webkit-scrollbar-thumb{background:var(--prompt-border);border-radius:2px}
@@ -852,7 +852,7 @@ body.dark .prompt-subgroup-title{color:var(--text-muted)}
 .prompt-param-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04)}
 .prompt-param-card-title{font-size:13px;font-weight:600;color:var(--prompt-text-primary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 /* v4.8.2 风格转换改为平铺分组（同背景页 flat-group），旧嵌套卡片规则作废；暗黑标题同背景页提亮 */
-body.dark [data-gtitle="风格转换"]{color:#F2B98C !important}
+body.dark [data-gtitle="风格转换"]{color:#BF85E0 !important}
 .prompt-param-options{display:flex;gap:4px;flex-wrap:wrap;flex:1}
 .prompt-param-btn{padding:4px 9px;border:1px solid var(--prompt-border);border-radius:8px;font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--prompt-bg-section);cursor:pointer;transition:var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-param-btn.selected{border-color:transparent;background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff}
@@ -914,10 +914,10 @@ body.dark .prompt-param-toolbar-top .prompt-ratio-box{border:none!important;back
 .prompt-style-tags-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:4px;padding-top:2px}
 /* v4.8.3 风格转换标签与背景页 .prompt-tag 完全同规格：白底胶囊 + 30px 高（对齐 10.3 芯片规范） */
 .prompt-style-tag{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;height:30px;line-height:1;padding:0 7px;border:1px solid rgba(212,165,116,0.28);border-radius:var(--r-pill,999px);font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--surface,#fff);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
-.prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
-.prompt-style-tag.faved{border-color:transparent;color:#B04A16;background:rgba(194,86,31,.10);font-weight:700;letter-spacing:.2px}
-.prompt-style-tag.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
-.prompt-style-tag.faved.selected{border-color:#C2561F;background:linear-gradient(135deg,#FFDCB6 0%,#FFC087 100%);color:#8A4212;box-shadow:0 2px 6px rgba(194,86,31,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
+.prompt-style-tag:hover{border-color:rgba(132,38,186,.32);background:rgba(255,255,255,.62)}
+.prompt-style-tag.faved{border-color:transparent;color:#651F8E;background:rgba(132,38,186,.10);font-weight:700;letter-spacing:.2px}
+.prompt-style-tag.selected{border-color:#8426BA;background:linear-gradient(135deg,#EEDCF9 0%,#D3A5EE 100%);color:#651F8E;box-shadow:0 2px 6px rgba(132,38,186,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
+.prompt-style-tag.faved.selected{border-color:#8426BA;background:linear-gradient(135deg,#EEDCF9 0%,#D3A5EE 100%);color:#651F8E;box-shadow:0 2px 6px rgba(132,38,186,.22),inset 0 0 0 1px rgba(255,255,255,.55)}
 .prompt-quick-prompt-card{background:var(--prompt-bg-card);border-radius:14px;padding:12px 14px;border:1px solid var(--prompt-border-light);box-shadow:0 4px 16px rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:6px}
 .prompt-quick-prompt-card .prompt-quick-prompt-add{flex-shrink:0;margin-top:2px;order:2;margin-left:auto}
 .prompt-quick-prompt-add{font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:none;font-family:inherit;padding:0 4px;border-radius:4px;transition:var(--prompt-transition);line-height:1}
@@ -1028,10 +1028,10 @@ body.dark [data-gtitle="产品描述"]{color:hsl(133,55%,70%) !important}
 body.dark .prompt-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
 /* 转换风格：暖橙系在深空蓝底上提亮一档 */
 body.dark .prompt-style-tag{background:transparent;border-color:rgba(255,255,255,.13);color:var(--prompt-text-secondary)}
-body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(240,149,92,.48);color:var(--prompt-text-primary)}
-body.dark .prompt-style-tag.faved{border-color:transparent;color:#F5B183;background:rgba(240,149,92,.13)}
+body.dark .prompt-style-tag:hover{background:rgba(255,255,255,.08);border-color:rgba(132,38,186,.48);color:var(--prompt-text-primary)}
+body.dark .prompt-style-tag.faved{border-color:transparent;color:#BF85E0;background:rgba(132,38,186,.14)}
 body.dark .prompt-style-tag.faved::before{content:"★";font-size:9px;line-height:1;margin-right:-1px}
-body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#F0955C;background:linear-gradient(135deg,rgba(240,149,92,.28) 0%,rgba(240,149,92,.15) 100%);color:#FBD3AE;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
+body.dark .prompt-style-tag.selected,body.dark .prompt-style-tag.faved.selected{border-color:#8426BA;background:linear-gradient(135deg,rgba(132,38,186,.28) 0%,rgba(132,38,186,.15) 100%);color:#E0C0F5;box-shadow:0 1px 4px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
 body.dark .prompt-ratio-btn,body.dark .prompt-param-btn,body.dark .prompt-quick-prompt-tag,body.dark .prompt-preset-item,body.dark .prompt-result-header-btn.close{background:#16202f;border-color:rgba(255,255,255,.12)}
 body.dark .prompt-ratio-btn.selected{background:rgba(240,149,92,.18);color:#F0955C;border-color:rgba(240,149,92,.40)}
 body.dark .prompt-ratio-faved-tag.selected{border-color:transparent;background:linear-gradient(135deg,#FF7A59,#FFA15C);color:#fff}
@@ -1695,10 +1695,12 @@ body.dark{
 .prompt-app .prompt-collapsible{border-color:var(--border); border-radius:16px;}
 .prompt-app .prompt-result-card{border:1px solid var(--border);}
 .prompt-app .prompt-result-header-btn.preset{
-  background:color-mix(in srgb, var(--prompt-accent) 14%, transparent);
-  color:var(--prompt-accent);
+  background:color-mix(in srgb, #FF7A59 14%, transparent);
+  color:#FF7A59;
 }
-.prompt-app .prompt-result-header-btn.preset:hover{background:color-mix(in srgb, var(--prompt-accent) 22%, transparent);}
+.prompt-app .prompt-result-header-btn.preset:hover{background:color-mix(in srgb, #FF7A59 22%, transparent);}
+body.dark .prompt-app .prompt-result-header-btn.preset{color:#FF8A66;background:color-mix(in srgb, #FF8A66 14%, transparent);}
+body.dark .prompt-app .prompt-result-header-btn.preset:hover{background:color-mix(in srgb, #FF8A66 22%, transparent);}
 .prompt-app .prompt-collapsible-header:hover{background:var(--prompt-bg-hover);}
 
 /* 布局健壮性：防止按钮被遮挡 / 溢出 */
@@ -2215,7 +2217,8 @@ body.dark{
   box-shadow:0 6px 16px color-mix(in srgb,var(--mod-accent) 28%,transparent);
 }
 /* v4.8.29 抠图模式切换对齐「背景/元素…」容器切换：同尺寸(32px/13px) + hover 不覆盖激活渐变 */
-#tabMatting .mp-btn{background:transparent;border:none;border-radius:8px;font-size:13px;font-weight:500;height:32px;padding:0 14px;min-width:70px;color:var(--prompt-text-secondary);}
+/* v4.8.89 抠图模式按钮加底纹：与导航/参数按钮同风格（浅底+描边圆角），选中渐变不变；变量用本 tab 作用域的 --surface/--border-2 */
+#tabMatting .mp-btn{background:var(--surface);border:1px solid var(--border-2);border-radius:8px;font-size:13px;font-weight:500;height:32px;padding:0 14px;min-width:70px;color:var(--prompt-text-secondary);}
 #tabMatting .mp-btn:hover:not(.active){background:var(--surface);color:var(--prompt-text);}
 #tabMatting .mp-btn.active{color:#fff;font-weight:600;}
 /* v4.8.30 去水印激活改蓝色渐变，与白底/AI抠图的绿色区分 */
@@ -2464,23 +2467,24 @@ body.dark .prompt-pane-style{background:transparent;border:none;box-shadow:none;
 .prompt-left-pane .prompt-product-col-layout{grid-template-columns:minmax(0,1fr);gap:10px;margin-top:12px;}
 .prompt-left-pane .prompt-product-column{gap:10px;}
 /* 容器切换按钮（位于顶部参数行，样式对齐 prompt-nav-btn 设计规范） */
-.pls-btn{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:500;color:var(--prompt-text-secondary);cursor:pointer;transition:all .15s ease;font-family:inherit;padding:0 14px;white-space:nowrap;outline:none;}
+/* v4.8.88 导航 pane 按钮加底纹：与参数按钮同风格（浅底+描边圆角）；选中高亮统一饱和度（各 hue 保留，S≈52-62% 一档，风格页保持全局橙 #FF7A59） */
+.pls-btn{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid var(--prompt-border);background:var(--prompt-bg-section);border-radius:8px;font-size:13px;font-weight:500;color:var(--prompt-text-secondary);cursor:pointer;transition:all .15s ease;font-family:inherit;padding:0 14px;white-space:nowrap;outline:none;}
 .pls-btn:focus-visible{outline:none;}
 .pls-btn:hover{background:var(--surface);}
-.pls-btn.active{color:#fff;}
-.pls-btn[data-pane="bg"].active{background:linear-gradient(135deg,#CE9040,#A66824);}
-.pls-btn[data-pane="element"].active{background:linear-gradient(135deg,#E96A5E,#B8433C);}
-.pls-btn[data-pane="font"].active{background:linear-gradient(135deg,#5D7FD0,#3E5FB0);}
-.pls-btn[data-pane="product"].active{background:linear-gradient(135deg,#5E9E62,#3E7E4C);}
-.pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#FF7A59,#FFA15C);}
-body.dark .pls-btn{background:transparent;border:none;color:var(--prompt-text-secondary);}
+.pls-btn.active{color:#fff;border-color:transparent;}
+.pls-btn[data-pane="bg"].active{background:linear-gradient(135deg,#DCAF56,#BE8E2D);}
+.pls-btn[data-pane="element"].active{background:linear-gradient(135deg,#DE5E78,#C62F4D);}
+.pls-btn[data-pane="font"].active{background:linear-gradient(135deg,#609ADC,#3176C4);}
+.pls-btn[data-pane="product"].active{background:linear-gradient(135deg,#40C949,#319B38);}
+.pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#B162DF,#922FCA);}
+body.dark .pls-btn{border:1px solid var(--prompt-border);background:var(--prompt-bg-section);color:var(--prompt-text-secondary);}
 body.dark .pls-btn:hover{background:#1d2940;}
 body.dark .pls-btn.active{color:#fff;}
-body.dark .pls-btn[data-pane="bg"].active{background:linear-gradient(135deg,#CE9040,#A66824);}
-body.dark .pls-btn[data-pane="element"].active{background:linear-gradient(135deg,#E96A5E,#B8433C);}
-body.dark .pls-btn[data-pane="font"].active{background:linear-gradient(135deg,#5D7FD0,#3E5FB0);}
-body.dark .pls-btn[data-pane="product"].active{background:linear-gradient(135deg,#5E9E62,#3E7E4C);}
-body.dark .pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#FF7A59,#FFA15C);}
+body.dark .pls-btn[data-pane="bg"].active{background:linear-gradient(135deg,#DCAF56,#BE8E2D);}
+body.dark .pls-btn[data-pane="element"].active{background:linear-gradient(135deg,#DE5E78,#C62F4D);}
+body.dark .pls-btn[data-pane="font"].active{background:linear-gradient(135deg,#609ADC,#3176C4);}
+body.dark .pls-btn[data-pane="product"].active{background:linear-gradient(135deg,#40C949,#319B38);}
+body.dark .pls-btn[data-pane="style"].active{background:linear-gradient(135deg,#B162DF,#922FCA);}
 /* v4.8.74 统一美化确认弹窗（替代原生 window.confirm）：明暗两套 */
 .app-confirm-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(30,26,20,.42);backdrop-filter:blur(3px);opacity:0;transition:opacity .18s ease;}
 .app-confirm-overlay.show{opacity:1}
@@ -4730,7 +4734,7 @@ function promptEscapeAttr(value){return promptEscapeHtml(value);}
 // 取色相（0-359），用于按色相重建高亮度、不掉饱和的浅色渐变
 function promptHue(hex){var h=(hex||'#888888').replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var r=parseInt(h.substr(0,2),16)/255,g=parseInt(h.substr(2,2),16)/255,b=parseInt(h.substr(4,2),16)/255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;if(!d)return 0;var hu;if(mx===r)hu=((g-b)/d)%6;else if(mx===g)hu=(b-r)/d+2;else hu=(r-g)/d+4;hu*=60;if(hu<0)hu+=360;return Math.round(hu);}
 // v4.5.1 选中态底色：生图页用（整列统一的）板块渐变；产品页用色相重建的浅色渐变（提亮且保持色感，不发灰）
-function promptSelectedBg(sec,c,isProd){var u=promptTagColor(sec,c);if(!isProd)return promptTagGrad(sec,c);var H=promptHue(u);return 'linear-gradient(135deg,hsl('+H+',58%,94%) 0%,hsl('+H+',48%,82%) 100%)';}
+function promptSelectedBg(sec,c,isProd){var u=promptTagColor(sec,c);if(!isProd)return promptTagGrad(sec,c);var H=promptHue(u);return 'linear-gradient(135deg,hsl('+H+',60%,92%) 0%,hsl('+H+',58%,79%) 100%)';}
 // v4.5.1 生图页三列内部效果统一：整列共用首组的颜色与渐变，一列一个色系
 var PROMPT_UNIFY_SEC={background:1,subject:1,typography:1};
 function promptUnifyFirst(sec){if(!PROMPT_UNIFY_SEC[sec])return null;var a=collapsibleData[sec]||[];return a[0]||null;}
@@ -4739,7 +4743,7 @@ function promptTagGrad(sec,c){var f=promptUnifyFirst(sec);return ((f||c).gradien
 // v4.6 暗色模式：按板块色相重建 HSL 色（保色相去灰，用于暗底上的描边/文字）
 function promptTint(hex,s,l,a){return ((a==null)?'hsl(':'hsla(')+promptHue(hex)+','+s+'%,'+l+'%'+((a==null)?'':','+a)+')';}
 // v4.4.7 板块统一色：优先取分组标题色，缺省回落到分组主色（收藏态与选中态共用）
-function promptGroupColor(c){return (c&&(c.tcolor||c.color))||'#9B4513';}
+function promptGroupColor(c){return (c&&(c.tcolor||c.color))||'#8E691F';}
 function promptTagHTML(label,prompt,group,opts){
   var style='';
   if(opts&&(opts.grad||opts.tcol)){
@@ -4762,7 +4766,7 @@ var collapsibleData={
 // 【背景·氛围】
 background:[
 // ── 背景风格 ──
-{icon:'景',color:'#CE9040',title:'背景风格',gradient:'linear-gradient(135deg,#FFF2DE 0%,#FCD9A4 100%)',tcolor:'#96601C',tags:[
+{icon:'景',color:'#BA8926',title:'背景风格',gradient:'linear-gradient(135deg,#F9EFDC 0%,#EED6A5 100%)',tcolor:'#8E691F',tags:[
 // ── 中式雅韵 ──
 ['极简中式水墨','极简中式水墨','极简中式水墨背景，宣纸肌理底色，淡墨大面积晕染，中央留白充足'],
 ['工笔淡彩','工笔淡彩','工笔淡彩背景，绢本设色，浅绛清雅，细线勾边'],
@@ -4818,7 +4822,7 @@ background:[
 ['网格底纹','浅灰网格底纹','正面平整视图，浅灰细网格底纹背景，线条规整均匀铺满，工程图纸印刷质感，淡雅低对比，无透视变形，无实体纸张']
 ]},
 // ── 空间构图 ──
-{icon:'构',color:'#B06E3A',title:'空间构图',gradient:'linear-gradient(135deg,#FBEDDC 0%,#EBC79E 100%)',tcolor:'#7E4B1C',tags:[
+{icon:'构',color:'#BA8926',title:'空间构图',gradient:'linear-gradient(135deg,#F9EFDC 0%,#EED6A5 100%)',tcolor:'#8E691F',tags:[
 // ── 构图法则 ──
 ['中心聚焦','中心聚焦','中心聚焦构图，主体居中，四周留白均分'],
 ['三分法构图','三分法构图','三分法构图，主体置于九宫格交叉点附近，画面均衡不呆板'],
@@ -4841,7 +4845,7 @@ background:[
 // 【主体·元素】
 subject:[
 // ── 元素风格 ──
-{icon:'素',color:'#E96A5E',title:'元素风格',gradient:'linear-gradient(135deg,#FFE3DD 0%,#F5B3A8 100%)',tcolor:'#A63A32',tags:[
+{icon:'素',color:'#BA2644',title:'元素风格',gradient:'linear-gradient(135deg,#F9DCE2 0%,#EEA5B4 100%)',tcolor:'#8E1F35',tags:[
 // ── 传统国画 ──
 ['水墨写意','水墨写意','水墨写意，浓淡干湿变化，随性笔触，大面积留白'],
 ['工笔细描','工笔细描','工笔细描，游丝细线勾边，层层罩染，细节精致'],
@@ -4880,7 +4884,7 @@ subject:[
 ['3D黏土','3D黏土','3D黏土，圆润饱满造型，哑光材质，柔和全局光']
 ]},
 // ── 取景构图 ──
-{icon:'取',color:'#C75B7A',title:'取景构图',gradient:'linear-gradient(135deg,#FBE3EA 0%,#EFB6C8 100%)',tcolor:'#93395A',tags:[
+{icon:'取',color:'#BA2644',title:'取景构图',gradient:'linear-gradient(135deg,#F9DCE2 0%,#EEA5B4 100%)',tcolor:'#8E1F35',tags:[
 // ── 景别 ──
 ['极特写','极特写','极特写，聚焦最细微局部，细节极致放大'],
 ['特写','特写','特写构图，主体局部占满画面，背景虚化'],
@@ -4905,7 +4909,7 @@ subject:[
 // 【材质·文字】
 typography:[
 // ── 文字风格：书法笔意 → 印刷美术体 → 手写涂鸦（单选）──
-{icon:'文',color:'#5D7FD0',title:'文字风格',gradient:'linear-gradient(135deg,#E1E9F9 0%,#AFC4EF 100%)',tcolor:'#2F4F94',tags:[
+{icon:'文',color:'#286BB8',title:'文字风格',gradient:'linear-gradient(135deg,#DDEAF8 0%,#A6C7ED 100%)',tcolor:'#21538C',tags:[
 ['篆书典雅','篆书典雅','篆书笔意标题字，线条圆融均匀，结体修长对称'],
 ['隶书古拙','隶书古拙','隶书笔意标题字，蚕头燕尾，横画舒展，结体扁方'],
 ['楷书端方','楷书端方','楷书笔意标题字，横平竖直，起收分明，结构匀称'],
@@ -4921,7 +4925,7 @@ typography:[
 ['圆润卡通','圆润卡通','圆润卡通标题字，笔画圆鼓矮胖，转角圆融无锐角'],
 ]},
 // ── 字效材质：立体体积 → 金属光泽 → 发光 → 肌理 → 潮流（多选，可与书体叠加）──
-{icon:'效',color:'#4D9FDA',title:'字效材质',gradient:'linear-gradient(135deg,#DFF0FA 0%,#A8D3EE 100%)',tcolor:'#1F6396',tags:[
+{icon:'效',color:'#286BB8',title:'字效材质',gradient:'linear-gradient(135deg,#DDEAF8 0%,#A6C7ED 100%)',tcolor:'#21538C',tags:[
 ['立体浮雕','立体浮雕','立体浮雕标题字，笔画有厚度与侧面，带落地投影'],
 ['3D充气立体','3D充气立体','3D充气立体标题字，圆鼓饱满体积，高光反射，糖果色'],
 ['奶油挤花','奶油挤花','奶油挤花标题字，饱满挤出体积，圆润隆起，柔和光泽'],
@@ -4939,7 +4943,7 @@ typography:[
 ['喷漆涂鸦','喷漆涂鸦','喷漆涂鸦标题字，雾化边缘，漆点飞溅，街头模板感'],
 ]},
 // ── 文字排向：可与上两组叠加（多选）──
-{icon:'排',color:'#4D9FDA',title:'文字排向',gradient:'linear-gradient(135deg,#DFF0FA 0%,#A8D3EE 100%)',tcolor:'#256C99',tags:[
+{icon:'排',color:'#286BB8',title:'文字排向',gradient:'linear-gradient(135deg,#DDEAF8 0%,#A6C7ED 100%)',tcolor:'#21538C',tags:[
 ['横向排列','横向排列','标题字横向排列，单行通栏排布，字距匀称，阅读顺序自然'],
 ['竖向排列','竖向排列','标题字竖向排列，自上而下，行气贯通'],
 ['右端齐平','右端齐平','标题字右端齐平，末端收齐，左端自然错落'],
@@ -4953,7 +4957,7 @@ typography:[
 // 【产品·材质】
 product:[
 // ── 产品类型 ──
-{icon:'品',color:'#5E9E62',title:'产品类型',gradient:'linear-gradient(135deg,#E9F5E9 0%,#C4E2C6 100%)',capGrad:'linear-gradient(135deg,#EDF6ED 0%,#C9E3CB 100%)',tcolor:'#2F6B3C',tags:[
+{icon:'品',color:'#31AF3A',title:'产品类型',gradient:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',capGrad:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',tcolor:'#28862E',tags:[
 // ── 纸品文具 ──
 ['书签','书签','书签，纤薄金属或木质，边缘切割干净，纹样清晰，搭配书页陈列'],
 ['笔记本','笔记本','笔记本，封面图案完整，书脊与圆角可见，内页微展'],
@@ -4992,7 +4996,7 @@ product:[
 ['包装礼盒','包装礼盒','包装礼盒，盒盖盒身结构清晰，烫金局部，开盒露内衬']
 ]},
 // ── 产品材质 ──
-{icon:'材',color:'#A5854E',title:'产品材质',gradient:'linear-gradient(135deg,#F8F2E2 0%,#E7D6AC 100%)',capGrad:'linear-gradient(135deg,#F6F0E0 0%,#E2D0A8 100%)',tcolor:'#6E5527',tags:[
+{icon:'材',color:'#31AF3A',title:'产品材质',gradient:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',capGrad:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',tcolor:'#28862E',tags:[
 // ── 纸质 ──
 ['纸质卡片','纸质卡片','纸质卡片，哑光纸面，厚度与切边清晰，细微纸纤维'],
 ['铜版纸','铜版纸','铜版纸，平滑细腻，印刷鲜亮，轻微半光泽'],
@@ -5023,7 +5027,7 @@ product:[
 ['橡胶软垫','橡胶软垫','橡胶软垫，柔韧防滑，底部纹理清晰，哑光']
 ]},
 // ── 表面工艺 ──
-{icon:'工',color:'#C4764A',title:'表面工艺',gradient:'linear-gradient(135deg,#FAEBE0 0%,#EBC8AC 100%)',capGrad:'linear-gradient(135deg,#F7EEE5 0%,#E5C6AC 100%)',tcolor:'#8A4A24',tags:[
+{icon:'工',color:'#31AF3A',title:'表面工艺',gradient:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',capGrad:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',tcolor:'#28862E',tags:[
 // ── 印刷 ──
 ['数码直喷','数码直喷','数码直喷，图案直接印于表面，色彩层次细腻'],
 ['热转印','热转印','热转印，图案贴合曲面，色彩鲜艳牢固'],
@@ -5046,7 +5050,7 @@ product:[
 ['拔染工艺','拔染工艺','拔染，布料局部褪色成图案，色彩复古自然']
 ]},
 // ── 视觉质感 ──
-{icon:'质',color:'#8E74CE',title:'视觉质感',gradient:'linear-gradient(135deg,#EFEAF9 0%,#CFC0EC 100%)',capGrad:'linear-gradient(135deg,#EEE8F8 0%,#C8B6E8 100%)',tcolor:'#5B3FA0',tags:[
+{icon:'质',color:'#31AF3A',title:'视觉质感',gradient:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',capGrad:'linear-gradient(135deg,#DEF7E0 0%,#AAE9AF 100%)',tcolor:'#28862E',tags:[
 // ── 拍摄方式 ──
 ['微距特写','微距特写','微距特写，贴近材质表面，纹理工艺极清晰，背景虚化'],
 ['俯视平铺','俯视平铺','90度俯拍平铺，产品完整展开，边缘平行画面'],
@@ -5123,9 +5127,9 @@ quickPromptText:'',
 function promptFadeBg(g,a){return (g||'').replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g,function(m){var h=m.slice(1);if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');return 'rgba('+parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16)+','+((a==null)?0.5:a)+')';});}
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 // v4.4.8 同一列内的小标题统一为该列主色（仅标题文字；标签的板块色仍按分组各自保持）
-var COL_TITLE_COLOR={background:'#9B4513',subject:'#A33646',typography:'#2C5286'};
+var COL_TITLE_COLOR={background:'#8E691F',subject:'#8E1F35',typography:'#21538C'};
 function flatGroupHTML(c,bodyHtml,extraTitleHtml,sec){
-  var tcol=(sec&&COL_TITLE_COLOR[sec])||c.tcolor||c.color||'#9B4513';
+  var tcol=(sec&&COL_TITLE_COLOR[sec])||c.tcolor||c.color||'#8E691F';
   // v4.4.8 「+」紧跟分组标题右侧；自定义描述框（如有）靠右排
   var title='<div class="prompt-flat-title"><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+tcol+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+(extraTitleHtml||'')+'</div>';
   return '<div class="prompt-flat-group">'+title+bodyHtml+'</div>';
@@ -5205,7 +5209,7 @@ if(prodData){
 
 // 上半部分两列：转换风格+常用提示词（左）| 生成结果+预设方案（右）
 var resultCardHTML='<div class="prompt-result-card"><div class="prompt-result-header"><div class="prompt-result-header-left"><span class="prompt-title">生成结果</span><span class="prompt-char-count" id="promptCharCount">0 字符</span></div><div class="prompt-result-header-actions"><button class="prompt-result-header-btn copy" id="promptCopyBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 复制</button><button class="prompt-result-header-btn preset" id="promptPresetBtn">存为预设</button><button class="prompt-result-header-btn close" id="promptClearBtn">&times;</button></div></div><div class="prompt-result-body"><textarea class="prompt-result-textarea" id="promptResultText" placeholder="点击左侧关键词，生成结果将显示在这里" rows="4"></textarea></div></div>';
-var styleCardHTML='<div class="prompt-flat-group"><div class="prompt-flat-title"><span class="prompt-title" data-gtitle="风格转换" style="color:#B4621F;font-size:13px;font-weight:700;letter-spacing:.4px">风格转换</span><button class="prompt-tag-add prompt-style-add-btn" id="promptStyleAddBtn">+</button></div><div class="prompt-style-tags-grid" id="promptStyleGrid"></div></div>'+
+var styleCardHTML='<div class="prompt-flat-group"><div class="prompt-flat-title"><span class="prompt-title" data-gtitle="风格转换" style="color:#651F8E;font-size:13px;font-weight:700;letter-spacing:.4px">风格转换</span><button class="prompt-tag-add prompt-style-add-btn" id="promptStyleAddBtn">+</button></div><div class="prompt-style-tags-grid" id="promptStyleGrid"></div></div>'+
   '<div class="prompt-quick-prompt-card" id="promptQuickPromptCard"><button class="prompt-quick-prompt-add" id="promptAddQuickPromptBtn">+</button><div class="prompt-quick-prompt-body" id="promptQuickPromptBody"><div class="prompt-quick-prompt-empty">暂无常用提示词</div></div></div>';
 PS('#promptStylePane').innerHTML=styleCardHTML;var qpc=PS('#promptQuickPromptCard');if(qpc)PS('#promptQuickCol').appendChild(qpc);
 var presetListHTML='<div class="prompt-preset-list-card" id="promptPresetListCard"><div class="prompt-preset-list-body" id="promptPresetListBody"><div class="prompt-preset-empty">暂无预设方案</div></div></div>';
@@ -5476,9 +5480,7 @@ function promptRestoreByKey(key){
       el.querySelectorAll('.prompt-tag-group').forEach(function(g){renderTagGroup(g);});
     });
     updatePromptResult();
-    var ts=backup._time;
-    if(typeof ts==='number'){var d=new Date(ts);ts=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-    showToast('已恢复到 '+ts);
+    /* v4.8.87 去掉「已恢复到 xx」成功提示：恢复结果立即可见，时间点在菜单里已展示；仅保留失败提示 */
   }catch(e){showToast('恢复失败','error');}
 }
 window.promptAddBackup = promptAddBackup;
