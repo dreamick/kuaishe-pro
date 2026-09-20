@@ -479,9 +479,9 @@ textarea:focus { outline: none; border-color: var(--primary); }
   position: absolute; top: 8px; right: 8px; z-index: 2;
   width: 24px; height: 24px; border-radius: 50%; border: none;
   background: rgba(0,0,0,0.5); color: #fff; font-size: 14px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; display: none; align-items: center; justify-content: center;
 }
-/* v4.8.16 粘贴区 × 改 hover 浮现：默认隐藏不可点，移入粘贴区才显示 */
+/* v4.8.85 粘贴区 × 按钮仅在「有图 + 鼠标移入」时显示；空区域完全不显示 */
 .color-app .paste-zone.has-image .paste-clear { display: flex; opacity: 0; transform: translateY(-2px); pointer-events: none; transition: all .18s ease; }
 .color-app .paste-zone.has-image:hover .paste-clear { opacity: 1; transform: none; pointer-events: auto; }
 .color-app #fileInput { display: none; }
@@ -818,10 +818,8 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-group:last-child{margin-bottom:0}
 .prompt-flat-title{display:flex;align-items:center;gap:8px;padding:2px 2px 8px;user-select:none;flex-wrap:nowrap}
 .prompt-flat-title .prompt-title{display:inline-flex;align-items:center;font-size:13px;font-weight:700;line-height:22px;height:22px;padding:0;letter-spacing:.4px;transform:translateY(1px)}
-/* v4.8.61 标签网格：默认 6 列，随标签组容器宽度自适应升到 7/8 列（最少 6 最多 8） */
-.prompt-tag-group{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding-top:2px}
-@container (min-width:640px){.prompt-tag-group{grid-template-columns:repeat(7,minmax(0,1fr))}}
-@container (min-width:860px){.prompt-tag-group{grid-template-columns:repeat(8,minmax(0,1fr))}}
+/* v4.8.83 标签网格最大列数完全自适应：auto-fill + 最小 92px，容器越宽列数越多，不设上限 */
+.prompt-tag-group{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:4px;padding-top:2px}
 .prompt-tag{display:inline-flex;align-items:center;padding:2px 6px;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:11px;font-weight:500;color:var(--prompt-text-secondary);background:transparent;cursor:pointer;transition:all var(--prompt-transition);user-select:none;line-height:1.2;font-family:inherit;white-space:nowrap}
 /* v4.8.32 收藏/选中重设计：收藏=无描边浅底+★前缀；选中=渐变实底+白色内圈高光 */
 .prompt-tag.faved{border-color:transparent;color:var(--tag-fav,var(--prompt-accent));font-weight:700;letter-spacing:.2px;background:color-mix(in srgb,var(--tag-fav,var(--prompt-accent)) 10%,transparent)}
@@ -912,10 +910,8 @@ body.dark .prompt-param-toolbar-top .prompt-ratio-box{border:none!important;back
 .prompt-style-add-btn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;font-size:16px;font-weight:600;color:var(--prompt-accent);cursor:pointer;background:none;border:1px dashed transparent;border-radius:8px;font-family:inherit;padding:0;transition:var(--prompt-transition);line-height:22px;transform:translateY(-1px)}
 .prompt-style-add-btn:hover{transform:translateY(-1px);border-color:var(--prompt-border);background:var(--prompt-bg-section)}
 .prompt-style-add-btn:active{transform:translateY(-1px) scale(0.96)}
-/* v4.8.1 风格转换对齐全局规范：等宽网格，与 .prompt-tag-group 一致；v4.8.61 同步 6→7→8 自适应 */
-.prompt-style-tags-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding-top:2px}
-@container (min-width:640px){.prompt-style-tags-grid{grid-template-columns:repeat(7,minmax(0,1fr))}}
-@container (min-width:860px){.prompt-style-tags-grid{grid-template-columns:repeat(8,minmax(0,1fr))}}
+/* 风格标签网格：与 .prompt-tag-group 同规格、同自适应规则 */
+.prompt-style-tags-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:4px;padding-top:2px}
 /* v4.8.3 风格转换标签与背景页 .prompt-tag 完全同规格：白底胶囊 + 30px 高（对齐 10.3 芯片规范） */
 .prompt-style-tag{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:0;height:30px;line-height:1;padding:0 7px;border:1px solid rgba(212,165,116,0.28);border-radius:var(--r-pill,999px);font-size:12px;font-weight:500;color:var(--prompt-text-secondary);background:var(--surface,#fff);cursor:pointer;transition:all var(--prompt-transition);font-family:inherit;white-space:nowrap}
 .prompt-style-tag:hover{border-color:rgba(194,86,31,.32);background:rgba(255,255,255,.62)}
@@ -1936,7 +1932,9 @@ body.dark{
 .topbar-picker .paste-zone.has-image .paste-hint{display:none;}
 .topbar-picker .paste-zone.has-image .paste-preview{display:block;}
 .topbar-picker .paste-clear{position:absolute;top:3px;right:3px;z-index:2;width:18px;height:18px;border-radius:50%;border:none;background:rgba(0,0,0,.5);color:#fff;font-size:11px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;}
-.topbar-picker .paste-zone.has-image .paste-clear{display:flex;}
+/* v4.8.85 顶栏吸色粘贴区 × 同样仅「有图 + 移入」显示 */
+.topbar-picker .paste-zone.has-image .paste-clear{display:flex;opacity:0;pointer-events:none;transition:opacity .18s ease;}
+.topbar-picker .paste-zone.has-image:hover .paste-clear{opacity:1;pointer-events:auto;}
 .topbar-picker .extracted-bar{display:none;gap:4px;align-items:center;min-width:0;overflow:hidden;max-height:none;margin-top:0;}
 .topbar-picker .extracted-bar.show{display:flex;}
 .topbar-picker .extracted-chip{display:flex;align-items:center;gap:3px;cursor:pointer;min-width:0;flex-shrink:0;}
@@ -2447,8 +2445,9 @@ body.dark .color-app .color-right .pick-status.err{color:#ff8098;}
 .sidebar-foot .scb-text{white-space:nowrap;overflow:hidden;}
 .tab-bar.collapsed .sidebar-foot .sidebar-collapse-btn{justify-content:center;padding:0 7px;margin-left:2px;}
 .tab-bar.collapsed .scb-text{display:none;}
-/* —— AI提示词页：左右两列（3/5 | 2/5），容器高度自适应 —— */
-.prompt-duo-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:14px;width:100%;min-width:0;flex:0 0 auto;align-items:start;}
+/* —— AI提示词页：左列自适应，右列固定贴合生成结果卡（550px+8margin），消除卡片左侧空档 —— */
+/* v4.8.84 右列改 fit-content(558px)：宽度由结果卡内容决定，不再按 2fr 拉出空白 */
+.prompt-duo-grid{display:grid;grid-template-columns:minmax(480px,1fr) fit-content(558px);gap:14px;width:100%;min-width:0;flex:0 0 auto;align-items:start;}
 .prompt-left-col{display:flex;flex-direction:column;min-width:0;}
 .prompt-left-view{position:relative;min-width:0;}
 .prompt-left-pane{display:none;flex-direction:column;min-width:0;border-radius:14px;overflow:hidden;box-sizing:border-box;}
@@ -2502,15 +2501,13 @@ body.dark .app-confirm-card{background:#1c2432;box-shadow:0 18px 48px rgba(0,0,0
 body.dark .app-confirm-msg{color:#dfe6f0}
 body.dark .app-confirm-btn.cancel{border-color:rgba(255,255,255,.16);color:#aeb8c6;}
 body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
-/* —— 右列：上=生成结果（原高度 238px） 下=常用提示词 —— */
-.prompt-right-col{display:flex;flex-direction:column;min-width:0;gap:14px;margin-right:8px;}
-/* v4.8.65 右列滚动冻结：sticky 吸顶与导航行顶部对齐，切换 pane 时位置固定 */
-.prompt-right-col{position:sticky;top:0;align-self:start;}
-/* v4.8.65 导航行高度锁定：避免切换 pane 时高度变化导致右列相对位置抖动 */
+/* —— 右列：上=生成结果（550×350） 下=常用提示词；整列 sticky 吸顶 —— */
+.prompt-right-col{display:flex;flex-direction:column;min-width:0;gap:14px;margin-right:8px;position:sticky;top:0;align-self:start;}
+/* 导航行锁高，避免切换 pane 时右列相对位置抖动 */
 .prompt-mini-nav{height:50px;box-sizing:border-box;flex-wrap:nowrap;overflow:hidden;}
 .prompt-right-top{display:flex;flex-direction:column;gap:12px;}
-/* v4.8.74 生成结果框按比例锁定：宽高比恒定（422:238，即 1280 设计宽度下的原始比例），宽度随窗口变化时高度等比跟随，不拉伸变形 */
-.prompt-right-top .prompt-result-card{display:flex;flex-direction:column;width:100%;height:auto;aspect-ratio:422/238;min-height:170px;flex:0 0 auto;}
+/* v4.8.80 生成结果固定尺寸 550×350、居右；右列不足 550 时按列宽收缩 */
+.prompt-right-top .prompt-result-card{display:flex;flex-direction:column;width:550px;max-width:100%;height:350px;margin-left:auto;flex:0 0 auto;}
 .prompt-right-top .prompt-result-header{padding:4px 12px;min-height:39px;box-sizing:border-box;}
 .prompt-right-top .prompt-result-header-left{flex:0 0 auto;white-space:nowrap;}
 /* v4.8.6 标题行与操作按钮同一行水平对齐（原按钮强制换行到第二行） */
@@ -2520,7 +2517,8 @@ body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
 .prompt-right-top .prompt-result-textarea{flex:1 1 auto;min-height:0;}
 .prompt-right-top .prompt-preset-list-card{flex:0 0 auto;}
 .prompt-right-bottom{flex:0 0 auto;}
-.prompt-right-bottom .prompt-quick-prompt-card{width:100%;box-sizing:border-box;}
+/* v4.8.80 常用提示词卡片锁定 550px 并右对齐（与生成结果卡同宽同右缘） */
+.prompt-right-bottom .prompt-quick-prompt-card{width:550px;max-width:100%;box-sizing:border-box;margin-left:auto;}
 /* ===== /RESKIN PART 13 ===== */
 </style>
 </head>
@@ -2750,13 +2748,13 @@ body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
           <div class="card color-right" id="colorRightCard">
             <div class="card-head-row">
               <span class="card-title">屏幕吸色</span>
-              <div class="head-acts"><button class="pick-screen-btn" onclick="colorPickScreen()" title="全屏吸管放大镜取色 (快捷键 E)">吸色 <span class="pick-key">E</span></button></div>
+              <div class="head-acts"><button class="pick-screen-btn" onclick="colorPickScreen()" title="全屏吸管取色 · 快捷键 E">吸色 <span class="pick-key">E</span></button></div>
             </div>
             <div class="pick-status" id="pickStatus"></div>
             <div class="paste-zone" id="pasteZone">
               <div class="paste-hint">
-                <span id="pasteHintMain">Ctrl+V 粘贴截图</span>
-                <span class="paste-hint-sub">或拖入图片</span>
+                <span id="pasteHintMain">Ctrl+V 粘贴截图 · 点击取色</span>
+                <span class="paste-hint-sub">或拖入图片 · 按 E 全屏吸色</span>
               </div>
               <img class="paste-preview" id="pastePreview" alt="">
               <button class="paste-clear" id="pasteClear" onclick="colorClearPaste()">x</button>
@@ -3473,13 +3471,6 @@ function highlight() {
     return'linear-gradient('+cfg.angle+'deg,'+stops.join(',')+')';
   }
 
-  window.colorSetGradRatio = function(ratio,btn){
-    state.gradRatio=ratio;
-    var btns=document.querySelectorAll('.ratio-btn');
-    for(var i=0;i<btns.length;i++)btns[i].classList.remove('active');
-    if(btn)btn.classList.add('active');
-    if(state.colors&&state.colors.length>=6)renderGradients(state.colors);
-  };
 
   window.downloadGradient=function(gi){
     if(!state.colors||state.colors.length<6)return;
@@ -3526,94 +3517,9 @@ function highlight() {
     }
     renderGradients(state.colors);
   };
-  window.colorResetGradients = function(){
-    state.gradConfigs=JSON.parse(JSON.stringify(getGradConfigs()));
-    if(state.colors&&state.colors.length>=6)renderGradients(state.colors);
-    showToast('已重置为默认组合');
-  };
-  function randUniqueColors(n,max){
-    var arr=[];
-    while(arr.length<n){var r=Math.floor(Math.random()*max);if(arr.indexOf(r)===-1)arr.push(r);}
-    return arr;
-  }
-  window.gradRandomize = function(){
-    if(!state.colors||state.colors.length<6){showToast('请先生成配色');return;}
-    var randTypes=['linear','linear','linear','radial','radial','radial'];
-    state.gradConfigs.forEach(function(cfg,i){
-      cfg.type=randTypes[i];
-      var uniq=randUniqueColors(cfg.colors.length,6);
-      for(var ci=0;ci<cfg.colors.length;ci++)cfg.colors[ci]=uniq[ci];
-      if(Math.random()<0.4)cfg.colors.reverse();
-      if(cfg.type==='linear')cfg.angle=Math.floor(Math.random()*360);
-      if(cfg.type==='radial'){cfg.cx=10+Math.floor(Math.random()*80);cfg.cy=10+Math.floor(Math.random()*80);}
-    });
-    renderGradients(state.colors);
-    showToast('已随机化');
-  };
   var gradSelColors=[];
   var gradPickPopup=null;
   var gradSelNext=0;
-  window.gradShowPicker = function(idx){
-    if(!paletteColors||!paletteColors.length){showToast('请先在调色盘添加颜色');return;}
-    if(gradPickPopup){document.body.removeChild(gradPickPopup);gradPickPopup=null;}
-    var box=document.getElementById('gradSelBox'+idx);
-    if(!box)return;
-    var br=box.getBoundingClientRect();
-    var hexes=paletteColors.map(function(c){return hslToHex(c.h,c.s,c.l);});
-    var cur=gradSelColors[idx];
-    var curHex=typeof cur==='object'?hslToHex(cur.h,cur.s,cur.l):(typeof cur==='number'?hexes[cur]:null);
-    var popup=document.createElement('div');
-    popup.style.cssText='position:fixed;z-index:1000;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 6px 20px rgba(0,0,0,0.12);';
-    popup.style.left=Math.min(br.left,window.innerWidth-200)+'px';
-    popup.style.top=(br.bottom+4)+'px';
-    popup.innerHTML='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">'+hexes.map(function(h,i){
-      var sel=curHex===h?'2px solid var(--accent)':'2px solid transparent';
-      return '<div class="grad-pick-item" data-ci="'+i+'" style="width:40px;height:40px;border-radius:6px;background:'+h+';border:'+sel+';cursor:pointer;transition:all 0.1s;" title="色'+(i+1)+' '+h+'"></div>';
-    }).join('')+'</div>';
-    popup.querySelectorAll('.grad-pick-item').forEach(function(el){
-      el.addEventListener('click',function(){
-        var ci=parseInt(this.dataset.ci);
-        gradSelColors[idx]=ci;
-        box.style.border='2px solid '+hexes[ci];box.style.background=hexes[ci];
-        var cnt=0;for(var si=0;si<3;si++){if(gradSelColors[si]!==undefined)cnt++;}
-        if(gradPickPopup){document.body.removeChild(gradPickPopup);gradPickPopup=null;}
-      });
-    });
-    document.body.appendChild(popup);
-    gradPickPopup=popup;
-    setTimeout(function(){document.addEventListener('click',function(e){if(gradPickPopup&&!popup.contains(e.target)&&e.target!==box){document.body.removeChild(popup);gradPickPopup=null;}},{once:true});},10);
-  };
-  window.gradClearColor = function(idx){
-    var box=document.getElementById('gradSelBox'+idx);
-    if(!box)return;
-    if(gradSelColors[idx]===undefined)return;
-    delete gradSelColors[idx];
-    box.style.border='2px dashed var(--border)';box.style.background='var(--bg-card)';
-    var cnt=0;for(var si=0;si<3;si++){if(gradSelColors[si]!==undefined)cnt++;}
-  };
-  window.gradGenFromSelected = function(){
-    var valid=[];for(var si=0;si<3;si++){if(gradSelColors[si]!==undefined)valid.push(gradSelColors[si]);}
-    if(valid.length<2){showToast('请至少选2种颜色');return;}
-    var selColors=valid.map(function(v){return typeof v==='number'?paletteColors[v]:v;});
-    for(var ti=0;ti<selColors.length;ti++){state.colors[ti]=selColors[ti];}
-    var types=['linear','linear','linear','radial','radial','radial'];
-    function equalPositions(len){
-      if(len===2)return[0,100];
-      return[0,50,100];
-    }
-    state.gradConfigs=types.map(function(type){
-      var n=Math.min(valid.length,2+Math.floor(Math.random()*(valid.length-1)));
-      var pool=[];for(var pi=0;pi<selColors.length;pi++)pool.push(pi);
-      var cols=[];
-      for(var ci=0;ci<n;ci++){var ri=Math.floor(Math.random()*pool.length);cols.push(pool[ri]);pool.splice(ri,1);}
-      var cfg={type:type,colors:cols,positions:equalPositions(n)};
-      if(type==='linear')cfg.angle=Math.floor(Math.random()*360);
-      if(type==='radial'){cfg.cx=10+Math.floor(Math.random()*80);cfg.cy=10+Math.floor(Math.random()*80);}
-      return cfg;
-    });
-    renderGradients(state.colors);
-    showToast('已生成');
-  };
 
   var anglePresets=[0,45,90,135,180,225,270,315];
   window.cycleAngle=function(gi,e){
@@ -3655,14 +3561,6 @@ function highlight() {
     document.addEventListener('mouseup',onUp);
   });
   var posPresets=[0,25,50,75,100];
-  window.cyclePos=function(gi,cpos,e){
-    var cfg=state.gradConfigs[gi];
-    if(!cfg.positions)cfg.positions=cfg.colors.map(function(_,i){return Math.round(i/(cfg.colors.length-1||1)*100);});
-    var cur=cfg.positions[cpos];
-    var idx=posPresets.indexOf(cur);
-    cfg.positions[cpos]=posPresets[(idx+1)%posPresets.length];
-    renderGradients(state.colors);
-  }
   window.showGradPicker=function(gi,pos,e){
     var picker=document.getElementById('gradPicker');
     var grid=document.getElementById('gradPickerGrid');
@@ -3955,13 +3853,6 @@ function setCompressedPreview(img){
     updateAll();showToast('已提取 '+result.length+' 种颜色');
   }
 
-  window.colorCopyColorSVG = function(hex,el){
-    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="'+hex+'"/></svg>';
-    navigator.clipboard.writeText(svg).then(function(){
-      if(el){el.style.outline='2px solid var(--accent)';el.style.outlineOffset='-2px';setTimeout(function(){el.style.outline='';el.style.outlineOffset='';},400);}
-      showToast('已复制 SVG，可直接粘贴到 Illustrator');
-    });
-  };
   window.colorCopyText = function(t,el){
     navigator.clipboard.writeText(t).then(function(){
       if(el){el.style.background='var(--accent-light)';setTimeout(function(){el.style.background='';},400);}
@@ -4615,10 +4506,13 @@ function setCompressedPreview(img){
   // 初始化：粘贴快捷键提示按平台显示；无系统吸色能力时说明将走截屏取色
   (function(){
     var hint=document.getElementById('pasteHintMain');
-    if(hint)hint.textContent=PASTE_KEY+' 粘贴截图，然后点击取色';
+    if(hint)hint.textContent=PASTE_KEY+' 粘贴截图 · 点击图上取色';
+    // v4.8.85 抠图面板粘贴提示同步平台快捷键（原硬编码 Ctrl+V）
+    var mdt=document.querySelector('.matting-drop-title');
+    if(mdt)mdt.textContent='点击选择 / 拖入图片，或直接 '+PASTE_KEY+' 粘贴';
     if(!window.EyeDropper){
       var btn=document.querySelector('.pick-screen-btn');
-      setPickStatus('按 E 直接全屏吸管取色：本浏览器无系统吸管，将截取屏幕后用放大镜取色；也可 '+PASTE_KEY+' 粘贴截图取色','warn');
+      setPickStatus('本浏览器无系统吸管 · 按 E 将截屏后放大镜取色 · 也可 '+PASTE_KEY+' 粘贴截图取色','warn');
     }
   })();
 
@@ -5228,11 +5122,6 @@ quickPromptText:'',
 
 // v4.8 容器底色减淡 50%：把渐变里的不透明色转半透明，透过页面底色后视觉浓度减半
 function promptFadeBg(g,a){return (g||'').replace(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g,function(m){var h=m.slice(1);if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');return 'rgba('+parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16)+','+((a==null)?0.5:a)+')';});}
-function collapsibleHTML(c,bodyHtml){
-  var arrow='<span class="prompt-arrow"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-  var header='<div class="prompt-collapsible-header"><span class="prompt-title" data-gtitle="'+promptEscapeAttr(c.title)+'" style="color:'+c.tcolor+';font-size:13px;font-weight:700;letter-spacing:.4px">'+promptEscapeHtml(c.title)+'</span><button class="prompt-tag-add">+</button>'+arrow+'</div>';
-  return '<div class="prompt-collapsible" data-gbox="'+promptEscapeAttr(c.title)+'" style="background:'+promptFadeBg(c.gradient)+';border-radius:14px;padding:8px">'+header+'<div class="prompt-collapsible-body open">'+bodyHtml+'</div></div>';
-}
 // v4.3.0 平铺分组：去掉折叠层，每组只留一条小标题 + 标签组（层级 列→标签）
 // v4.4.8 同一列内的小标题统一为该列主色（仅标题文字；标签的板块色仍按分组各自保持）
 var COL_TITLE_COLOR={background:'#9B4513',subject:'#A33646',typography:'#2C5286'};
