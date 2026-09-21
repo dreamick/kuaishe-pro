@@ -775,10 +775,10 @@ textarea:focus { outline: none; border-color: var(--primary); }
 .prompt-flat-title .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-flat-title .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
 /* v4.8.52 自定义描述输入框：导航行「风格」按钮右侧，4 个板块常显，各随板块配色，无外框容器 */
-.prompt-nav-custom-bar{display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 auto;margin-left:8px;margin-right:14px}
+.prompt-nav-custom-bar{display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 auto;margin-left:8px;margin-right:40px}
 .prompt-nav-custom-bar .prompt-col-custom-wrap{position:relative;display:none;flex:1 1 200px;min-width:0;max-width:420px}
 .prompt-nav-custom-bar .prompt-col-custom-wrap.active{display:block}
-.prompt-nav-custom-bar .prompt-col-custom-input{width:100%;height:30px;padding:4px 22px 4px 10px;box-sizing:border-box;font-size:12px;border:1.5px solid transparent;border-radius:6px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;transition:var(--prompt-transition)}
+.prompt-nav-custom-bar .prompt-col-custom-input{width:100%;height:30px;padding:4px 22px 4px 10px;box-sizing:border-box;font-size:12px;border:1.5px solid transparent;border-radius:8px;color:var(--prompt-text-primary);background:var(--prompt-bg-card);outline:none;font-family:inherit;transition:var(--prompt-transition)}
 .prompt-nav-custom-bar .prompt-col-custom-input::placeholder{color:var(--prompt-text-muted);font-style:italic;font-size:12px}
 .prompt-nav-custom-bar .prompt-col-custom-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--prompt-text-muted);font-size:16px;line-height:1;display:none;background:none;border:none;font-family:inherit;padding:0}
 /* 各板块配色（与 tag 板块色一致：背景棕/元素红/文字蓝/产品绿）；v4.8.66 输入文字/光标随板块色，占位符用板块色淡化 */
@@ -2468,9 +2468,14 @@ body.dark .prompt-pane-style{background:transparent;border:none;box-shadow:none;
 .prompt-left-pane .prompt-product-column{gap:10px;}
 /* 容器切换按钮（位于顶部参数行，样式对齐 prompt-nav-btn 设计规范） */
 /* v4.8.88 导航 pane 按钮加底纹：与参数按钮同风格（浅底+描边圆角）；选中高亮统一饱和度（各 hue 保留，S≈52-62% 一档，风格页保持全局橙 #FF7A59） */
-.pls-btn{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid var(--prompt-border);background:var(--prompt-bg-section);border-radius:8px;font-size:13px;font-weight:500;color:var(--prompt-text-secondary);cursor:pointer;transition:all .15s ease;font-family:inherit;padding:0 14px;white-space:nowrap;outline:none;}
+.pls-btn{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid var(--prompt-border);background:var(--prompt-bg-section);border-radius:8px;font-size:13px;font-weight:500;color:var(--prompt-text-secondary);cursor:grab;transition:all .15s ease;font-family:inherit;padding:0 14px;white-space:nowrap;outline:none;}
 .pls-btn:focus-visible{outline:none;}
 .pls-btn:hover{background:var(--surface);}
+.pls-btn:active{cursor:grabbing;}
+.pls-btn.dragging{opacity:.45;cursor:grabbing;}
+/* 拖拽目标高亮提示 */
+.pls-btn.drop-before{box-shadow:-3px 0 0 0 var(--primary);}
+.pls-btn.drop-after{box-shadow:3px 0 0 0 var(--primary);}
 .pls-btn.active{color:#fff;border-color:transparent;}
 .pls-btn[data-pane="bg"].active{background:linear-gradient(135deg,#DCAF56,#BE8E2D);}
 .pls-btn[data-pane="element"].active{background:linear-gradient(135deg,#DE5E78,#C62F4D);}
@@ -5356,6 +5361,71 @@ function switchPromptPane(key){
   switchPSection(key==='product'?'product':'image');
 }
 PSS('.pls-btn').forEach(function(btn){btn.addEventListener('click',function(){switchPromptPane(btn.dataset.pane);});});
+// ====== 板块导航拖拽排序（用户自定义 5 个板块顺序，持久化到 localStorage，并同步滚轮切换顺序） ======
+(function(){
+  var PANE_ORDER_KEY='mergedPromptPaneOrder';
+  var header=PS('.prompt-mini-nav');
+  if(!header)return;
+  var bar=PS('.prompt-nav-custom-bar',header);
+  function paneBtns(){ return Array.from(header.querySelectorAll('.pls-btn')); }
+  function getPaneOrder(){
+    try{
+      var s=JSON.parse(localStorage.getItem(PANE_ORDER_KEY)||'[]');
+      return Array.isArray(s)?s.filter(function(k){return PROMPT_PANES.indexOf(k)>=0;}):[];
+    }catch(e){return [];}
+  }
+  // 按指定顺序重排按钮（保持其在 custom-bar 之前）
+  function reorderPaneButtons(order){
+    var btns=paneBtns();
+    var map={}; btns.forEach(function(b){map[b.dataset.pane]=b;});
+    var seq=order.concat(PROMPT_PANES.filter(function(k){return order.indexOf(k)<0;}));
+    seq.forEach(function(k){ if(map[k] && bar) header.insertBefore(map[k],bar); });
+  }
+  // 从当前 DOM 顺序同步 PROMPT_PANES 与 localStorage
+  function syncOrder(){
+    var seq=paneBtns().map(function(b){return b.dataset.pane;});
+    PROMPT_PANES.length=0; seq.forEach(function(k){PROMPT_PANES.push(k);});
+    try{localStorage.setItem(PANE_ORDER_KEY,JSON.stringify(seq));}catch(e){}
+  }
+  // 初始恢复上次顺序
+  var saved=getPaneOrder();
+  if(saved.length) reorderPaneButtons(saved);
+  // 拖拽交互
+  var dragSrc=null;
+  function clearMarks(){ paneBtns().forEach(function(b){b.classList.remove('drop-before','drop-after');}); }
+  paneBtns().forEach(function(btn){
+    btn.setAttribute('draggable','true');
+    btn.addEventListener('dragstart',function(e){
+      dragSrc=btn; btn.classList.add('dragging');
+      try{e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',btn.dataset.pane);}catch(_){}
+    });
+    btn.addEventListener('dragend',function(){ btn.classList.remove('dragging'); clearMarks(); dragSrc=null; });
+    btn.addEventListener('dragover',function(e){ e.preventDefault(); try{e.dataTransfer.dropEffect='move';}catch(_){}
+      if(!dragSrc||dragSrc===btn){clearMarks();return;}
+      var rect=btn.getBoundingClientRect();
+      var after=(e.clientX>rect.left+rect.width/2);
+      clearMarks();
+      btn.classList.add(after?'drop-after':'drop-before');
+    });
+    btn.addEventListener('drop',function(e){
+      e.preventDefault();
+      if(!dragSrc||dragSrc===btn){clearMarks();return;}
+      var rect=btn.getBoundingClientRect();
+      var after=(e.clientX>rect.left+rect.width/2);
+      if(after) header.insertBefore(dragSrc,btn.nextSibling);
+      else header.insertBefore(dragSrc,btn);
+      clearMarks(); syncOrder();
+    });
+  });
+  // 拖到自定义输入框区域时，放到末尾
+  if(bar){
+    bar.addEventListener('dragover',function(e){ e.preventDefault(); });
+    bar.addEventListener('drop',function(e){
+      e.preventDefault();
+      if(dragSrc){ header.insertBefore(dragSrc,bar); clearMarks(); syncOrder(); }
+    });
+  }
+})();
 // ====== 鼠标滚轮切换容器（v4.8.28 循环切换：监听整个提示词区；右列不触发；真可滚动容器未到边界时优先内部滚动） ======
 (function(){
   var pbody=PS('#promptBody');
