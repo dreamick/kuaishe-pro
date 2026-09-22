@@ -2789,8 +2789,8 @@ body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
       <div class="matting-modebar" id="mattingModeBar">
         <div class="matting-pickwrap" id="mattingPickWrap">
           <div class="matting-modepick" id="mattingModePick">
-            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 Shift：在白底 / 纯色底之间切换">白底</button>
-            <button type="button" class="mp-btn mp-wm" data-mode="watermark" title="快捷键 Z：进入去水印模式（按 Shift 返回白底）">去水印</button>
+            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 1：白底 / 纯色底切换">白底</button>
+            <button type="button" class="mp-btn mp-wm" data-mode="watermark" title="快捷键 2：进入去水印（按 1 返回白底）">去水印</button>
             <button type="button" class="mp-btn mp-ai" data-mode="ai">AI 抠图</button>
           </div>
           <div class="mq-popup" id="mqPopup">
@@ -6164,6 +6164,20 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   const cursorGreen = buildCrosshairCursor('#22c55e');
   const cursorRed   = buildCrosshairCursor('#ef4444');
   const cursorStamp = buildCrosshairCursor('#3b82f6');
+  // 圆圈颜色跟随十字标：增加/保留=绿，删除/减去=红，图章=蓝
+  const RING_RGB = { green: [34,197,94], red: [239,68,68], blue: [59,130,246] };
+  function ringColorRGB(){
+    if(stampActive) return RING_RGB.blue;
+    if(brushActive) return (brushDir === 'add') ? RING_RGB.green : RING_RGB.red;
+    if(wandActive)  return (wandMode === 'keep') ? RING_RGB.green : RING_RGB.red;
+    return RING_RGB.blue;
+  }
+  function applyRingColor(){
+    if(!wmBrushRing) return;
+    const c = ringColorRGB();
+    wmBrushRing.style.borderColor = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',0.9)';
+    wmBrushRing.style.background  = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',0.08)';
+  }
   function updateToolCursor(){
     let c = '';
     if(stampActive) c = cursorStamp;
@@ -6171,6 +6185,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     else if(wandActive) c = (wandMode === 'keep') ? cursorGreen : cursorRed;
     brushCanvas.style.cursor = c;
     canvas.style.cursor = c;
+    applyRingColor();
   }
   const gridEl = document.getElementById('mattingGrid');
   const batchBar = document.getElementById('mattingBatchBar');
@@ -6931,7 +6946,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
     if(brushClear) brushClear.style.display = 'none';   // 去水印：屏蔽画笔「清除」（其依赖抠图基图，会污染结果）
-    if(brushHint) brushHint.textContent = 'Shift+点击 取样（基准点），然后涂抹覆盖；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
+    if(brushHint) brushHint.textContent = '按住 Shift 点击取样，再涂抹覆盖水印（对齐）';
     updateToolCursor();
     updateWmUndoButtons();
   }
@@ -6966,16 +6981,20 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     }
     if(brushHint) brushHint.textContent = '已取样：以该点为基准复制像素，涂抹时周围纹理随笔刷一起盖过来（对齐模式）';
   }
-  function wmMoveCursor(e){
-    if(!stampActive || !wmBrushRing) return;
+  function updateToolRingAt(p){
+    if(!wmBrushRing) return;
+    applyRingColor();
     const sc = wmLocalScale();
-    const p = brushPos(e);
     const R = brushRadiusInternal() * sc;
     wmBrushRing.style.display = 'block';
     wmBrushRing.style.width = (R * 2) + 'px';
     wmBrushRing.style.height = (R * 2) + 'px';
     wmBrushRing.style.left = (p[0] * sc - R) + 'px';
     wmBrushRing.style.top  = (p[1] * sc - R) + 'px';
+  }
+  function wmMoveCursor(e){
+    if(!stampActive && !brushActive) return;
+    updateToolRingAt(brushPos(e));
   }
   function wmSchedulePut(){
     if(wmRafPending) return;
@@ -7116,7 +7135,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(brushDirLabel) brushDirLabel.style.display = 'none';
       enableStamp({ fromMode: 'watermark' });
       prepareBase();
-      if(brushHint) brushHint.textContent = '去水印：Shift+点击 取样（基准点），再涂抹覆盖水印；源区域随笔刷滑动，周围纹理一起盖过来（对齐）';
+      if(brushHint) brushHint.textContent = '去水印：按住 Shift 点击取样，再涂抹覆盖水印（对齐）';
       syncView();
       fitTopWidth();
     }catch(e){ console.error(e); if(typeof showError === 'function') showError('去水印模式加载失败'); }
@@ -7127,8 +7146,18 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     if(wandTools) wandTools.style.display = 'none';
     if(wandTolLabel) wandTolLabel.style.display = 'none';
     if(brushDirLabel) brushDirLabel.style.display = 'none';
-    if(brushHint) brushHint.textContent = '去水印模式：上传或粘贴图片后，Shift+点击 取样，再涂抹覆盖水印';
+    if(brushHint) brushHint.textContent = '去水印模式：上传或粘贴图片后，按住 Shift 点击取样，再涂抹覆盖水印';
     if(currentSourceBlob){ wmLoadOriginal(currentSourceBlob); }
+  }
+  // 快捷键 1：切换「白底 / 纯色底」（从去水印 / AI 进入时先回到白底）
+  function selectBgMode(mode){   // mode: 'white' | 'solid'
+    if(stampActive) disableStamp();
+    setBgButton(mode);
+    applyMode(mode, true);
+    if(!currentSourceBlob){ if(typeof showToast === 'function') showToast('请先上传图片','warn'); return; }
+    if(busy){ if(typeof showToast === 'function') showToast('正在处理中，请稍候','warn'); return; }
+    if(typeof showToast === 'function') showToast(mode === 'solid' ? '正在按纯色底重新处理…' : '正在快速去除白底…', 'info');
+    processImage(currentSourceBlob);
   }
   // 用「笔刷 / 容差」文字高亮表示当前激活的工具（画笔→高亮笔刷，魔棒→高亮容差）；画笔按钮已隐藏
   function updateToolIndicators(){
@@ -7167,6 +7196,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   function disableBrush(){
     brushActive = false;
     brushCanvas.classList.remove('active');
+    if(wmBrushRing) wmBrushRing.style.display = 'none';
     if(brushHint) brushHint.textContent = '笔刷涂抹还原 · 容差魔棒抠除';
     updateToolIndicators();
     updateToolCursor();
@@ -7453,6 +7483,17 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   if(brushSize) brushSize.addEventListener('input', function(){
     if(Math.abs((+brushSize.value) - 25) <= 5) brushSize.value = 25;
     if(brushSizeVal) brushSizeVal.textContent = brushSize.value;
+    // 画笔模式下实时跟随环尺寸
+    if(brushActive && wmBrushRing && wmBrushRing.style.display === 'block' && typeof wmLocalScale === 'function'){
+      const sc = wmLocalScale();
+      const R = brushRadiusInternal() * sc;
+      const left = parseFloat(wmBrushRing.style.left) || 0, top = parseFloat(wmBrushRing.style.top) || 0;
+      const cx = left + R, cy = top + R;
+      wmBrushRing.style.width = (R * 2) + 'px';
+      wmBrushRing.style.height = (R * 2) + 'px';
+      wmBrushRing.style.left = (cx - R) + 'px';
+      wmBrushRing.style.top  = (cy - R) + 'px';
+    }
   });
   // 键盘 [ ] 调整笔刷大小（由全局 keydown 调用）；步进 5，越界钳制，不触发滑块吸附
   window.mattingAdjustBrush = function(delta){
@@ -7462,8 +7503,8 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     v = Math.max(min, Math.min(max, v));
     brushSize.value = v;
     if(brushSizeVal) brushSizeVal.textContent = v;
-    // 去水印（图章）模式下实时跟随环尺寸
-    if(stampActive && wmBrushRing && wmBrushRing.style.display === 'block' && typeof wmLocalScale === 'function'){
+    // 画笔 / 图章模式下实时跟随环尺寸
+    if((stampActive || brushActive) && wmBrushRing && wmBrushRing.style.display === 'block' && typeof wmLocalScale === 'function'){
       const sc = wmLocalScale();
       const R = brushRadiusInternal() * sc;
       const left = parseFloat(wmBrushRing.style.left) || 0, top = parseFloat(wmBrushRing.style.top) || 0;
@@ -7498,14 +7539,16 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   });
   brushCanvas.addEventListener('pointermove', function(e){
     if(stampActive){ wmMoveCursor(e); wmPointerMove(e); return; }
-    if(!brushActive || !brushDrawing) return; e.preventDefault();
+    if(!brushActive) return; e.preventDefault();
     const p = brushPos(e);
+    updateToolRingAt(p);
+    if(!brushDrawing) return;
     if(brushLast) brushLine(brushLast, p); else brushStroke(p[0], p[1]);
     brushDirty = true; brushLast = p;
   });
   function brushEnd(){ brushDrawing = false; brushLast = null; if(brushDirty) bakeBrush(); }
   brushCanvas.addEventListener('pointerup', function(e){ if(stampActive){ wmPointerUp(e); return; } brushEnd(e); });
-  brushCanvas.addEventListener('pointerleave', function(e){ if(stampActive){ if(wmBrushRing) wmBrushRing.style.display = 'none'; wmPointerUp(e); return; } brushEnd(e); });
+  brushCanvas.addEventListener('pointerleave', function(e){ if(stampActive){ if(wmBrushRing) wmBrushRing.style.display = 'none'; wmPointerUp(e); return; } if(wmBrushRing) wmBrushRing.style.display = 'none'; brushEnd(e); });
   brushCanvas.addEventListener('pointercancel', function(e){ if(stampActive){ wmPointerUp(e); return; } brushEnd(e); });
   // 全局快捷键
   document.addEventListener('keydown', function(e){
@@ -7525,7 +7568,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     // 单键快捷键：不在输入框、且无 Ctrl/Cmd/Alt 组合键时生效（Ctrl+S 等交给浏览器）
     if(inField || e.ctrlKey || e.metaKey || e.altKey) return;
     if(e.repeat) return;             // 长按不重复触发
-    if(e.shiftKey && key !== 'shift') return;   // Shift+其他键不触发单键快捷键（仅独立 Shift 用于图章）
+    if(e.shiftKey && key !== 'shift') return;   // Shift+其他键不触发单键快捷键（Shift+点击用于图章取样）
     if(mattingMode === 'watermark' && (key === 'b' || key === 'w' || key === 'm')) return;   // 去水印模式：屏蔽画笔 / 魔棒快捷键
     if(key === 'b'){                      // B：画笔开启 + 方向切换；开启后只在「增加/减去」间循环，不自动关闭
       if(panMode) exitPanMode(false);     // 先退出移动模式
@@ -7553,28 +7596,17 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
       if(resultBlob) zoomCenter(zoom / 1.25);
     } else if(key === '0'){               // 0：完整复位（100% 且回归视口原点）
       if(resultBlob) resetTransform();
-    } else if(key === 'shift'){           // Shift：白底 / 纯色底切换；去水印模式下按 Shift 回到白底
+    } else if(key === '1' || key === '2'){   // 1：白底 / 纯色底切换；2：去水印（仅在「极速抠图」页面有效）
+      // 仅在「极速抠图」标签页生效，其它页面忽略数字键
+      var mtEl = document.querySelector('.tab-item[data-tab="matting"]');
+      if(!mtEl || !mtEl.classList.contains('active')) return;
       if(panMode) exitPanMode(false);
-      if(mattingMode === 'watermark'){    // 去水印 → 白底
-        if(stampActive) disableStamp();
-        setBgButton('white');
-        applyMode('white', true);
-        if(!currentSourceBlob){ if(typeof showToast === 'function') showToast('请先上传图片','warn'); return; }
-        if(busy){ if(typeof showToast === 'function') showToast('正在处理中，请稍候','warn'); return; }
-        if(typeof showToast === 'function') showToast('正在快速去除白底…','info');
-        processImage(currentSourceBlob);
-        return;
+      if(key === '1'){                     // 1：白底 ↔ 纯色底（去水印 / AI 进入时先回到白底）
+        if(mattingMode === 'watermark' || mattingMode === 'ai'){ selectBgMode('white'); }
+        else { toggleBgMode(); }
+      } else {                             // 2：切换到「去水印」模式（按 1 返回白底）
+        if(mattingMode !== 'watermark'){ selectWatermarkMode(); }
       }
-      if(stampActive) disableStamp();
-      const nextMode = toggleBgMode();
-      if(!currentSourceBlob){ if(typeof showToast === 'function') showToast('请先上传图片','warn'); return; }
-      if(busy){ if(typeof showToast === 'function') showToast('正在处理中，请稍候','warn'); return; }
-      if(nextMode === 'solid'){ if(typeof showToast === 'function') showToast('正在按纯色底重新处理…','info'); }
-      else { if(typeof showToast === 'function') showToast('正在快速去除白底…','info'); }
-      processImage(currentSourceBlob);
-    } else if(key === 'z'){               // Z：切换到「去水印」模式（进入后用 Shift 返回白底）
-      if(panMode) exitPanMode(false);
-      if(mattingMode !== 'watermark'){ selectWatermarkMode(); }
     }
   });
 
@@ -7881,7 +7913,7 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   (function restoreMattingMode(){
     let saved;
     try { saved = localStorage.getItem(MATTING_MODE_KEY); } catch(e){ saved = null; }
-    // 抠图默认白底（按 Z 在白底/纯色底间切换，故不记忆纯色底）；仅记忆 AI 模式，避免每次重选模型
+    // 抠图默认白底（按 1 在白底/纯色底间切换，故不记忆纯色底）；仅记忆 AI 模式，避免每次重选模型
     if(saved === 'ai'){
       applyMode('ai', false);
     } else {
