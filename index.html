@@ -2789,7 +2789,7 @@ body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
       <div class="matting-modebar" id="mattingModeBar">
         <div class="matting-pickwrap" id="mattingPickWrap">
           <div class="matting-modepick" id="mattingModePick">
-            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 1：白底 / 纯色底切换">白底</button>
+            <button type="button" class="mp-btn mp-bg active" data-mode="white" id="bgModeBtn" title="快捷键 1 / Tab：白底 / 纯色底切换">白底</button>
             <button type="button" class="mp-btn mp-wm" data-mode="watermark" title="快捷键 2：进入去水印（按 1 返回白底）">去水印</button>
             <button type="button" class="mp-btn mp-ai" data-mode="ai">AI 抠图</button>
           </div>
@@ -5297,7 +5297,7 @@ promptHeader.className='prompt-mini-nav';
 promptHeader.style.cssText='display:flex;gap:6px;align-items:center;position:sticky;top:0;z-index:30;background:var(--bg);padding:8px 0 10px;margin-top:-8px;';
 // v4.8.58 自定义描述输入框：导航行「风格」按钮右侧，5 个板块各一个、随板块配色，按当前 pane 单显（含风格），不再随 pane 隐藏整条
 var promptsNavCustomHTML='<div class="prompt-nav-custom-bar"><div class="prompt-col-custom-wrap c-bg active" data-pane="bg"><input class="prompt-col-custom-input" id="promptCustomBg" placeholder="自定义背景描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearBg">&times;</button></div><div class="prompt-col-custom-wrap c-element" data-pane="element"><input class="prompt-col-custom-input" id="promptCustomElement" placeholder="自定义元素描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearElement">&times;</button></div><div class="prompt-col-custom-wrap c-font" data-pane="font"><input class="prompt-col-custom-input" id="promptCustomFont" placeholder="自定义文字描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearFont">&times;</button></div><div class="prompt-col-custom-wrap c-product" data-pane="product"><input class="prompt-col-custom-input" id="promptCustomProduct" placeholder="自定义产品关键词..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearProduct">&times;</button></div><div class="prompt-col-custom-wrap c-style" data-pane="style"><input class="prompt-col-custom-input" id="promptCustomStyle" placeholder="自定义风格描述..." autocomplete="off"><button class="prompt-col-custom-clear" id="promptClearStyle">&times;</button></div></div>';
-promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button">背景</button><button class="pls-btn" data-pane="element" type="button">元素</button><button class="pls-btn" data-pane="font" type="button">文字</button><button class="pls-btn" data-pane="product" type="button">产品</button><button class="pls-btn" data-pane="style" type="button">风格</button>'+promptsNavCustomHTML;
+promptHeader.innerHTML='<button class="pls-btn active" data-pane="bg" type="button" title="Tab 切换板块">背景</button><button class="pls-btn" data-pane="element" type="button" title="Tab 切换板块">元素</button><button class="pls-btn" data-pane="font" type="button" title="Tab 切换板块">文字</button><button class="pls-btn" data-pane="product" type="button" title="Tab 切换板块">产品</button><button class="pls-btn" data-pane="style" type="button" title="Tab 切换板块">风格</button>'+promptsNavCustomHTML;
 PS('#promptLeftView').insertBefore(promptHeader,PS('#promptLeftView').firstChild);
 
 // 生成结果列左右拖动调整宽度（拖动后保存到 localStorage，下次打开恢复）
@@ -5453,6 +5453,28 @@ PSS('.pls-btn').forEach(function(btn){btn.addEventListener('click',function(){sw
     lastWheel=Date.now();
     switchPromptPane(PROMPT_PANES[ni]);
   },{passive:true});
+})();
+// ====== Tab 键切换板块（生图页：循环切换 + 跟随拖拽顺序；与滚轮逻辑一致；输入框内不拦截，右侧结果列不切换） ======
+(function(){
+  var pbody=PS('#promptBody');
+  if(!pbody)return;
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Tab'||e.ctrlKey||e.metaKey||e.altKey)return;
+    var at=document.querySelector('.tab-item.active');
+    if(!at||at.dataset.tab!=='prompt')return;
+    var t=e.target;
+    var inField=t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable);
+    if(inField)return;
+    var inRight=false,n=t;
+    while(n&&n!==pbody){ if(n.classList&&n.classList.contains('prompt-right-col')){inRight=true;break;} n=n.parentNode; }
+    if(inRight)return;
+    e.preventDefault();
+    var ci=PROMPT_PANES.indexOf(currentPromptPane);
+    var ni=ci+(e.shiftKey?-1:1);
+    if(ni<0)ni=PROMPT_PANES.length-1;          // Shift+Tab：反向循环
+    if(ni>PROMPT_PANES.length-1)ni=0;
+    switchPromptPane(PROMPT_PANES[ni]);
+  });
 })();
 
 // Collapse
@@ -7555,6 +7577,16 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
     const t = e.target;
     const inField = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
     const key = (e.key || '').toLowerCase();
+    // Tab：极速抠图页切换「白底 / 纯色底」（输入框中按 Tab 仍正常移动焦点；Ctrl/Cmd/Alt+Tab 不拦截，交给系统/浏览器）
+    if(key === 'tab' && !e.ctrlKey && !e.metaKey && !e.altKey){
+      var _mt = document.querySelector('.tab-item[data-tab="matting"]');
+      if(_mt && _mt.classList.contains('active') && !inField){
+        e.preventDefault();
+        if(mattingMode === 'watermark' || mattingMode === 'ai'){ selectBgMode('white'); }
+        else { toggleBgMode(); }
+      }
+      return;
+    }
     if(key === 'escape' && cmpSliderOn){ closeCmpSlider(); return; }   // Esc：退出原图/结果对比
     // 撤销 / 重做：Ctrl/Cmd+Z 撤销；Ctrl/Cmd+Shift+Z 或 Ctrl/Cmd+Y 重做
     if((e.ctrlKey || e.metaKey) && (key === 'z' || key === 'y')){
