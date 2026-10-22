@@ -2529,6 +2529,24 @@ body.dark .app-confirm-btn.cancel:hover{background:rgba(255,255,255,.06)}
 .prompt-right-bottom .prompt-quick-prompt-card{width:500px;max-width:100%;box-sizing:border-box;margin-left:auto;}
 /* ===== /RESKIN PART 13 ===== */
 </style>
+<style id="tabletAdaptCss">
+/* ===== 平板适配（iPad 触控 + 窄屏可读性） ===== */
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;}
+/* 交互面浏览器手势让路：画笔/平移/对比条/滑杆/拖拽柄上的触摸直接生效，不滚动不缩放页面 */
+.brush-canvas,.matting-pan-overlay,.cmp-slider,.cmp-slider-line,#slPicker,#hueSlider,.resize-handle-h,.split-handler{touch-action:none;}
+/* 触屏点按：去点击闪块、按钮/导航不弹长按菜单、不选中文字 */
+button,.tab-item,.prompt-tag,.mq-btn,.toggle-btn{-webkit-tap-highlight-color:transparent;}
+.tab-bar,.prompt-mini-nav,.matting-modebar,.prompt-nav-btn,.mq-btn,.toggle-btn,.prompt-tag{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;}
+/* 粗指针（iPad 等）：小幅加大点按热区 */
+@media (pointer:coarse){
+  #tabMatting .mp-btn{height:36px;min-width:78px;}
+  .pls-btn{height:36px;}
+  .prompt-nav-btn{min-height:34px;}
+  .prompt-tag{min-height:32px;}
+  #brushSize,#wandTolerance,#wmHardness{height:22px;}
+  .cmp-slider-knob{min-width:44px;min-height:28px;}
+}
+</style>
 </head>
 <body>
 
@@ -8292,12 +8310,27 @@ try{restoreCustomTagsFromLegacy();}catch(e){try{console.warn('[快设助手PRO] 
   var btn=document.getElementById('sidebarCollapseBtn');
   if(!tabBar||!btn)return;
   var saved=localStorage.getItem('mergedSidebarCollapsed')==='1';
+  /* 平板竖屏：视口过窄自动收起侧栏（临时态，不写偏好）；转回宽屏时若用户没手动动过则恢复偏好 */
+  var autoCollapsed=false, autoDisabled=false;
+  function recalcScale(){ if(typeof window.updatePageScale==='function')requestAnimationFrame(window.updatePageScale); }
+  function applyAutoCollapse(){
+    var narrow=(document.documentElement.clientWidth||window.innerWidth||0)<=920;
+    if(narrow&&!autoDisabled&&!tabBar.classList.contains('collapsed')){
+      tabBar.classList.add('collapsed'); autoCollapsed=true; recalcScale();
+    }else if(!narrow&&autoCollapsed){
+      tabBar.classList.toggle('collapsed', saved); autoCollapsed=false; autoDisabled=false; recalcScale();
+    }
+  }
   tabBar.classList.toggle('collapsed', saved);
+  applyAutoCollapse();
+  window.addEventListener('resize',applyAutoCollapse);
+  window.addEventListener('orientationchange',function(){setTimeout(applyAutoCollapse,120);});
   btn.addEventListener('click',function(){
     var now=!tabBar.classList.contains('collapsed');
     tabBar.classList.toggle('collapsed', now);
+    autoCollapsed=false; autoDisabled=true;   // 用户手动操作后本次会话不再自动收起/还原
     localStorage.setItem('mergedSidebarCollapsed', now?'1':'0');
-    if(typeof window.updatePageScale==='function')requestAnimationFrame(window.updatePageScale);
+    recalcScale();
   });
 })();
 </script>
